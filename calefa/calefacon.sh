@@ -35,17 +35,18 @@ send_Mail()
 {
     if test `find "/var/log/sendmail.log" -mmin +600`
     then
+         /usr/sbin/sendmail -v MAILL < ${LOG_FILE} 1>/dev/null 2>>${LOG_FILE}
+        if [ $? -eq 0 ] ; then
+           rm /var/log/calefa.log
+           rm /var/log/sendmail.log
+           date >/var/log/sendmail.log
+        fi
+    else
         echo "Intenta mandar mail con menos de 10 min."| tee -a ${LOG_FILE}
         echo "Se rechecha mail."| tee -a ${LOG_FILE}
-        return
     fi
     
-    /usr/sbin/sendmail -v !!!! MAIL !!!!!!! < ${LOG_FILE} 1>/dev/null 2>>${LOG_FILE}
-    if [ $? -eq 0 ] ; then
-       rm /var/log/calefa.log
-       rm /var/log/sendmail.log
-       date >/var/log/sendmail.log
-    fi
+   
 }
 
 Start_esto()
@@ -58,6 +59,7 @@ Start_esto()
 
     date | tee -a ${LOG_FILE}
     hostname ticsistemas.com 1>> ${LOG_FILE} 2>&1
+	ntpdate
 }
 
 
@@ -83,7 +85,7 @@ send_Mail
 while true
 do
     echo "#start program.calefacon.py... " | tee -a ${LOG_FILE}  
-    python /home/pi/calefa/calefacon.py 2>&1 | tee -a ${LOG_FILE}  
+    /home/pi/calefa/calefacon.py  1>>${LOG_FILE}  2>&1
     echo "Server 'calefacon.py' crashed with exit code $?.  Respawning.." >&2 | tee -a ${LOG_FILE}
     sleep 30
     
@@ -91,4 +93,3 @@ do
     
     send_Mail
 done
-
