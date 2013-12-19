@@ -32,12 +32,11 @@ text_event=""
 def Start_Google():
        global cal_client
        
-       print "Start  Google...."
+       print "Start  Google API...."
        cal_client = gdata.calendar.client.CalendarClient(source='Google-Calendar_Python_Sample-1.0')
-       cal_client.ClientLogin("mail",  "passs", cal_client.source)
-       print "Start  Google  [OK]"
+       cal_client.ClientLogin("AMIL",  "passs", cal_client.source)
+       print "Start  Google API [OK]"
       
-       
 def googleCa():
        global cal_client
        global text_event
@@ -45,7 +44,7 @@ def googleCa():
        rc=GPIO.LOW
 
        query = gdata.calendar.client.CalendarEventQuery()
-       query.start_min = time.strftime("%Y-%m-%dT%H:%M:%S.000+01:00", time.gmtime())
+       query.start_min = time.strftime("%Y-%m-%dT%H:%M:%S.000+01:00", time.localtime())
        query.start_max = time.strftime("%Y-%m-%dT%H:%M:%S.000+01:00", time.localtime(time.time()+300))
        # los siguientes 300 seg.
        
@@ -54,8 +53,13 @@ def googleCa():
        #print 'Events on Primary Calendar: %s' % (feed.title.text,)
        for i, an_event in zip(xrange(len(feed.entry)), feed.entry):
         for a_when in an_event.when:
-			text_event = "Event: '" + an_event.title.text +"' Entre " + a_when.start + " y " + a_when.end
-			rc=GPIO.HIGH
+            rc=GPIO.HIGH
+            try:
+                utText_event = "Event: '" + an_event.title.text +"' Entre " + a_when.start + " y " + a_when.end
+                text_event= utText_event.encode("ascii","ignore")
+            except:
+                text_event="Nuevo evento: EROOR nombre.!!" 
+                
         
        return rc
 
@@ -106,10 +110,16 @@ def main():
 
           if (estado != old_estado):
                print "IMP: cambiio de estado: antes: %d ahora: %d" %(old_estado, estado)
+               sys.stderr.write( "IMP: cambiio de estado.")
                old_estado = estado 
                old_time =  time.time()
-               print text_event
-               
+               try:
+                  sys.stderr.write( text_event)
+                  print text_event
+               except:
+                  sys.stderr.write( "Nuevo evento ERROR al impriirlo.")
+                  print "Nuevo evento ERRO al impriirlo."
+                  
           #control del led status.
           for x in range(0, WAIT_TIME):
                GPIO.output(STATUSLED, GPIO.HIGH)
@@ -119,7 +129,7 @@ def main():
                GPIO.output(STATUSLED, GPIO.HIGH)
                sleep((0.5-(estado*0.3)))
 
-          if (estado==GPIO.HIGH) and (time.time()-old_time>1800):
+          if (estado==GPIO.HIGH) and (time.time()-old_time>7200):
                print "Mucho tiempo encendido: apagamos 30 seg."
                cambiarRele(GPIO.LOW)
                sleep (30)
