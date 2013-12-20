@@ -13,6 +13,7 @@ import getopt
 import sys
 import string
 import time
+import logging
 from time import sleep
 
 #Rele.
@@ -36,7 +37,8 @@ def Start_Google():
        cal_client = gdata.calendar.client.CalendarClient(source='Google-Calendar_Python_Sample-1.0')
        cal_client.ClientLogin("AMIL",  "passs", cal_client.source)
        print "Start  Google API [OK]"
-      
+       logging.info("Start  Google API [OK]")
+
 def googleCa():
        global cal_client
        global text_event
@@ -59,7 +61,7 @@ def googleCa():
                 text_event= utText_event.encode("ascii","ignore")
             except:
                 text_event="Nuevo evento: EROOR nombre.!!" 
-                
+                logging.error("Nuevo evento: EROOR nombre.!!")
         
        return rc
 
@@ -75,7 +77,7 @@ def empezar_rele():
      GPIO.output(STATUSLED, GPIO.LOW)
      print "empezar_rele %d y %d [OK]" %(RELE1, RELE2)
      print "Estado incial All GPIO.LOW" 
-
+     logging.info("empezar_rele %d y %d [OK]  todos a GPIO.LOW" %(RELE1, RELE2))
      
 
 def cambiarRele(Estado):
@@ -86,12 +88,19 @@ def cambiarRele(Estado):
         errores_rele=0
      except:
         print"ERRROR!!! No se puede.num_Rele"
+        logging.error( "ERRROR!!! No se puede.num_Rele" )
         errores_rele+=1
         sleep (33)
         if (errores_rele> 3):
           print "ERROR: Max numero de erorres reiniciamos:! "
+          logging.error( "ERROR: Max numero de erorres reiniciamos:! " )
           os.system("reboot")
 
+def startLog():
+    logging.basicConfig(filename='calefa.log',filemode='aw', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+    logging.info('Started Log')
+    
 def main():
      global text_event
      global WAIT_TIME
@@ -100,6 +109,7 @@ def main():
      old_time= 0
      
      #int
+     startLog()
      empezar_rele()
      Start_Google()
      
@@ -110,15 +120,15 @@ def main():
 
           if (estado != old_estado):
                print "IMP: cambiio de estado: antes: %d ahora: %d" %(old_estado, estado)
-               sys.stderr.write( "IMP: cambiio de estado.")
+               logging.info( "IMP: cambiio de estado: antes: %d ahora: %d" %(old_estado, estado))
                old_estado = estado 
                old_time =  time.time()
                try:
-                  sys.stderr.write( text_event)
+                  logging.info(text_event)
                   print text_event
                except:
                   sys.stderr.write( "Nuevo evento ERROR al impriirlo.")
-                  print "Nuevo evento ERRO al impriirlo."
+                  logging.error("Nuevo evento ERRO al impriirlo.")
                   
           #control del led status.
           for x in range(0, WAIT_TIME):
@@ -131,6 +141,7 @@ def main():
 
           if (estado==GPIO.HIGH) and (time.time()-old_time>7200):
                print "Mucho tiempo encendido: apagamos 30 seg."
+               logging.info("Mucho tiempo encendido: apagamos 30 seg.")
                cambiarRele(GPIO.LOW)
                sleep (30)
                cambiarRele(estado)
