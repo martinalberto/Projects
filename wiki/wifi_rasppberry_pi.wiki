@@ -1,0 +1,105 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+
+
+= Details =
+
+==Configure Wireless Networking==
+
+If you have a WiFi network that broadcasts its SSID (the wireless network name), this is fairly straightforward:
+
+*sudo nano /etc/network/interfaces*
+
+delete everything in there, and copy and paste the below text in instead. Then edit the last two lines to reflect your actual network name and password (keeping the double quotes on both):
+
+<code>
+
+auto lo
+     
+iface lo inet loopback
+iface eth0 inet dhcp
+     
+allow-hotplug wlan0
+auto wlan0
+     
+     
+iface wlan0 inet dhcp
+    wpa-ssid "ssid"
+    wpa-psk "password"
+
+</code>
+
+[http://learn.adafruit.com/assets/4278]
+
+Skip ahead to the “Reboot” section below. This next section pertains only to “hidden” wireless networks.
+
+==Hidden Networks==
+
+If you run a hidden WiFi network — one that does not broadcast its SSID — this can still be made to work but is considerably more complicated. The slightest typo here, even one character, can prevent the system from joining the network! We strongly recommend using a “broadcast” network, it’s far easier and less error-prone.
+
+*sudo nano /etc/network/interfaces*
+
+Delete the last two lines (wpa-ssid and wpa-psk) and replace with (indented):
+<code>
+
+    pre-up wpa_supplicant -Dwext -i wlan0 -c /etc/wpa_supplicant.conf -B
+sudo nano /etc/wpa_supplicant.conf
+</code>
+(This is a new file.)
+Copy Code
+
+<code>
+ctrl_interface=/var/run/wpa_supplicant
+update_config=1
+ap_scan=2
+eapol_version=1
+network={
+	ssid="my-network-ssid"
+	scan_ssid=1
+	mode=0
+	proto=WPA2
+	auth_alg=OPEN
+	pairwise=CCMP
+	group=CCMP
+	key_mgmt=WPA-PSK
+	psk="my-network-password"
+}
+</code>
+
+Replace ssid and psk with your actual network name and password, in quotes.
+
+Important: indent the 'network' section using tabs, not spaces.
+
+
+==Reboot==
+Finally, shut down the system:
+
+*sudo shutdown -h now*
+
+Wait for the system to report that it’s halted before disconnecting power. It should take about 30 seconds.
+
+Following shutdown, remove the keyboard (if using a Model A board), insert the WiFi adapter and re-connect power (keep the monitor attached for now). With a Model B board, you can keep both the keyboard and WiFi adapter attached until you know the networking is properly configured.
+
+If you're using a console cable, just keep the cable connected and the terminal program open. Plug in the wifi adapter and disconnect/reconnect the red wire from the Pi to restart it.
+This boot will take a very long time as the filesystem is expanded to fill the whole SD card.
+
+During the boot process, you should see a series of DHCPDISCOVER messages as the system tries to join the wireless network. Eventually (by the fifth or sixth try), you should see a “bound to [address]” message, indicating a successful connection. Remember that address! It's probably going to look like 10.0.1.17 or 192.168.0.6 or similar. If it doesnt show up, log in with the pi username and run the command ifconfig wlan0 and look for inet addr:10.0.1.8 or similar.
+
+If you still have keyboard and monitor connected, test the wireless connection by logging in and running this command:
+Copy Code
+<code>
+ping -c 1 google.com
+
+</code>
+
+This will try to connect to Google's servers. If you see the response 1 packets transmitted, 1 received, 0% packet loss then the WiFi connection works!
+
+If the wireless connection doesn’t work, unplug the WiFi adapter and connect the keyboard (if using a Model A board) and double-check the network setup steps above. It might simply be a typo. Correct any mistakes and reboot.
+
+Once WiFi is working, the keyboard and monitor are no longer required. All further configuration can be done remotely via SSH.
+
+
+[http://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/overview]
