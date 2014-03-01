@@ -1,0 +1,31 @@
+Partlist
+
+Exported from untitled.sch at 25/02/2014 16:52:07
+
+EAGLE Version 5.6.0 Copyright (c) 1988-2009 CadSoft
+
+Part     Value             Device                   Package           Library        Sheet
+
+C1       1uF               C5/3.5                   C5B3.5            capacitor-wima 1
+D1       1N4004            1N4004                   DO41-10           diode          1
+DIS1     TUXGR_16X2_R2     TUXGR_16X2_R2            TUXGR_16X2_R2     display-lcd    1
+DS18S20                    18S20                    TO-92             merriman       1
+JP1                        M03POLAR                 MOLEX-1X3         SparkFun       1
+JP2                        M05PTH                   1X05              SparkFun       1
+JP3                        M03POLAR                 MOLEX-1X3         SparkFun       1
+K2       DS2Y-S-DC5V       DS2Y-S-DC5V              DS2Y              relay          1
+Q1                         TRANSISTOR_NPNTO-92-AMMO TO-92-AMMO        SparkFun       1
+R1                         R-TRIMM64W               RTRIM64W          resistor       1
+R2                         R-TRIMM64Y               RTRIM64Y          resistor       1
+R3       PHOTOCELLPTH-KIT  PHOTOCELLPTH-KIT         PHOTOCELL-KIT     SparkFun       1
+R4       1K                R-EU_0207/10             0207/10           rcl            1
+R5       2.2K              R-EU_0207/10             0207/10           rcl            1
+R6       1K                R-EU_0207/10             0207/10           rcl            1
+R7       1K                R-EU_0207/10             0207/10           rcl            1
+R8       1K                R-EU_0207/10             0207/10           rcl            1
+R9       4.7K              R-EU_0207/10             0207/10           rcl            1
+R10      10K               R-EU_0207/10             0207/10           rcl            1
+R11      1K                R-EU_0207/10             0207/10           rcl            1
+S2                         TAC_SWITCHPTH            TACTILE-PTH       SparkFun       1
+U$2      RASPBERRY-PI_REV1 RASPBERRY-PI_REV1        RASPBERRY-PI_REV1 RaspberryPi    1
+X1                         AK500/2                  AK500/2           con-ptr500     1
