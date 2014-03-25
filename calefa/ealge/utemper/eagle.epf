@@ -1,12 +1,14 @@
 [Eagle]
-Version="05 06 00"
+Version="06 04 00"
 Platform="Windows"
-Serial="62191E841E-LSR-WLM128CP"
+Serial="62191E841E-LSR-WLM-1EL"
 Globals="Globals"
 Desktop="Desktop"
 
 [Globals]
 AutoSaveProject=1
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-LED.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-RF.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-5.6.0/lbr/19inch.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-5.6.0/lbr/40xx.lbr"
 UsedLibrary="C:/Program Files (x86)/EAGLE-5.6.0/lbr/41xx.lbr"
@@ -308,10 +310,34 @@ UsedLibrary="libs/relay/relay.lbr"
 UsedLibrary="libs/merriman.lbr"
 UsedLibrary="libs/RaspberryPi.lbr"
 UsedLibrary="libs/relay.lbr"
+UsedLibrary="C:/Users/martin/Documents/proyectos/itemper/albert-ideas/calefa/ealge/rele_recptor/lib/SparkFun-LED.lbr"
+UsedLibrary="libs/seeedstudio/Discrete.lbr"
+UsedLibrary="libs/seeedstudio/IC.lbr"
+UsedLibrary="libs/seeedstudio/Logo.lbr"
+UsedLibrary="libs/seeedstudio/OPL.lbr"
+UsedLibrary="libs/seeedstudio/Power or GND .lbr"
+UsedLibrary="libs/seeedstudio/template.lbr"
+UsedLibrary="libs/seeedstudio/Connector .lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/LilyPad-Wearables.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Aesthetics.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-AnalogIC.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Boards.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Capacitors.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Connectors.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-DigitalIC.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-DiscreteSemi.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Displays.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Electromechanical.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-FreqCtrl.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Passives.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-PowerIC.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Resistors.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Retired.lbr"
+UsedLibrary="libs/SparkFun-Eagle-Libraries-master/SparkFun-Sensors.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="150 160 749 559"
+Loc="491 0 1090 804"
 State=1
 Number=0
 
