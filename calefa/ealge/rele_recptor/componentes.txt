@@ -1,0 +1,9 @@
+tmega328 w/ Arduino UNO Optiboot Bootloader ATMEGA328P-PU
+2- 22pF/50V Radial Ceramic Disc Capacitor
+28 Contacts DIP 0.3” Socket
+Green LED ø 3mm Diffused Green
+330 Ohm 1/4W Resistor ±2% 330R 331
+3296 Precision Trimpot 10k Ohm 3296W Variable Resistor 103
+10k Ohm 1/4W Resistor ±2% 103
+10uF/25V Radial Electrolytic Capacitor 105°C
+Pushbutton 6x6mm for PCB 4.3mm APEM Components Inc MJTP1230
