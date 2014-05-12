@@ -14,10 +14,20 @@
 #include "RCSwitch.h"
 #include <stdlib.h>
 #include <stdio.h>
-     
+#include <time.h>
 
-int rele= 1;
-int tiempo_espera=0;
+// INT
+int PIN_433 = 0;
+int PIN_RELE =8; // cuidado usamos la libreira  wiringpi
+	
+int rele= 0;
+int tiempo_espera=10;
+
+int log (int nivel,char *text )
+{
+
+	
+}
 
 int read_rele(void){
    FILE * fp;
@@ -26,7 +36,7 @@ int read_rele(void){
    fp = fopen("/tmp/rele.var", "r");
    if (fp == NULL)
    {
-       printf("ERROR al abrir el fichero: /tmp/rele.var");
+       printf("ERROR al abrir el fichero: /tmp/rele.var\n");
        return 0;
     }
     
@@ -34,7 +44,7 @@ int read_rele(void){
     
     if (fscanf (fp, "%u", &temp_valor)!=1)
     {
-        printf("ERROR al leer el fichero: /tmp/rele.var");
+        printf("ERROR al leer el fichero: /tmp/rele.var\n");
        return 0;
     }
     // close
@@ -42,7 +52,7 @@ int read_rele(void){
     if( fclose(fp) )
     {
       printf( "Error: fichero /tmp/rele.var NO CERRADO\n" );
-      return -1;
+      exit(1);
    }
     
     if (temp_valor == -1)
@@ -53,7 +63,7 @@ int read_rele(void){
    }
    else if (0<temp_valor>1)
    {
-       printf ("Valor no se entiende no se sabe que es >1 o <0");
+       printf ("Valor no se entiende no se sabe que es >1 o <0\n");
        return 0;
    }
    else
@@ -68,21 +78,21 @@ int read_espera(void){
     fp = fopen("/tmp/time_espera.var", "r");
     if (fp == NULL)
     {
-       printf("ERROR al abrir el fichero: /tmp/time_espera.var");
+       printf("ERROR al abrir el fichero: /tmp/time_espera.var\n");
        return 0;
     }   
     //read
     
     if (fscanf (fp, "%u", &temp_valor)!=1)
     {
-        printf("ERROR al leer el fichero: /tmp/time_espera.var");
+        printf("ERROR al leer el fichero: /tmp/time_espera.var\n");
        return 0;
     }
     // close    
     if( fclose(fp) )
     {
       printf( "Error: fichero /tmp/time_espera.var NO CERRADO\n" );
-      return -1;
+      exit(1);
     }
     
     if (temp_valor == -1)
@@ -93,7 +103,7 @@ int read_espera(void){
     }
     else if (0<temp_valor>99)
     {
-       printf ("Valor no se entiende no se sabe que es >1 o <0");
+       printf ("Valor no se entiende no se sabe que es >1 o <0\n");
        return 0;
     }
     else
@@ -101,27 +111,19 @@ int read_espera(void){
    return 1;
 }
 
-int send433(RCSwitch mySwitch, int code)
-{
-
-    
-}
 int main(int argc, char *argv[]) {
     
         // This pin is not the first pin on the RPi GPIO header!
     // Consult https://projects.drogon.net/raspberry-pi/wiringpi/pins/
     // for more information.
     
-    // INT
-    int PIN_433 = 0;
-    int PIN_RELE =22;
-    
-    
     int code= 0;
     int errores=0;
-    int last_value=0;
-    int result=-1;
-    
+    int result1=-1;
+    int result2=-1;
+	time_t lasttime=0;
+	
+    printf ("inicializamos\n");
     if (wiringPiSetup () == -1) return 1;
 	printf("sending code[%i]\n", code);
 	RCSwitch mySwitch = RCSwitch();
@@ -129,51 +131,40 @@ int main(int argc, char *argv[]) {
     
      pinMode (PIN_RELE, OUTPUT) ;
      digitalWrite (PIN_RELE, 0);
-    
-    while (errores<20)
+    printf ("empezamos\n");
+	fflush(stdout);
+	
+    while (errores<20000)
     {
-        
-        result = read_rele();
-        if (result==-1 )
-        {
-             printf ("ERRoR Grave salimos ");
-             return 1;
-        }
-        else if (result!=1)
-        {
-            errores++;
-            delay(200);
-        }
-        else
-        {
-            printf ("OK!!!!!! \n");
-       
-            
-            result = read_espera();
-            if (result==-1 )
-            {
-                 printf ("ERRoR Grave salimos ");
-                 return 1;
-            }
-            else if (result!=1)
-            {
-                errores++;
-                delay(200);
-            }
-            else
-            {
-                if (last_value!= rele)
-                {
-                    digitalWrite (PIN_RELE, rele);
-                    last_value =rele;
-                }
-                
-                code = (rele*100)+tiempo_espera;
-                mySwitch.send(code, 24);
+        if (time(NULL) - lasttime > 2)
+		{
+			lasttime = time(NULL);
+			// leer valor del relé
+			result1 = read_rele();
+			fflush(stdout);
 
-            }
-        }
-     delay(200);
+			// leer valor del tiempo.
+			result2 = read_espera();
+			fflush(stdout);
+			if ((result1!=1)||(result2!=1))
+			{
+				errores++;
+				delay(2000);
+			}
+			else
+			{
+				errores=0;
+			}
+				// Enviamos los valores.
+			digitalWrite (PIN_RELE, rele);
+
+		}
+		
+		// Enviamos los valores.
+		code = (rele*100)+tiempo_espera;
+		mySwitch.send(code, 24);
+		fflush(stdout);
+     delay(400);
     }
     
 	return 0;
