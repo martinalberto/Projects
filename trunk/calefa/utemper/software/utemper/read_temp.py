@@ -42,13 +42,20 @@ while True:
         time.sleep(5*errores)
         
         if (temp>2 and temp<40):
-            file = open("/tmp/temp.var", "w")
-            file.write(str(temp))
-            file.close()
-            
+			try:
+				file = open("/tmp/temp.var", "w")
+				file.write(str(temp))
+				file.close()
+				errores=1
+			except:
+				os.system('echo $(date  +"%F_%T")";4;READ_TEMP;Impisible guardar valor en /tmp/temp.var">>/var/utemp/logs.log')
+				errores+=1
+        else:
+			errores+=1
+			
         if (errores>7):
             os.system('echo $(date  +"%F_%T")";5;READ_TEMP;Errores max KO">>/var/utemp/logs.log')
-            os.system('echo $(date  +"%F_%T")";5;READ_TEMP;Reboot">>/var/utemp/logs.log')
+            os.system('echo $(date  +"%F_%T")";5;READ_TEMP;Exit">>/var/utemp/logs.log')
             time.sleep(90)
-            os.system("reboot -f")
+            exit(1)
             
