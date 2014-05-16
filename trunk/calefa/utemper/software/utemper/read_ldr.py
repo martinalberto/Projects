@@ -47,7 +47,7 @@ while True:
 		lastvalue3 = RCtime(PIN)
 		valor= (lastvalue1 + lastvalue2 + lastvalue3)/3
 		
-		print ("Valores: %d, %d %d = %d", (lastvalue1, lastvalue2, lastvalue3, valor))
+		#print ("Valores: %d, %d %d = %d", (lastvalue1, lastvalue2, lastvalue3, valor))
 		
 		#save:
 		if (valor>0 and valor<49000):
