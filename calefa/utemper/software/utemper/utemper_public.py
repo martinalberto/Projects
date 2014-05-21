@@ -54,9 +54,12 @@ class cread_config(object):
 		return valor_local
 	def read_config_file (self, file, nombre_config):
 		lines=[""]
-		tiempo = 0
-		valor = "-1"
-		# read file 1
+		encontrado = False
+		tiempo = 0 
+		nombre=""
+		valor="-1"
+		
+		# read
 		try:
 			f = open(file)
 			lines = f.readlines()
@@ -64,13 +67,17 @@ class cread_config(object):
 		except:
 			clog().log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, file) )
 			
+		# check.
 		for line in lines:
-			if len(line.split(':')):
-				(tiempo,config,valor)=line.split(':')
-				if config.lower() == nombre_config.lower():
-					return {int(tiempo), valor}
-		return {tiempo, valor}
-		
+			if (len(line.split(':'))==3):
+				(stiempo, nombre, valor) = line.split(':')
+				tiempo = int(stiempo)
+				if (nombre.lower() == nombre_config.lower()):
+					encontrado = True
+					return {tiempo, valor}
+				
+		return {0, "-1"}
+			
 	def update_config_file (self, file, tiempo_new, nombre_config , valor_new):
 		encontrado =False
 		lines =[]
@@ -90,7 +97,7 @@ class cread_config(object):
 				(tiempo,config,valor)=lines[numline].split(':')
 				if config.lower() == nombre_config.lower():
 					lines[numline] = new_line
-					encontrado = True					
+					encontrado = True
 		if (encontrado ==False):
 			lines.lappend (new_line)
 			
@@ -119,3 +126,13 @@ class gv(object):
 
     #dia noche:
     noche=0
+    
+    # rele
+    rele=0
+    tiempo_espera=0
+	
+    # wifi
+    wifi = 0
+    wifi_connect = 0
+    wifissid = "error"
+    wificode = "error"
