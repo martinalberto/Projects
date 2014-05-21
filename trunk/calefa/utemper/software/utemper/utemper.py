@@ -8,6 +8,9 @@ import time, os
 import utemper_tiempo
 from utemper_public import *
 import utemper_screen
+import utemper_check_estados
+import utemper_check_temperatura
+
 #import utemper_wifi
 		
 def main():
@@ -17,11 +20,17 @@ def main():
 	# Init Clases.
 	cutemper_tiempo = utemper_tiempo.eltiempo()
 	cutemper_screen = utemper_screen.cScreen()
+	cutemper_cCheck_estados = utemper_check_estados.cCheck_estados()
+	cutemper_cCheck_temperatura = utemper_check_temperatura.cCheck_temperatura()
+	
 	clog().log(1,"Init Utemper OK")
 	
 	# bucle
 	while(salir):
 		cutemper_tiempo.suceso()
+		cutemper_screen.suceso()
+		cutemper_cCheck_estados.suceso()
+		cutemper_cCheck_temperatura.suceso()
 		
 		print gv.tiempo_temp
 		print gv.tiempo_code

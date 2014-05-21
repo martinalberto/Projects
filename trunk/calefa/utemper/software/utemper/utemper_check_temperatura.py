@@ -2,55 +2,46 @@
 
 import sys
 import time, os
+from utemper_public import *
 
 class cCheck_temperatura:
-
+	lastTimeNoche=0
 	CONF_FILE="config/utemper.conf"
 
-	def __init__():
+	def __init__(self):
 		# read config value:
-		leer_conf_temp()
-		checkTemperatura()
-		actualiza_rele(gv.rele)
+		gv.temperatura_max = int (cread_config().read_config("temperatura"))
+		gv.estadoCalefa = int (cread_config().read_config("estado_caldera"))
+		self.checkTemperatura()
+		self.actualiza_rele(gv.rele)
 
-	def leer_conf_temp():
-                try:
-                        f = file(self.CONF_FILE, 'r')
-                        lines = f.readlines()
-                        f.close()
-                        for line in lines:
-				result = scanf(lines, "%d:%s:%f", segActualizacion, nombre, valor)
-                                if (result==3) and (nombre = "temperatura" ):
-                             		gv.temperatura_max= valor
-   	
-                except:
-                        clog().log(3,"Imposible leer config 'temp'")
-                        return 0
-
-	
-	def suceso():
+	def suceso(self):
 		# check noche:
                 if (time.time()-self.lastTimeNoche>6):
-                        checkTemperatura()
+                        self.checkTemperatura()
                         self.lastTimeNoche = time.time()
 
-	def checkTemperatura():
+	def checkTemperatura(self):
 		
 		if(gv.estadoCalefa == 0):
 			# estado Apagado.
 			if (gv.rele !=0):
-				actualiza_rele(0)
+				self.actualiza_rele(0)
 
 		elif(gv.estadoCalefa == 1):
 			#estado  Encendido.
 
 			if ((gv.temperatura - 0.1) < gv.temperatura_max) and (gv.rele==0):
 				# temperatura menor y rele apagado.
-				actualzia_rele(1)
+				self.actualiza_rele(1)
 
 			elif ((gv.temperatura + 0.1) > gv.temperatura_max) and (gv.rele==1):
                                 # temperatura mayor y rele encedido.
-                                actualzia_rele(0)
+                                actualiza_rele(0)
 
 		elif (gv.estadoCalefa == 2):
 			# estado programado
+			pass
+			
+	def actualiza_rele(self, valor):
+		pass
