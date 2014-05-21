@@ -1,0 +1,147 @@
+wlan0     Scan completed :
+          Cell 01 - Address: 00:1F:A4:86:D5:44
+                    ESSID:"WLAN_D543"
+                    Protocol:IEEE 802.11bg
+                    Mode:Master
+                    Frequency:2.417 GHz (Channel 2)
+                    Encryption key:on
+                    Bit Rates:54 Mb/s
+                    Extra:wpa_ie=dd180050f20101000050f20201000050f20201000050f2020000
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (1) : TKIP
+                        Authentication Suites (1) : PSK
+                    IE: Unknown: DD760050F204104A00011010440001021041000100103B00010310470010000102030405060708090A0B0C0D0EBB1021000842726F6164636F6D1023000842726F6164636F6D1024000631323334353610420004313233341054000800060050F20400011011000A42726F6164636F6D4150100800020088
+                    Quality=36/100  Signal level=100/100  
+          Cell 02 - Address: 00:1A:2B:A8:C6:46
+                    ESSID:"WLAN_3C6B"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.417 GHz (Channel 2)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd1c0050f20101000050f20202000050f2040050f20201000050f2020c00
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    Quality=17/100  Signal level=47/100  
+          Cell 03 - Address: 38:72:C0:67:49:56
+                    ESSID:"JAZZTEL"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.412 GHz (Channel 1)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd180050f20101000050f20401000050f20401000050f2020c00
+                    IE: WPA Version 1
+                        Group Cipher : CCMP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    Quality=43/100  Signal level=23/100  
+          Cell 04 - Address: C0:C1:C0:F7:07:A7
+                    ESSID:"wlancar"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.412 GHz (Channel 1)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:rsn_ie=30180100000fac020200000fac04000fac020100000fac020c00
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    Quality=0/100  Signal level=42/100  
+          Cell 05 - Address: E0:91:53:2C:C6:F5
+                    ESSID:"WLAN_CA"
+                    Protocol:IEEE 802.11bg
+                    Mode:Master
+                    Frequency:2.427 GHz (Channel 4)
+                    Encryption key:on
+                    Bit Rates:54 Mb/s
+                    Quality=100/100  Signal level=42/100  
+          Cell 06 - Address: 38:72:C0:4A:07:B7
+                    ESSID:"JAZZTEL_07B7"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.437 GHz (Channel 6)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd180050f20101000050f20401000050f20401000050f2020c00
+                    IE: WPA Version 1
+                        Group Cipher : CCMP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    Quality:75  Signal level:0  Noise level:0
+          Cell 07 - Address: 00:1A:2B:AE:38:EE
+                    ESSID:"WLAN_F38B"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.437 GHz (Channel 6)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd1c0050f20101000050f20202000050f2040050f20201000050f2020c00
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    IE: Unknown: DD760050F204104A00011010440001021041000100103B000103104700101665C016AE44C6CD74A5FD2609F0529A1021000842726F6164636F6D1023000842726F6164636F6D1024000631323334353610420004313233341054000800060050F20400011011000A42726F6164636F6D4150100800020088
+                    Quality=70/100  Signal level=7/100  
+          Cell 08 - Address: 88:03:55:1F:3D:D6
+                    ESSID:"Orange-3DD4"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.437 GHz (Channel 6)
+                    Encryption key:on
+                    Bit Rates:300 Mb/s
+                    Extra:rsn_ie=30140100000fac040100000fac040100000fac020100
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : CCMP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                       Preauthentication Supported
+                    IE: Unknown: DD0E0050F204104A0001101044000102
+                    Quality=100/100  Signal level=64/100  
+          Cell 09 - Address: 00:1A:2B:04:11:94
+                    ESSID:"JAZZTEL_4C"
+                    Protocol:IEEE 802.11bg
+                    Mode:Master
+                    Frequency:2.462 GHz (Channel 11)
+                    Encryption key:on
+                    Bit Rates:54 Mb/s
+                    Quality=36/100  Signal level=43/100  
+          Cell 10 - Address: 88:03:55:2A:0A:9E
+                    ESSID:"Orange-0A9C"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.452 GHz (Channel 9)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd1a0050f20101000050f20202000050f2040050f20201000050f202
+                    IE: WPA Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                    Extra:rsn_ie=30180100000fac020200000fac04000fac020100000fac020100
+                    IE: IEEE 802.11i/WPA2 Version 1
+                        Group Cipher : TKIP
+                        Pairwise Ciphers (2) : CCMP TKIP
+                        Authentication Suites (1) : PSK
+                       Preauthentication Supported
+                    IE: Unknown: DD8F0050F204104A00011010440001021041000100103B00010310470010000000000000000300008803552A0A9D1021000B436F72706F726174696F6E1023000B41525637353139525732321024000930302E39362E3131341042000A4A3332303337313834331054000800060050F204000110110014576972656C65737320526F757465722857464129100800020084
+                    Quality=26/100  Signal level=4/100  
+          Cell 11 - Address: E4:C1:46:BB:B1:40
+                    ESSID:"VodafoneB13F"
+                    Protocol:IEEE 802.11bgn
+                    Mode:Master
+                    Frequency:2.462 GHz (Channel 11)
+                    Encryption key:on
+                    Bit Rates:144 Mb/s
+                    Extra:wpa_ie=dd180050f20101000050f20401000050f20401000050f2020c00
+                    IE: WPA Version 1
+                        Group Cipher : CCMP
+                        Pairwise Ciphers (1) : CCMP
+                        Authentication Suites (1) : PSK
+                    IE: Unknown: DD760050F204104A00011010440001021041000100103B00010310470010DE3A5CE75FAA212BEB7DCF13CFEADCBC1021000842726F6164636F6D1023000842726F6164636F6D1024000631323334353610420004313233341054000800060050F20400011011000A42726F6164636F6D4150100800020084
+                    Quality:63  Signal level:0  Noise level:0
+
