@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
 import urllib, time
+import glob, os
 import xml.etree.ElementTree as ET
 
 from utemper_public import *
-
-
 
 class eltiempo:
 	# tiempo
@@ -16,18 +15,19 @@ class eltiempo:
 	lastTimeTiempo=0
 	
 	#temp:
+	
 	temp = False
-	READ_TEMP_FILE = "/tmp/temp.var"
 	lastTimeTemp=0
 	
 	def __init__(self):
 		clog().log(1,"init int_tiempo OK")
 		if self.int_tiempo()==1:
 			self.tiempo=True
-		clog().log(1,"init read temperatura OK")
+		
 		if self.int_temp()==1:
 			self.temp=True
-			
+		clog().log(1,"init read temperatura OK")
+		
 	def int_tiempo(self):		
 		self.WOEID = int(cread_config().read_config("WOEID"))
 		if self.WOEID ==-1:
@@ -36,15 +36,17 @@ class eltiempo:
 		return 1
 		
 	def int_temp(self):
-		try:
-			f = file(self.READ_TEMP_FILE, 'r')
-			gv.temperatura = float(f.readlines())
-			f.close()
-		except:
-			clog().log(3,("Imposible leer temperatura del fichero "+ self.READ_TEMP_FILE))
-			return 0			
-		return 1
-
+		#try:
+			os.system('modprobe w1-gpio')
+			os.system('modprobe w1-therm')
+			base_dir = '/sys/bus/w1/devices/'
+			device_folder = glob.glob(base_dir + '10*')[0]
+			self.device_file = device_folder + '/w1_slave'
+			return 1
+		#except:
+			clog().log(3,("Imposible modprobe w1-gpio y w1-therm "))
+			return 0
+			
 	def suceso(self):
 		#leer tiempo
 		if (time.time()-self.lastTimeTiempo>4000) and (self.tiempo):
@@ -80,12 +82,36 @@ class eltiempo:
 			return 0
 			
 	def leer_temperatura(self):
-		clog().log(0,"leer_temperatura...")
-		try:
-			f = file(self.READ_TEMP_FILE, 'r')
-			gv.temperatura = float(f.readlines())
-			f.close()
-		except:
-			clog().log(3,("Imposible leer temperatura del fichero "+ self.READ_TEMP_FILE))
-			return 0			
-		return 1
+		clog().log(1,"leer_temperatura...")
+		temp_c=0
+		count = 0
+	#try:		
+		lines = self.read_temp_raw()
+		while lines[0].strip()[-3:] != 'YES':
+			time.sleep(0.2)
+			lines = self.read_temp_raw()
+			count += 1
+			clog().log(1,"count ++")
+			if (count>4):
+				clog().log(3,("Imposible leer temperatura count > 4"))
+				break
+		equals_pos = lines[1].find('t=')
+		if equals_pos != -1:
+			temp_string = lines[1][equals_pos+2:]
+			temp_c = float(temp_string) / 1000.0
+			#temp_f = temp_c * 9.0 / 5.0 + 32.0
+			if (temp_c>2 and temp_c<40):
+				gv.temperatura = temp_c
+				return 1
+	#except:
+		clog().log(3,("Imposible leer temperatura "))
+		return 0			
+
+		
+	def read_temp_raw(self):
+		f = open(self.device_file, 'r')
+		clog().log(3,("f.readlines() "))
+		lines = f.readlines()
+		clog().log(3,("f.readlines() OK"))
+		f.close()
+		return lines
