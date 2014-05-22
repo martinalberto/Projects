@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 480
  
 
 class clog:
-	DEBUG_LEVEL=1
+	DEBUG_LEVEL= -1
 	LOGS_FILE= "/var/utemp/logs.log"
 	
 	def log(self, nivel, text):
@@ -51,6 +51,7 @@ class cread_config(object):
 				self.update_config_file(self.CONFIG_FILE_LOCAL, tiempo_remote, nombre_config , valor_remote)
 				valor_local = valor_remote
 				
+		clog().log(1, "Leida el valor -%s- para la config -%s- " %(valor_local, nombre_config) )
 		return valor_local
 	def read_config_file (self, file, nombre_config):
 		lines=[""]
@@ -70,13 +71,14 @@ class cread_config(object):
 		# check.
 		for line in lines:
 			if (len(line.split(':'))==3):
+				line = line.replace("\n", "")
 				(stiempo, nombre, valor) = line.split(':')
 				tiempo = int(stiempo)
 				if (nombre.lower() == nombre_config.lower()):
 					encontrado = True
-					return {tiempo, valor}
+					return (tiempo, valor)
 				
-		return {0, "-1"}
+		return (0, "-1")
 			
 	def update_config_file (self, file, tiempo_new, nombre_config , valor_new):
 		encontrado =False
