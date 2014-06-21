@@ -1,0 +1,16 @@
+-87;VodafoneBFAG;1
+-50;WLAN_D543;1
+-76;WLAN_3C6B;1
+-86;Camjer;1
+-77;WLAN_CA;1
+-78;WLAN_4230;1
+-78;wlancar;1
+-97;Red de Adolfo;1
+-70;Orange-3DD4;1
+0;JAZZTEL_07B7;1
+0;aulaaA;0
+-78;JAZZTEL_4C;1
+-99;WLAN_47;1
+0;carmina;1
+-99;FS-ES-AP02;1
+-96;FS-ES-AP02-guest;0
