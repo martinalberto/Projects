@@ -19,26 +19,25 @@ def main():
 	
 	# Init Clases.
 	cutemper_tiempo = utemper_tiempo.eltiempo()
-	#cutemper_screen = utemper_screen.cScreen()
+	cutemper_screen = utemper_screen.cScreen()
 	cutemper_cCheck_estados = utemper_check_estados.cCheck_estados()
 	cutemper_cCheck_temperatura = utemper_check_temperatura.cCheck_temperatura()
 	
-	clog().log(1,"Init Utemper OK")
+	clog().log(1,"##### Init Utemper OK ####")
 	
 	# bucle
 	while(salir):
 		cutemper_tiempo.suceso()
-		clog().log(1," cutemper_tiempo OK")
-		#cutemper_screen.suceso()
-		cutemper_cCheck_estados.suceso()
-		clog().log(1," cutemper_cCheck_estados OK")
-		cutemper_cCheck_temperatura.suceso()
-		clog().log(1," cutemper_cCheck_temperatura OK")
-		
-		print gv.tiempo_temp
-		print gv.tiempo_code
-		salir=0
-		
+		#clog().log(1," cutemper_tiempo OK")
+		cutemper_screen.suceso()
+		#clog().log(1," cutemper_cCheck_estados OK")
+		#cutemper_cCheck_estados.suceso()
+		#clog().log(1," cutemper_cCheck_estados OK")
+		#cutemper_cCheck_temperatura.suceso()
+		#clog().log(1," cutemper_cCheck_temperatura OK")
+
+		#salir=0
+		#time.sleep(3)
 	# exit
 	clog().log(1,"Salimos del Utemper OK")
 	

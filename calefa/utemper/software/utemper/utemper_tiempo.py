@@ -36,25 +36,26 @@ class eltiempo:
 		return 1
 		
 	def int_temp(self):
-		#try:
+		try:
 			os.system('modprobe w1-gpio')
 			os.system('modprobe w1-therm')
 			base_dir = '/sys/bus/w1/devices/'
 			device_folder = glob.glob(base_dir + '10*')[0]
 			self.device_file = device_folder + '/w1_slave'
 			return 1
-		#except:
+		except:
 			clog().log(3,("Imposible modprobe w1-gpio y w1-therm "))
 			return 0
 			
 	def suceso(self):
 		#leer tiempo
+
 		if (time.time()-self.lastTimeTiempo>4000) and (self.tiempo):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
 			
 		#leer temperatura
-		if (time.time()-self.lastTimeTemp>5) and (self.temp):
+		if (time.time()-self.lastTimeTemp>6) and (self.temp):
 			self.lastTimeTemp=time.time()
 			self.leer_temperatura()
 			
@@ -62,7 +63,7 @@ class eltiempo:
 		if self.WOEID<=0:
 			clog().log(4,("Error al leer tiempo WOEID <0 "))
 			return 0
-		#try:
+		try:
 			clog().log(1,("init leer_tiempo... "))
 			data = urllib.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID)).read()
 			rss = ET.fromstring(data)
@@ -76,8 +77,9 @@ class eltiempo:
 			ycondition = rss.find('channel/{%s}astronomy' % self.WEATHER_NS)
 			gv.hora_init_dia = time.strptime(ycondition.get('sunrise'), "%I:%M %p")
 			gv.hora_init_noche = time.strptime(ycondition.get('sunset'), "%I:%M %p")
+			clog().log(0," leer_tiempo  OK")
 			return 1
-		#except:
+		except:
 			clog().log(3,"Imposible poder acceder al tiempo.")
 			return 0
 			
@@ -110,8 +112,6 @@ class eltiempo:
 		
 	def read_temp_raw(self):
 		f = open(self.device_file, 'r')
-		clog().log(3,("f.readlines() "))
 		lines = f.readlines()
-		clog().log(3,("f.readlines() OK"))
 		f.close()
 		return lines
