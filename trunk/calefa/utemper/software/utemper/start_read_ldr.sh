@@ -5,6 +5,9 @@ echo -e "\tIniciar start_read_ldr.sh"
 count=1
 while [ $count -le 15 ]
 do
+  # si el programa esta arrancado lo cerramos.
+  killall read_ldr.py 2>/dev/null 
+  
   python read_ldr.py 
   #x=$(( $x + 1 )) # NUNCA TERMINA!!!!!
   sleep 30
