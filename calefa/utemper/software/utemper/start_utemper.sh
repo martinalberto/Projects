@@ -31,11 +31,12 @@ chmod 777 /var/utemp/logs.log
 sudo swapoff --all
 sudo rm /var/swap
 
-# cerramos antiagos programas:
+# cerramos antiguos programas:
 killall start_read_temp.sh 2>/dev/null
 killall start_read_ldr.sh 2>/dev/null
 killall start_rele.sh 2>/dev/null
 killall utemper.py 2>/dev/null
+#killall connect_wifi.py 2>/dev/null
 
 # Iniciamos programas.
 sleep 10
@@ -43,6 +44,7 @@ sleep 10
 bash /home/pi/utemper/start_read_temp.sh &
 bash /home/pi/utemper/start_read_ldr.sh &
 bash /home/pi/utemper/start_rele.sh &
+#bash /home/pi/utemper/start_wifi_conect.sh &
 sleep 2
 
 #python utepmer.py &

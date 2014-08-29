@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-import time, datetime, os
+import time, os
 from utemper_public import *
 
 class cCheck_temperatura:
@@ -12,9 +12,8 @@ class cCheck_temperatura:
     horarios=[]
     def __init__(self):
         # read config value:
-        gv.temperatura_max = float (cread_config().read_config("temperatura"))
+        gv.temperatura_max = int (cread_config().read_config("temperatura"))
         gv.estadoCalefa = int (cread_config().read_config("estado_caldera"))
-        self.leer_temperatura()
         self.checkestadotemperatura()
         self.actualiza_rele(gv.rele)
 
@@ -43,27 +42,27 @@ class cCheck_temperatura:
                 self.check_temperatura()
                 
     def check_temperatura(self):
-        clog().log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max ))
-        if ((gv.temperatura + 0.2) < gv.temperatura_max) and (gv.rele==0):
+        if ((gv.temperatura - 0.1) < gv.temperatura_max) and (gv.rele==0):
                 # temperatura menor y rele apagado.
                 self.actualiza_rele(1)
 
-        elif ((gv.temperatura - 0.2) > gv.temperatura_max) and (gv.rele==1):
+        elif ((gv.temperatura + 0.1) > gv.temperatura_max) and (gv.rele==1):
                 # temperatura mayor y rele encendido.
                 self.actualiza_rele(0)
                 
     def actualiza_rele(self, valor):
-        iFile = file(self.RELE_FILE, 'w')
-        iFile.write(str(valor))
-        iFile.close()
-        gv.rele = valor
-        clog().log(2, "Actulizado valor del rele a -%d- " %(valor) )
+        File = file(self.RELE_FILE, 'w')
+        File.write(str(valor))
+        File.close()
+        gv.rele
+        clog().log(1, "actulizado valor del rele a -%d- " %(valor) )
         
     def leer_temperatura(self):
-        fichero = str(time.localtime().tm_wday +1) + ".txt"
-        clog().log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
-        iFile = file(self.FOLER_PROGRA +fichero, 'r')
-        line = iFile.readline()
+        fichero = str(datetime.datetime.date.fromtimestamp(time.localtime()).weekday()+1) + ".txt"
+        File = file(self.FOLER_PROGRA +fichero, 'r')
+        line = f.readline()
         line = line.replace("\n", "")
-        iFile.close()        
+        File.close()        
         self.horarios = line.split(';')
+        
+            

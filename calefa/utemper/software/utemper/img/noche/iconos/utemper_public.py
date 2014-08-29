@@ -58,7 +58,6 @@ class cread_config(object):
 
         clog().log(1, "Leida el valor -%s- para la config -%s- " %(valor_local, nombre_config) )
         return valor_local
-		
     def read_config_file (self, file, nombre_config):
         lines=[""]
         encontrado = False
@@ -82,19 +81,10 @@ class cread_config(object):
                 tiempo = int(stiempo)
                 if (nombre.lower() == nombre_config.lower()):
                     encontrado = True
-                    return (tiempo, valor)                
+                    return (tiempo, valor)
+                
         return (0, "-1")
-		
-    def write_config_file (self,  data):
-        # write
-        try:
-            f = open(self.CONFIG_FILE_LOCAL, "w")
-            lines = f.writelines(data)
-            f.close()
-        except:
-            clog().log(4, "Imposible poder escribir la nueva configuracion en fichero %s " %( self.CONFIG_FILE_LOCAL) )
-        return 1
-		
+
     def update_config_file (self, file, tiempo_new, nombre_config , valor_new):
         encontrado =False
         lines =[]
@@ -154,7 +144,6 @@ class gv(object):
     
     #internet
     internet=0
-    necesary_read = 0
     # wifi
     wifi_estado = 0
     wifi_ip = ""

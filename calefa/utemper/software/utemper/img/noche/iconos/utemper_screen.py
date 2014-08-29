@@ -114,7 +114,7 @@ class cScreen:
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +30
         self.screen.blit(mytext, (20 ,posY))
         
-        string="%.1fC" %gv.temperatura
+        string="%d.C" %gv.temperatura
         mytext = self.Letra_temp1.render(string, False, self.letra_color).convert_alpha()
         posX = gv.screen_widht - mytext.get_size()[0] - 30
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +42
