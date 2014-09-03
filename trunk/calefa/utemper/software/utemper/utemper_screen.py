@@ -25,7 +25,7 @@ class cScreen:
             pygame.init()
             #screen = pygame.display.set_mode((gv.screen_widht, gv.screen_widht))
             self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-            pygame.display.set_caption("tutorial pygame parte 2")
+            pygame.display.set_caption("utemper")
             pygame.mouse.set_visible(False)
 
             # inicializamos las letras.
@@ -61,6 +61,23 @@ class cScreen:
             else:
                 self.suceso_estado=0
     
+    def reset():
+        self.refrescar_screen()
+
+    def check_screen(self):        
+        for event in pygame.event.get():
+            if(event.type is MOUSEBUTTONDOWN):
+                 pos = pygame.mouse.get_pos()
+                 clog().log(1,"BOTON press screen %d x %d  y." %(pos[0], pos[1]))
+                 if(self.pantalla==0):
+                       return 0
+                 if self.screen_number == 0:
+                       self.boton_screen_0(pos)
+                 elif self.screen_number == 1:
+                       self.boton_screen_1(pos)
+                 else:
+                       self.boton_screen_0(pos)
+
     def refrescar_screen(self):
         if(self.pantalla==0):
 			return 0
@@ -85,7 +102,7 @@ class cScreen:
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"
         fondo_up = pygame.image.load(fichero_up).convert_alpha()
-        self.screen.blit(fondo_up, (0, 0))
+        self.screen.blit(fondo_up, (0, -7))
         #dia y hora:
         string=time.strftime("%d-%b-%Y %H:%M", time.localtime())
         mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
@@ -123,3 +140,35 @@ class cScreen:
         pygame.display.flip()
         clog().log(1,"Refrescar screen 0 OK")
 
+    def refrescar_screen_1(self):
+
+        # cargamos el fondo 
+        fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
+        fondo = pygame.image.load(fichero_fondo).convert()
+        self.screen.blit(fondo, (0, 0))
+
+        #iconos
+        posX = 10
+        fichero_icono = self.carpeta_img+"iconos/subir_temp.png"
+        icon = pygame.image.load(fichero_icono).convert_alpha()
+        self.screen.blit(icon, (20,100))
+        fichero_icono = self.carpeta_img+"iconos/bajar_temp.png"
+        icon = pygame.image.load(fichero_icono).convert_alpha()
+        self.screen.blit(icon, (120,100))
+
+        fichero_icono = self.carpeta_img+"iconos/boton_config.png"
+        icon = pygame.image.load(fichero_icono).convert_alpha()
+        posX = gv.screen_widht - icon.get_size()[0] - 5
+        posY = (gv.screen_height) - (icon.get_size()[1]/2) -5
+        self.screen.blit(icon, (posX,posY))
+
+        fichero_icono = self.carpeta_img+"iconos/boton_volver.png"
+        icon = pygame.image.load(fichero_icono).convert_alpha()
+        posY = (gv.screen_height) - (icon.get_size()[1]/2) -5
+        self.screen.blit(icon, (15,posY))
+
+ 
+    def botton_screen_1 (self, pos):
+        # subir boton 
+        if (pos[0] < (gv.screen_widht/2)-10) and (pos[1] < 120):
+			print ""                 

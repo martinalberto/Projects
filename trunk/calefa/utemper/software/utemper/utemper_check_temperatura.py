@@ -5,7 +5,7 @@ import time, datetime, os
 from utemper_public import *
 
 class cCheck_temperatura:
-    lastTimeNoche=0
+    lastTimeCheckCalefa=0
     RELE_FILE="/tmp/rele.var"
     FOLER_PROGRA = "programacion/"
     tiempo_rele = 0
@@ -15,16 +15,19 @@ class cCheck_temperatura:
         gv.temperatura_max = float (cread_config().read_config("temperatura"))
         gv.estadoCalefa = int (cread_config().read_config("estado_caldera"))
         self.leer_temperatura()
-        self.checkestadotemperatura()
+        self.checkEstadoCheckCalefacion()
         self.actualiza_rele(gv.rele)
 
     def suceso(self):
-        # check noche:
-        if (time.time()-self.lastTimeNoche>6):
-            self.checkestadotemperatura()
-            self.lastTimeNoche = time.time()
-
-    def checkestadotemperatura(self):
+        # check  programacion del la calefacion:
+        if (time.time()-self.lastTimeCheckCalefa>6):
+            self.checkEstadoCheckCalefacion()
+            self.lastTimeCheckCalefa = time.time()
+            
+    def reset(self): 
+        self.__init__()
+        
+    def checkEstadoCheckCalefacion(self):
         
         if(gv.estadoCalefa == 0):
             # estado Apagado.

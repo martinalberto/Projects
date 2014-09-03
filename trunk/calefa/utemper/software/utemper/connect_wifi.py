@@ -5,6 +5,14 @@ import os
 import os.path
 
 from utemper_public import *
+        
+def save_resultados (wifi, conectado, internet, ip ):
+    file = open(FILE_WIFI, "w")
+    file.write(str(wifi)+"\n")
+    file.write(str(conectado)+"\n")
+    file.write(str(internet)+"\n")
+    file.write(str(ip)+"\n")
+    file.close()
 
 ######################################################
 ############## que pasa si se cambia la clave wifi.
@@ -35,6 +43,7 @@ save_resultados (wifi, conectado, internet, ip )
 errores=0
 salir = 0
 cread_config_Class = cread_config()
+
 while not(salir):
     if estado==0:
         # leer configuracion
@@ -46,6 +55,13 @@ while not(salir):
             internet=0
             estado = 1
             clog().log(0, "configuracion leida.")
+            try:
+                scheme = Scheme.find("wlan0", wifissid)
+                if (scheme != None ):
+                    scheme.delete()
+                    clog().log(0, "scheme borrado.")
+            except:
+                scheme = None
         except:
             # error.
             clog().log(5, "Imposible leer la configuracion"  )
@@ -155,11 +171,3 @@ while not(salir):
     
     if os.path.isfile(FILE_RED_WIFI):
         salir = 0
-        
-def save_resultados (wifi, conectado, internet, ip ):
-    file = open(FILE_WIFI, "w")
-    file.write(str(wifi)+"\n")
-    file.write(str(conectado)+"\n")
-    file.write(str(internet)+"\n")
-    file.write(str(ip)+"\n")
-    file.close()

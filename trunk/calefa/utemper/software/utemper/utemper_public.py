@@ -5,14 +5,10 @@ import time, os
 import os.path
 import shutil
 
-
 # -----------
 # Constantes
 # -----------
  
-
- 
-
 class clog:
     DEBUG_LEVEL= -1
     LOGS_FILE= "/var/utemp/logs.log"
@@ -152,14 +148,14 @@ class gv(object):
     rele=0
     tiempo_espera=0
     
-    #internet
+    #internet y wifi
     internet=0
-    necesary_read = 0
-    # wifi
     wifi_estado = 0
     wifi_ip = ""
-    wifi_error = 0
 
     # screen
     screen_widht = 320
     screen_height = 240
+
+    # reset todas las clases.
+    reset_class = 0
