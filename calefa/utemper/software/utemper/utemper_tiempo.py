@@ -10,7 +10,7 @@ class eltiempo:
 	# tiempo
 	tiempo = False
 	WOEID=0
-	CONF_FILE="config/utemper.conf"
+	CONF_FILE= "config/utemper.conf"
 	WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'	
 	lastTimeTiempo=0
 	
@@ -24,9 +24,9 @@ class eltiempo:
 		if self.int_tiempo()==1:
 			self.tiempo=True
 		
-		if self.int_temp()==1:
-			self.temp=True
-		clog().log(1,"init read temperatura OK")
+		#if self.int_temp()==1:
+		#	self.temp=True
+		#clog().log(1,"init read temperatura OK")
 		
 	def int_tiempo(self):		
 		self.WOEID = int(cread_config().read_config("WOEID"))
@@ -62,7 +62,10 @@ class eltiempo:
 			    gv.temperatura_error=0
 			else:
 			    gv.temperatura_error=1
-
+	
+	def reset(self):
+		self.__init__()
+		
 	def leer_tiempo(self):
 		if self.WOEID<=0:
 			clog().log(4,("Error al leer tiempo WOEID <0 "))
