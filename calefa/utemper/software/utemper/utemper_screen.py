@@ -50,7 +50,7 @@ class cScreen:
                 self.suceso_estado+=1
                 
                 # Check el estado del mouse!!!!
-                #self.check_screen()
+                self.check_screen()
             elif self.suceso_estado== 1:
                 self.suceso_estado+=1
                 if (time.time()-self.lastTimeRefes > 60 ):
@@ -96,7 +96,7 @@ class cScreen:
             self.carpeta_img="img/dia/"
             self.letra_color=(0,0,0)
             
-        # cargamos el fondo 
+        # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/"+str(gv.tiempo_code)+".jpg"
         fondo = pygame.image.load(fichero_fondo).convert()
         self.screen.blit(fondo, (0, 0))
@@ -113,7 +113,7 @@ class cScreen:
         #wifi
         posX = 10
         fichero_icono = self.carpeta_img+"iconos/wifi_"+str(gv.wifi_estado)+".png"
-        icon = pygame.image.load(fichero_icono).convert_alpha() 
+        icon = pygame.image.load(fichero_icono).convert_alpha()
         self.screen.blit(icon, (posX,10))
         
         #sensor temperatura
@@ -122,7 +122,7 @@ class cScreen:
             fichero_icono = self.carpeta_img+"iconos/temp_KO.png"
         else:
             fichero_icono = self.carpeta_img+"iconos/temp_OK.png"
-        icon = pygame.image.load(fichero_icono).convert_alpha() 
+        icon = pygame.image.load(fichero_icono).convert_alpha()
         self.screen.blit(icon, (posX,10))
 
         # temperaturas:
@@ -142,7 +142,7 @@ class cScreen:
 
     def refrescar_screen_1(self):
 
-        # cargamos el fondo 
+        # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
         fondo = pygame.image.load(fichero_fondo).convert()
         self.screen.blit(fondo, (0, 0))
@@ -167,8 +167,12 @@ class cScreen:
         posY = (gv.screen_height) - (icon.get_size()[1]/2) -5
         self.screen.blit(icon, (15,posY))
 
- 
+    def boton_screen_0 (self, pos):
+        # Entrar menu
+        self.screen_number = 1
+        self.refrescar_screen()
+        
     def botton_screen_1 (self, pos):
-        # subir boton 
+        # subir boton
         if (pos[0] < (gv.screen_widht/2)-10) and (pos[1] < 120):
-			print ""                 
+          print ""                
