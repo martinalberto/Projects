@@ -3,6 +3,7 @@ from __future__ import print_function
 from wifi import Cell, Scheme
 import os
 import os.path
+import subprocess
 
 from utemper_public import *
         
@@ -24,7 +25,7 @@ FILE_WIFI =  "/tmp/wifi.var"
 wifissid ="prueba"
 wificode="prueba"
 
-estado = 0
+estado = -1
 
 wifi=0
 conectado=0
@@ -45,7 +46,32 @@ salir = 0
 cread_config_Class = cread_config()
 
 while not(salir):
-    if estado==0:
+    if estado== -1:
+        # Init. borramos las redes antuguas.
+        try:
+            clog().log(2, "====== Init Connect wifi =======")
+            wifissid = cread_config_Class.read_config("wifi_ssid")
+            wificode = cread_config_Class.read_config("wifi_code")
+            wait = 0.1
+            conectado=0
+            internet=0
+            estado = 0            
+            try:
+                scheme = Scheme.find("wlan0", wifissid)
+                if (scheme != None ):
+                    scheme.delete()
+                    clog().log(0, "scheme borrado.")
+            except:
+                scheme = None
+        except:
+            # error.
+            clog().log(5, "Imposible leer la configuracion"  )
+            wifi = 0
+            conectado=0
+            internet=0
+            estado = 0
+            wait= 10
+    elif estado==0:
         # leer configuracion
         try:
             wifissid = cread_config_Class.read_config("wifi_ssid")
@@ -55,13 +81,6 @@ while not(salir):
             internet=0
             estado = 1
             clog().log(0, "configuracion leida.")
-            try:
-                scheme = Scheme.find("wlan0", wifissid)
-                if (scheme != None ):
-                    scheme.delete()
-                    clog().log(0, "scheme borrado.")
-            except:
-                scheme = None
         except:
             # error.
             clog().log(5, "Imposible leer la configuracion"  )
@@ -79,8 +98,8 @@ while not(salir):
                 # error.
                 log(3, "Imposible Encontrar la wifissid  %s " %wifissid )
                 wifi = 1
-                estado = 0
-                wait = 7
+                estado = 1
+                wait = 10
             else:
                 clog().log(0, "red -%s- encontrada."%wifissid)
                 wifi = 1
@@ -104,6 +123,7 @@ while not(salir):
                 wifi = 1
                 estado = 3
                 wait= 0.1
+                errores = 0
             except:
                 try:
                     scheme.delete()
@@ -122,24 +142,54 @@ while not(salir):
             wait= 0.5
             
     elif estado ==3:
-        # conectamos.        
-        scheme = Scheme.for_cell("wlan0",wifissid, cell[0], wificode )
+        # conectamos. 
         try:
+            scheme = Scheme.for_cell("wlan0",wifissid, cell[0], wificode )
             conexion = scheme.activate()
             ip = conexion.ip_address
-            clog().log(3, "conectado  %s con -%s- ip" %(wifissid, ip) )
+            clog().log(2, "conectado con %s" %wifissid)
             wifi = 1
             conectado=1
             estado = 4
             wait = 2
         except:
-            clog().log(3, "Imposible connectar a  la red  %s " %wifissid )
+            clog().log(3, "Imposible conectar a la red  %s " %wifissid )
+            conectado=0
+            internet=0
+            estado = 1
+            wait = 20
+           
+    elif estado ==4:
+        # dhcp.
+        try:
+            result = subprocess.call(["dhclient", "wlan0"])
+            if (result == 0):
+               conexion = scheme.activate()
+               ip = conexion.ip_address
+               clog().log(2, "DHCP con -%s- ip" %ip )
+               wifi = 1
+               conectado=1
+               estado = 5
+               wait = 1
+               errores = 0
+            else:
+               wait = 5 #intentamos conectar otra vez.
+               errores+=1
+               estado = 3 
+               clog().log(3, "DHCP Error: %d" %result )
+               if errores >3:
+                   conectado=0
+                   internet=0
+                   estado = 0
+                   estado = 0 # empezamos otra vez.
+                   wait = 10
+        except:
+            clog().log(3, "Imposible DHCP a  la red  %s " %wifissid )
             conectado=0
             internet=0
             estado = 0
             wait = 20
-            
-    elif estado ==4:
+    elif estado ==5:
         # check internet.
         result = os.system("ping -c 1 -w 1 -I wlan0 %s >/dev/null" %ip)
         if (result== 0):
@@ -147,18 +197,25 @@ while not(salir):
             wifi = 1
             conectado=1
             internet=1
-            estado = 4
+            estado = 5
             wait = 30
         else:
             clog().log(3, "Imposible hacer ping en la wlan0 a 8.8.8.8" )
             errores+=1
             internet=0
-            estado = 4
+            estado = 5
             wait = 2
             if errores >3:
                 estado = 0
                 wait = 10
-                
+    else:
+            #estado imposible
+            clog().log(5, "Estado imposible del Wifi connect estado : %d" %estado )
+            wifi = 0
+            conectado=0
+            internet=0
+            estado = 0
+            wait= 10
     #########################################################
     if ((wifi, conectado, internet, ip ) !=(wifi_old, conectado_old, internet_old, ip_old ) ):
         wifi_old = wifi

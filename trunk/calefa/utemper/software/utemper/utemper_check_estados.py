@@ -41,7 +41,7 @@ class cCheck_estados:
             if (result ==1):
                 self.lastTimeReadWifiStatus = time.time()
             else:
-                self.lastTimeReadWifiStatus = time.time() - 25 # chequeamos cada 5 seg si no hay wifi.
+                self.lastTimeReadWifiStatus = time.time() - 26 # chequeamos cada 5 seg si no hay wifi.
             
     def reset(self):
         self.checkNoche()
@@ -67,7 +67,7 @@ class cCheck_estados:
     def read_wifi_estado (self):
         # read
         try:
-            f = open("/tmp/crear_wifi.var")
+            f = open("/tmp/wifi.var")
             lines = f.readlines()
             f.close()
             if int(lines[2]) == 1:

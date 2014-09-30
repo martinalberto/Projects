@@ -24,7 +24,7 @@ class cCheck_temperatura:
             self.checkEstadoCheckCalefacion()
             self.lastTimeCheckCalefa = time.time()
             
-    def reset(self): 
+    def reset(self):
         self.__init__()
         
     def checkEstadoCheckCalefacion(self):
