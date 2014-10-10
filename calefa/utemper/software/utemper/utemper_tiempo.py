@@ -24,9 +24,12 @@ class eltiempo:
 		if self.int_tiempo()==1:
 			self.tiempo=True
 		
-		#if self.int_temp()==1:
-		#	self.temp=True
-		#clog().log(1,"init read temperatura OK")
+		if self.int_temp()==1:
+			self.temp=True
+			clog().log(1,"init read temperatura OK")
+		else:
+			self.temp=False
+			clog().log(1,"init read temperatura KO")
 		
 	def int_tiempo(self):		
 		self.WOEID = int(cread_config().read_config("WOEID"))
@@ -115,7 +118,7 @@ class eltiempo:
 			return 0
 		except:
 			clog().log(3,("Imposible leer temperatura "))
-			return 0			
+			return 0
 
 		
 	def read_temp_raw(self):

@@ -26,7 +26,7 @@ class cScreen:
             #screen = pygame.display.set_mode((gv.screen_widht, gv.screen_widht))
             self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
             pygame.display.set_caption("utemper")
-            #pygame.mouse.set_visible(False)
+            pygame.mouse.set_visible(False)
 
             # inicializamos las letras.
             self.Letra_top = pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
@@ -52,7 +52,7 @@ class cScreen:
                 self.lastTimeRefes = time.time()
                 self.refrescar_screen()  
     
-    def reset():
+    def reset(self):
         self.refrescar_screen()
 
     def check_screen(self):        
@@ -119,6 +119,16 @@ class cScreen:
         icon = pygame.image.load(fichero_icono).convert_alpha()
         self.screen.blit(icon, (posX,10))
 
+        #caldera.
+        if (gv.rele ==1):            
+            fichero_icono = self.carpeta_img+"iconos/fire_ON.png"
+        else:
+            fichero_icono = self.carpeta_img+"iconos/fire_OFF.png"
+        icon = pygame.image.load(fichero_icono).convert_alpha()
+        posX = gv.screen_widht - icon.get_size()[0] - 7
+        posY = gv.screen_height - (icon.get_size()[1]) -7
+        self.screen.blit(icon, (posX,posY))
+		
         # temperaturas:
         string="%d.C" %gv.tiempo_temp
         mytext = self.Letra_temp2.render(string, False, self.letra_color).convert_alpha()
@@ -157,15 +167,15 @@ class cScreen:
         self.screen_number = 1
         
     def boton_screen_1(self, pos):
-        # subir boton 
-        # pos[0] x 
-        # pos[1] y
+        # subir boton         # pos[0] x 
+                              # pos[1] y
         if (pos[0] < 100) and (60 < pos[1] < 160):  # bajo temp
              self.changeTemp(gv.temperatura_max+0.5)
         elif (pos[0] > 180) and (60 < pos[1] < 160):  # subir temp
              self.changeTemp(gv.temperatura_max-0.5)
         elif (pos[0] < 80) and ( pos[1] > 170):  # volver
              self.screen_number = 0
+             gv.reset_class = 1
 			
 	
     def changeTemp(self, new_temp):
