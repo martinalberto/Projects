@@ -29,13 +29,12 @@ def main():
 	while(salir):
 		cutemper_tiempo.suceso()
 		#clog().log(1," cutemper_tiempo OK")
-		cutemper_screen.suceso()
-		#clog().log(1," cutemper_Check_estados OK")
 		cutemper_Check_estados.suceso()
 		#clog().log(1," cutemper_Check_estados OK")
 		cutemper_Check_temperatura.suceso()
 		#clog().log(1," cutemper_Check_temperatura OK")
-
+		cutemper_screen.suceso()
+		#clog().log(1," cutemper_screen OK")
 		#salir=0
 		time.sleep(0.3)
 		

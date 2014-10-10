@@ -137,7 +137,7 @@ class gv(object):
     hora_init_noche = time.strptime( "07:00 pm", "%I:%M %p")
 
     # temperatura.
-    temperatura=45
+    temperatura=30
     temperatura_max = 50
     temperatura_error=1
 

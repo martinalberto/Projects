@@ -28,7 +28,6 @@ class cCheck_temperatura:
         self.__init__()
         
     def checkEstadoCheckCalefacion(self):
-        
         if(gv.estadoCalefa == 0):
             # estado Apagado.
             if (gv.rele !=0):
@@ -41,9 +40,15 @@ class cCheck_temperatura:
         elif (gv.estadoCalefa == 2):
             # estado programado
             hora=time.localtime()
-            index = hora.tm_hour + (hora.tm_min/15)
+            index = (hora.tm_hour*4) + (hora.tm_min/15)
+            if 0 < index >=len(self.horarios):
+                clog().log(3, "checkEstadoCheckCalefacion: mal estado de index en leer estado %d " %(index) )
+                index = 0
             if (self.horarios[index]!="0"):
                 self.check_temperatura()
+            else:
+                if (gv.rele !=0):
+                   self.actualiza_rele(0)
                 
     def check_temperatura(self):
         clog().log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max ))
