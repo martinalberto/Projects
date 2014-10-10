@@ -50,7 +50,7 @@ class eltiempo:
 	def suceso(self):
 		#leer tiempo
 
-		if (time.time()-self.lastTimeTiempo>4000) and (self.tiempo):
+		if (time.time()-self.lastTimeTiempo>900) and (self.tiempo):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
 			
