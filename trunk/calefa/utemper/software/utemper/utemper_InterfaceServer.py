@@ -10,7 +10,7 @@ from utemper_public import *
 class cInterfaceServer:
     folder_send_files =  "config/send/"
 
-    maxTimeSendStatus = 30
+    maxTimeSendStatus = 5
     maxTimeSendFromServer = maxTimeSendStatus
 
     lastTimeInterfaceServer = 0
@@ -43,13 +43,14 @@ class cInterfaceServer:
             self.lastTimeInterfaceServer = time.time()
 
     def reset(self):
-        self.maxTimeSendStatus = 30
+        self.maxTimeSendStatus = 5
         self.lastTimeSendStatus =  0
         self.maxTimeSendFromServer = self.maxTimeSendStatus
         lastSendRele = -1
          
     def checkmaxTimeSendStatus(self):
          maxTimeSend = self.maxTimeSendStatus
+         print (time.time() - gv.lastTimeChageSomething)
          if (time.time() - gv.lastTimeChageSomething <30):
              self.maxTimeSendStatus = 5 
          elif (time.time() - gv.lastTimeChageSomething <90):
