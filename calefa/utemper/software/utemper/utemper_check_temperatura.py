@@ -9,12 +9,13 @@ class cCheck_temperatura:
     RELE_FILE="/tmp/rele.var"
     FOLER_PROGRA = "programacion/"
     tiempo_rele = 0
+    dia_horarios = 0
     horarios=[]
     def __init__(self):
         # read config value:
         gv.temperatura_max = float (cread_config().read_config("temperatura"))
         gv.estadoCalefa = int (cread_config().read_config("estado_caldera"))
-        self.leer_temperatura()
+        self.leer_ficheroHorarios()
         self.checkEstadoCheckCalefacion()
         self.actualiza_rele(gv.rele)
 
@@ -23,7 +24,9 @@ class cCheck_temperatura:
         if (time.time()-self.lastTimeCheckCalefa>6):
             self.checkEstadoCheckCalefacion()
             self.lastTimeCheckCalefa = time.time()
-            
+            if (self.dia_horarios != time.localtime().tm_wday):
+                self.leer_ficheroHorarios()
+				 
     def reset(self):
         self.__init__()
         
@@ -43,7 +46,7 @@ class cCheck_temperatura:
             index = (hora.tm_hour*4) + (hora.tm_min/15)
             if 0 < index >=len(self.horarios):
                 clog().log(3, "checkEstadoCheckCalefacion: mal estado de index en leer estado %d " %(index) )
-                index = 0
+                return
             if (self.horarios[index]!="0"):
                 self.check_temperatura()
             else:
@@ -64,14 +67,19 @@ class cCheck_temperatura:
         iFile = file(self.RELE_FILE, 'w')
         iFile.write(str(valor))
         iFile.close()
+        gv.lastTimeChageSomething = time.time()
         gv.rele = valor
         clog().log(2, "Actulizado valor del rele a -%d- " %(valor) )
         
-    def leer_temperatura(self):
+    def leer_ficheroHorarios(self):
         fichero = str(time.localtime().tm_wday +1) + ".txt"
-        clog().log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
-        iFile = file(self.FOLER_PROGRA +fichero, 'r')
-        line = iFile.readline()
-        line = line.replace("\n", "")
-        iFile.close()        
-        self.horarios = line.split(';')
+        try:
+            clog().log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
+            iFile = file(self.FOLER_PROGRA +fichero, 'r')
+            line = iFile.readline()
+            line = line.replace("\n", "")
+            iFile.close()        
+            self.horarios = line.split(';')
+            self.dia_horarios = time.localtime().tm_wday
+        except:
+            clog().log(5, "imposible leer fichero %s" %(self.FOLER_PROGRA +fichero) )

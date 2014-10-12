@@ -2,8 +2,8 @@
 
 import sys
 import time, os
-import os.path
 import shutil
+import os.path
 
 # -----------
 # Constantes
@@ -35,26 +35,14 @@ class clog:
 class cread_config(object):
 
     CONFIG_FILE_LOCAL= "config/utemper.conf"
-    CONFIG_FILE_REMOTE= "config/server/utemper.conf"
     CONFIG_FILE_SEND= "config/send/utemper.conf"
     
     def read_config (self, nombre_config):
         # read file local
         (tiempo_local, valor_local) = self.read_config_file(self.CONFIG_FILE_LOCAL,nombre_config )
-        
-        if (os.path.isfile(self.CONFIG_FILE_REMOTE)):
-            (tiempo_remote, valor_remote) = self.read_config_file(self.CONFIG_FILE_REMOTE,nombre_config )
-            if (tiempo_remote<tiempo_local):
-                self.update_config_file(self.CONFIG_FILE_REMOTE, tiempo_local, nombre_config , valor_local)
-                shutil.copy2(self.CONFIG_FILE_REMOTE, self.CONFIG_FILE_SEND)
-                
-            elif (tiempo_remote>tiempo_local):
-                self.update_config_file(self.CONFIG_FILE_LOCAL, tiempo_remote, nombre_config , valor_remote)
-                valor_local = valor_remote
-
         clog().log(1, "Leida el valor -%s- para la config -%s- " %(valor_local, nombre_config) )
         return valor_local
-		
+	
     def read_config_file (self, file, nombre_config):
         lines=[""]
         encontrado = False
@@ -80,7 +68,7 @@ class cread_config(object):
                     encontrado = True
                     return (tiempo, valor)                
         return (0, "-1")
-		
+
     def write_config_file (self,  data):
         # write
         try:
@@ -89,38 +77,62 @@ class cread_config(object):
             f.close()
         except:
             clog().log(4, "Imposible poder escribir la nueva configuracion en fichero %s " %( self.CONFIG_FILE_LOCAL) )
+            return 0
+        gv.lastTimeChageSomething = time.time()
         return 1
 		
-    def update_config_file (self, file, tiempo_new, nombre_config , valor_new):
+    def update_config_file (self, nombre_config , valor_new):
         encontrado =False
         lines =[]
+        tiempo_new = long(time.time())
         new_line = str(tiempo_new) + ":" + nombre_config + ":" + valor_new + "\n"
 
         # read
         try:
-            f = open(file)
+            f = open(self.CONFIG_FILE_LOCAL)
             lines = f.readlines()
             f.close()
         except:
-            clog().log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, file) )
-            
+            clog().log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, self.CONFIG_FILE_LOCAL) )
+            return
+
         # process
-        for numline in range(lines):
-            if len(lines[numline].split(':')):
-                (tiempo,config,valor)=lines[numline].split(':')
-                if config.lower() == nombre_config.lower():
-                    lines[numline] = new_line
+        new_lines =[]
+        for linen in lines:
+            if (len(linen.split(':'))==3):
+                line = linen.replace("\n", "")
+                (stiempo, nombre, valor) = line.split(':')
+                if (nombre.lower() == nombre_config.lower()):
+                    new_lines.append(new_line)
                     encontrado = True
+                else:
+                    new_lines.append(linen)
+            else:
+                new_lines.append(linen)
         if (encontrado ==False):
-            lines.lappend (new_line)
+            new_lines.lappend (new_line)
             
         # save
         try:
-            f = open(file, "w")
-            lines = f.writelines(lines)
+            f = open(self.CONFIG_FILE_LOCAL, "w")
+            f.writelines(new_lines)
             f.close()
         except:
-            clog().log(5, "Imposible GUARDAR leer la configuracion del fichero %s " %file )
+            clog().log(5, "Imposible GUARDAR leer la configuracion del fichero %s " %self.CONFIG_FILE_LOCAL )
+            return 
+
+        # copy to send data.
+        try:
+            shutil.copy2(self.CONFIG_FILE_LOCAL, self.CONFIG_FILE_SEND)
+            clog().log(0, "Configuracion copiada a  %s " %self.CONFIG_FILE_SEND )
+        except:
+            clog().log(5, "Imposible copiar de %s  a %s" %(self.CONFIG_FILE_LOCAL, self.CONFIG_FILE_SEND) )
+            gv.upload_config = False
+            return
+
+        clog().log(2, "Configuracion Actualizada fichero  %s " %self.CONFIG_FILE_LOCAL )
+        gv.upload_config = True
+        gv.lastTimeChageSomething = time.time()
         return 1
         
 class gv(object):
@@ -152,10 +164,14 @@ class gv(object):
     internet=0
     wifi_estado = 0
     wifi_ip = ""
-
+    
     # screen
     screen_widht = 320
     screen_height = 240
 
     # reset todas las clases.
     reset_class = 0
+
+    #config:
+    upload_config = True
+    lastTimeChageSomething = 0 

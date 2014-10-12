@@ -9,6 +9,7 @@ import utemper_tiempo
 from utemper_public import *
 import utemper_screen
 import utemper_check_estados
+import utemper_InterfaceServer
 import utemper_check_temperatura
 
 #import utemper_wifi
@@ -22,7 +23,7 @@ def main():
 	cutemper_screen = utemper_screen.cScreen()
 	cutemper_Check_estados = utemper_check_estados.cCheck_estados()
 	cutemper_Check_temperatura = utemper_check_temperatura.cCheck_temperatura()
-	
+	cinterfaceServer = utemper_InterfaceServer.cInterfaceServer()
 	clog().log(1,"##### Init Utemper OK ####")
 	
 	# bucle
@@ -33,6 +34,8 @@ def main():
 		#clog().log(1," cutemper_Check_estados OK")
 		cutemper_Check_temperatura.suceso()
 		#clog().log(1," cutemper_Check_temperatura OK")
+		cinterfaceServer.suceso()
+		
 		cutemper_screen.suceso()
 		#clog().log(1," cutemper_screen OK")
 		#salir=0
@@ -42,6 +45,7 @@ def main():
 			clog().log(2,"RESET utemper....")
 			cutemper_tiempo.reset()
 			cutemper_screen.reset()
+			cinterfaceServer.reset()
 			cutemper_Check_estados.reset()
 			cutemper_Check_temperatura.reset()
 			clog().log(2,"RESET utemper OK")

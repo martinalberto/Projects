@@ -3,8 +3,10 @@
 
 import time
 import pygame
+import os
 from pygame.locals import *
 from utemper_public import *
+import utemper_screen_image
 
 class cScreen:
     
@@ -14,7 +16,10 @@ class cScreen:
     letra_color = (0,0,0)
     Letra_top = None
     lastTimeRefes = time.time() + 5
-    
+    cUtemperSceenImagen=None
+	
+    saveConfigurcion = False
+	
     def __init__(self):
         try:
             # iniciamos la pantalla.
@@ -37,13 +42,14 @@ class cScreen:
             # info
             gv.screen_widht  = pygame.display.Info().current_w
             gv.screen_height  = pygame.display.Info().current_h
+
+            self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
             
             self.refrescar_screen()
         except:
             clog().log(4,"Imposible iniciar la pantalla")
             self.pantalla=0
 
-        
     def suceso(self):
         if(self.pantalla==1):
             # Check el estado del mouse!!!!
@@ -55,7 +61,7 @@ class cScreen:
     def reset(self):
         self.refrescar_screen()
 
-    def check_screen(self):        
+    def check_screen(self):
         for event in pygame.event.get():
             if(event.type is MOUSEBUTTONDOWN):
                  pos = pygame.mouse.get_pos()
@@ -67,20 +73,25 @@ class cScreen:
                        self.boton_screen_0(pos)
                  elif self.screen_number == 1:
                        self.boton_screen_1(pos)
+                 elif self.screen_number == 2:
+                       self.boton_screen_2(pos)
                  else:
                        self.boton_screen_0(pos)
                  self.refrescar_screen()
+                 gv.lastTimeChageSomething = time.time()
 
     def refrescar_screen(self):
         self.lastTimeRefes = time.time()
         if(self.pantalla==0):
-			return 0
+            return 0
         if self.screen_number == 0:
-			self.refrescar_screen_0()
+            self.refrescar_screen_0()
         elif self.screen_number == 1:
-			self.refrescar_screen_1()
+            self.refrescar_screen_1()
+        elif self.screen_number == 2:
+            self.refrescar_screen_2()
         else:
-			elf.refrescar_screen_0()
+            elf.refrescar_screen_0()
             
     def refrescar_screen_0(self):
         if (gv.noche==1):
@@ -92,10 +103,10 @@ class cScreen:
             
         # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/"+str(gv.tiempo_code)+".jpg"
-        fondo = pygame.image.load(fichero_fondo).convert()
+        fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"
-        fondo_up = pygame.image.load(fichero_up).convert_alpha()
+        fondo_up = self.cUtemperSceenImagen.getImagen(fichero_up)
         self.screen.blit(fondo_up, (0, -7))
         #dia y hora:
         string=time.strftime("%d-%b %I:%M%p", time.localtime())
@@ -107,7 +118,7 @@ class cScreen:
         #wifi
         posX = 10
         fichero_icono = self.carpeta_img+"iconos/wifi_"+str(gv.wifi_estado)+".png"
-        icon = pygame.image.load(fichero_icono).convert_alpha()
+        icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         self.screen.blit(icon, (posX,10))
         
         #sensor temperatura
@@ -116,7 +127,7 @@ class cScreen:
             fichero_icono = self.carpeta_img+"iconos/temp_KO.png"
         else:
             fichero_icono = self.carpeta_img+"iconos/temp_OK.png"
-        icon = pygame.image.load(fichero_icono).convert_alpha()
+        icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         self.screen.blit(icon, (posX,10))
 
         #caldera.
@@ -124,11 +135,11 @@ class cScreen:
             fichero_icono = self.carpeta_img+"iconos/fire_ON.png"
         else:
             fichero_icono = self.carpeta_img+"iconos/fire_OFF.png"
-        icon = pygame.image.load(fichero_icono).convert_alpha()
+        icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         posX = gv.screen_widht - icon.get_size()[0] - 7
         posY = gv.screen_height - (icon.get_size()[1]) -7
         self.screen.blit(icon, (posX,posY))
-		
+        
         # temperaturas:
         string="%d.C" %gv.tiempo_temp
         mytext = self.Letra_temp2.render(string, False, self.letra_color).convert_alpha()
@@ -148,7 +159,7 @@ class cScreen:
 
         # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
-        fondo = pygame.image.load(fichero_fondo).convert()
+        fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
         
         #temp
@@ -158,9 +169,20 @@ class cScreen:
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2)
         self.screen.blit(mytext, (posX ,posY))
          
-		# se muestran lo cambios en pantalla
+        # se muestran lo cambios en pantalla
         pygame.display.flip()
         clog().log(1,"Refrescar screen 1 OK")
+
+    def refrescar_screen_2(self):
+
+        # cargamos el fondo
+        fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
+        fondo = pygame.image.load(fichero_fondo).convert()
+        self.screen.blit(fondo, (0, 0))
+        
+        # se muestran lo cambios en pantalla
+        pygame.display.flip()
+        clog().log(1,"Refrescar screen 2 OK")
 
     def boton_screen_0 (self, pos):
         # Entrar menu
@@ -175,10 +197,13 @@ class cScreen:
              self.changeTemp(gv.temperatura_max-0.5)
         elif (pos[0] < 80) and ( pos[1] > 170):  # volver
              self.screen_number = 0
-             gv.reset_class = 1
-			
-	
+             if(self.saveConfigurcion == True):
+                cread_config().update_config_file("temperatura",str(gv.temperatura_max))
+                self.saveConfigurcion == False
+                gv.reset_class = 1
+            
+    
     def changeTemp(self, new_temp):
         if (15 < new_temp <35):
           gv.temperatura_max = new_temp
-          gv.saveConfigurcion = True
+          self.saveConfigurcion = True
