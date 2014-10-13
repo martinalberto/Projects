@@ -4,6 +4,7 @@ import urllib, urllib2, time
 import xml.etree.ElementTree as ET
 import socket
 import os, os.path
+import subprocess
 from uuid import getnode as get_mac
 from utemper_public import *
 
@@ -11,7 +12,7 @@ class cInterfaceServer:
     folder_send_files =  "config/send/"
 
     maxTimeSendStatus = 5
-    maxTimeSendFromServer = maxTimeSendStatus
+    maxTimeSendFromServer = 360
 
     lastTimeInterfaceServer = 0
     lastTimeSendStatus=0
@@ -45,12 +46,11 @@ class cInterfaceServer:
     def reset(self):
         self.maxTimeSendStatus = 5
         self.lastTimeSendStatus =  0
-        self.maxTimeSendFromServer = self.maxTimeSendStatus
+        self.maxTimeSendFromServer = 360
         lastSendRele = -1
          
     def checkmaxTimeSendStatus(self):
          maxTimeSend = self.maxTimeSendStatus
-         print (time.time() - gv.lastTimeChageSomething)
          if (time.time() - gv.lastTimeChageSomething <30):
              self.maxTimeSendStatus = 5 
          elif (time.time() - gv.lastTimeChageSomething <90):
@@ -98,40 +98,31 @@ class cInterfaceServer:
     
     def update_file(self):
         try:
-            clog().log(2," update_file Download from server http://www.utemper.net/movil/update_file_config.php ... ")
-            text2="http://www.utemper.net/movil/update_file_config.php"
-            data = urllib.urlencode({"operacion":"2utemper" , "id":str(gv.number_equipo)})
+            #clog().log(2," update_file Download from server http://www.utemper.net/movil/update_file_config.php ... ")
+            #text2="http://www.utemper.net/movil/update_file_config.php"
+            #data = urllib.urlencode({"operacion":"2utemper" , "id":str(gv.number_equipo)})
 
             clog().log(2," update_file from server to local file....")
-            configData = urllib2.urlopen(text2,  data=data).read()
-            cread_config().write_config_file(configData)
-            self.download_config = False
-            gv.lastTimeChageSomething = time.time()
+            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  /tmp/wifi.var ubuntu@utemper.net:/tmp/."
+            result = subprocess.call(text, sell = True)
+            if result ==0:
+                gv.lastTimeChageSomething = time.time()
+                download_config = False
         except:
             clog().log(0," Imposible send status to http://www.utemper.net/movil/update_file_config.php ... ")
     
     def upload_files(self):
         try:
-            dirs = os.listdir( self.folder_send_files )
+            dirs = os.listdir(self.folder_send_files)
         except:
             clog().log(5,"upload_files: ERROR! Imposible read fonder: %s" %self.folder_send_files)
             gv.upload_config =False
             return
 			
-        for file in dirs:
-            try:
-                clog().log(5,"upload_files: ERROR: Imposible send file: %s" %(self.folder_send_files + file))
-                return
-            except:
-                clog().log(2,"upload_files: ERROR: Imposible send file: %s" %(self.folder_send_files + file))
-                return
-
-            try:
-                clog().log(0," borramos %s ... "%(self.folder_send_files + file))
-                os.remove(self.folder_send_files + file)
-            except:
-                clog().log(5,"upload_files: ERROR Imposible remove: %s" %(self.folder_send_files + file))
-                gv.upload_config = False
-                return
+        if os.listdir(self.folder_send_files) == []: 
+            text =  "sshpass -f /var/utemp/----.txt rsync  -av --remove-source-files --timeout=15  /home/pi/utemper/config/send/* -------@utemper.net:/tmp/."
+            result = subprocess.call(text, shell = True)
+            if result ==0:
+                gv.lastTimeChageSomething = time.time()
 
             gv.lastTimeChageSomething = time.time()

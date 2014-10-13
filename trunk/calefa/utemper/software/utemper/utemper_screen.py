@@ -166,7 +166,7 @@ class cScreen:
         fichero_icono = self.carpeta_img+"iconos/boton_"+str(gv.estadoCalefa)+".png"
         icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         posX = (gv.screen_widht/2) - (icon.get_size()[0]/2)
-        self.screen.blit(icon, (posX,20))
+        self.screen.blit(icon, (posX,15))
          
         #temp
         string="%.1f" %gv.temperatura_max
@@ -187,7 +187,7 @@ class cScreen:
         self.screen.blit(fondo, (0, 0))
 
         #text
-        mytext = self..Letra_top.render("Seleciona el modo.", False, self.letra_color).convert_alpha()
+        mytext = self.Letra_top.render("Seleciona el modo.", False, self.letra_color).convert_alpha()
         posX = (gv.screen_widht/2) - (mytext.get_size()[0]/2)
         self.screen.blit(mytext, (posX ,15))
         
@@ -215,7 +215,7 @@ class cScreen:
     def boton_screen_1(self, pos):
         # subir boton         # pos[0] x 
                               # pos[1] y
-        if ( pos[1] < 60):  # cambiar configuracion.
+        if ( pos[1] < 50):  # cambiar configuracion.
              self.screen_number = 2
         elif (pos[0] < 100) and (60 < pos[1] < 160):  # bajo temp
              self.changeTemp(gv.temperatura_max+0.5)
@@ -231,15 +231,15 @@ class cScreen:
     def boton_screen_2(self, pos):
         # boton         # pos[0] x 
                         # pos[1] y
-        if (80 < pos[0] < 130) and (50 < pos[1] < 95):  # estado 0
+        if (80 < pos[0] < 250) and (50 < pos[1] < 95):  # estado 0
              gv.estadoCalefa = 0
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
              gv.reset_class = 1
-        elif (80 < pos[0] < 130) and (95 < pos[1] < 150):  # estado 1
+        elif (80 < pos[0] < 250) and (95 < pos[1] < 150):  # estado 1
              gv.estadoCalefa = 1
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
              gv.reset_class = 1
-        elif (80 < pos[0] < 130) and (150 < pos[1] < 180):  # estado 2
+        elif (80 < pos[0] < 250) and (150 < pos[1] < 180):  # estado 2
              gv.estadoCalefa = 2
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
              gv.reset_class = 1
