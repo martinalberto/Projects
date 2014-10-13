@@ -161,7 +161,13 @@ class cScreen:
         fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
-        
+
+        #estado Calefa
+        fichero_icono = self.carpeta_img+"iconos/boton_"+str(gv.estadoCalefa)+".png"
+        icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+        posX = (gv.screen_widht/2) - (icon.get_size()[0]/2)
+        self.screen.blit(icon, (posX,20))
+         
         #temp
         string="%.1f" %gv.temperatura_max
         mytext = self.Letra_temp2.render(string, False, self.letra_color).convert_alpha()
@@ -179,7 +185,25 @@ class cScreen:
         fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
         fondo = pygame.image.load(fichero_fondo).convert()
         self.screen.blit(fondo, (0, 0))
+
+        #text
+        mytext = self..Letra_top.render("Seleciona el modo.", False, self.letra_color).convert_alpha()
+        posX = (gv.screen_widht/2) - (mytext.get_size()[0]/2)
+        self.screen.blit(mytext, (posX ,15))
         
+        #botones.
+        icon = self.cUtemperSceenImagen.getImagen(self.carpeta_img+"iconos/boton_0.png")
+        posX = (gv.screen_widht/2) - (icon.get_size()[0]/2)
+        self.screen.blit(icon, (posX,55))
+
+        icon = self.cUtemperSceenImagen.getImagen(self.carpeta_img+"iconos/boton_1.png")
+        posX = (gv.screen_widht/2) - (icon.get_size()[0]/2)
+        self.screen.blit(icon, (posX,100))
+
+        icon = self.cUtemperSceenImagen.getImagen(self.carpeta_img+"iconos/boton_2.png")
+        posX = (gv.screen_widht/2) - (icon.get_size()[0]/2)
+        self.screen.blit(icon, (posX,155))
+
         # se muestran lo cambios en pantalla
         pygame.display.flip()
         clog().log(1,"Refrescar screen 2 OK")
@@ -191,7 +215,9 @@ class cScreen:
     def boton_screen_1(self, pos):
         # subir boton         # pos[0] x 
                               # pos[1] y
-        if (pos[0] < 100) and (60 < pos[1] < 160):  # bajo temp
+        if ( pos[1] < 60):  # cambiar configuracion.
+             self.screen_number = 2
+        elif (pos[0] < 100) and (60 < pos[1] < 160):  # bajo temp
              self.changeTemp(gv.temperatura_max+0.5)
         elif (pos[0] > 180) and (60 < pos[1] < 160):  # subir temp
              self.changeTemp(gv.temperatura_max-0.5)
@@ -201,8 +227,27 @@ class cScreen:
                 cread_config().update_config_file("temperatura",str(gv.temperatura_max))
                 self.saveConfigurcion == False
                 gv.reset_class = 1
-            
-    
+
+    def boton_screen_2(self, pos):
+        # boton         # pos[0] x 
+                        # pos[1] y
+
+        if (80 < pos[0] < 130) and (50 < pos[1] < 95):  # estado 0
+             gv.estadoCalefa = 0
+             cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
+             gv.reset_class = 1
+        elif (80 < pos[0] < 130) and (95 < pos[1] < 150):  # estado 1
+             gv.estadoCalefa = 1
+             cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
+             gv.reset_class = 1
+        elif (80 < pos[0] < 130) and (150 < pos[1] < 180):  # estado 2
+             gv.estadoCalefa = 2
+             cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
+             gv.reset_class = 1
+        elif (pos[0] < 80) and ( pos[1] > 180):  # volver
+             self.screen_number = 1
+
+
     def changeTemp(self, new_temp):
         if (15 < new_temp <35):
           gv.temperatura_max = new_temp
