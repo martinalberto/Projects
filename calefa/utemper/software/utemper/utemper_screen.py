@@ -231,7 +231,6 @@ class cScreen:
     def boton_screen_2(self, pos):
         # boton         # pos[0] x 
                         # pos[1] y
-
         if (80 < pos[0] < 130) and (50 < pos[1] < 95):  # estado 0
              gv.estadoCalefa = 0
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
@@ -244,11 +243,10 @@ class cScreen:
              gv.estadoCalefa = 2
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
              gv.reset_class = 1
-        elif (pos[0] < 80) and ( pos[1] > 180):  # volver
-             self.screen_number = 1
+        self.screen_number = 1
 
 
     def changeTemp(self, new_temp):
         if (15 < new_temp <35):
-          gv.temperatura_max = new_temp
-          self.saveConfigurcion = True
+             gv.temperatura_max = new_temp
+             self.saveConfigurcion = True
