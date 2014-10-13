@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import urllib, time
+import urllib2, time
 import glob, os
 import xml.etree.ElementTree as ET
 
@@ -75,7 +75,7 @@ class eltiempo:
 			return 0
 		try:
 			clog().log(1,("init leer_tiempo... "))
-			data = urllib.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID)).read()
+			data = urllib2.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID), timeout = 5).read()
 			rss = ET.fromstring(data)
 			ycondition = rss.find('channel/item/{%s}condition' % self.WEATHER_NS)
 			gv.tiempo_temp = int(ycondition.get('temp'))
