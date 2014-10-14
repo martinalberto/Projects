@@ -103,7 +103,7 @@ class cInterfaceServer:
             #data = urllib.urlencode({"operacion":"2utemper" , "id":str(gv.number_equipo)})
 
             clog().log(2," update_file from server to local file....")
-            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  /tmp/wifi.var ubuntu@utemper.net:/tmp/."
+            text = "sshpass -f /var/utemp/------.txt rsync -av --remove-source-files --timeout=8  ------@utemper.net:/tmp/* /home/pi/utemper/config/."
             result = subprocess.call(text, sell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
