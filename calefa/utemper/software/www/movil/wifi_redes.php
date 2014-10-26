@@ -1,15 +1,24 @@
+<?php
+session_start();
+//manejamos en sesion el nombre del usuario que se ha logeado
+if (!isset($_SESSION["usuario"])){
+  //  header("location:login/index.php?nologin=false");
+    
+}
+$_SESSION["usuario"];
+?>
 <!DOCTYPE html> 
 <html> 
 <head> 
 	 <meta charset="UTF-8">
-	<title>Restaurant Picker</title> 
+	<title>Utemper Control</title> 
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet" href="jquery.mobile.structure-1.0.1.css" />
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.1.css" />
 	<link rel="apple-touch-icon" href="images/launch_icon_57.png" />
 	<link rel="apple-touch-icon" sizes="72x72" href="images/launch_icon_72.png" />
 	<link rel="apple-touch-icon" sizes="114x114" href="images/launch_icon_114.png" />
-	<link rel="stylesheet" href="jquery.mobile-1.0.1.css" />
-	<link rel="stylesheet" href="custom.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.0.1.css" />
+	<link rel="stylesheet" href="css/custom.css" />
 	<script src="js/jquery-1.7.1.min.js"></script>
 	<script src="js/jquery.mobile-1.0.1.min.js"></script>
 </head> 
@@ -17,13 +26,13 @@
 <div id="choisir_ville" data-role="page" data-add-back-btn="true">
 	
 	<div data-role="header"> 
-		<h1> Selección de la red Wifi para conctarse.</h1>
+		<h1> Utemper Control</h1>
 	</div> 
 
 	<div data-role="content">
 	
 	<div class="choice_list"> 
-	<h1> Selección del día de la semana a programar </h1>
+	<h1> Selecciona de la red Wifi para conctarse. </h1>
 	
 	<ul data-role="listview" data-inset="true" data-filter="true"  >
 		

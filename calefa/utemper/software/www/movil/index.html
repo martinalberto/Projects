@@ -1,74 +1,15 @@
-<!DOCTYPE html> 
-<html> 
-	<head>
-  <meta charset="UTF-8">	
-	<title>Utemper Control</title> 
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet" href="jquery.mobile.structure-1.0.1.css" />
-	<link rel="stylesheet" href="css/font-awesome.min.css" />
-	<link rel="apple-touch-icon" href="images/launch_icon_57.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="images/launch_icon_72.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="images/launch_icon_114.png" />
-	<link rel="stylesheet" href="jquery.mobile-1.0.1.css" />
-	<link rel="stylesheet" href="custom.css" />
-	<script src="js/jquery-1.7.1.min.js"></script>
-	<script src="js/jquery.mobile-1.0.1.min.js"></script>
-</head> 
-
-<body> 
-<div data-role="page" id="home" data-theme="c">
-
-	<div data-role="content">
-	
-	<div id="branding">
-		<h1>Utemper Control </h1>
-	</div>
-	
-	<div class="choice_list"> 
-	<!-- <h1> What would you'd like to eat? </h1> -->
-
-	<ul data-role="listview" data-inset="true" >
-	<li><i class="fa fa-home"></i> <h3> Caldera: </h3>
-		<select name="note_utilisateur" id="note_utilisateur" data-native-menu="false" data-theme="c" >
-		   <option value="on" class="on"> Encendido </option>
-		   <option value="off" class="off">Apagado </option>
-		   <option value="prog" class="prog">Programacion </option>
-		</select>	
-	</form>
-	</li>
-	
-	<li><a href="choose_town.html"  data-transition="slidedown"><i><IMG SRC="img/icon_temp.png"> </i>  <h3> temperatura. </h3></a></li>
-	<li><a href="dias.php"  data-transition="slidedown"><i class="fa fa-calendar-o"></i><h3> Programacion</h3></a></li>
-
-	<li><a href="config.html"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>	
-	</ul>	
-	
-	</div>
-	</div>
-	
-	
-	<script type="text/javascript">
-	<!-- para el estado de la calefa  -->
-	
-	$( '#restau' ).live( 'pageinit',function(event){
-		var SelectedOptionClass = $('option:selected').attr('class');
-		$('div.ui-select').addClass(SelectedOptionClass);
-		
-		$('#note_utilisateur').live('change', function(){	 
-			$('div.ui-select').removeClass(SelectedOptionClass);
-			
-			SelectedOptionClass = $('option:selected').attr('class');
-			$('div.ui-select').addClass(SelectedOptionClass);		
-			
-		 });
-		
-	  
-	});
-
-	</script>
-
-
-</div><!-- /page -->
-</body>
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="0;url=index.php">
+        <script type="text/javascript">
+            window.location.href = "index.php"
+        </script>
+        <title>utemper Redirection</title>
+    </head>
+    <body>
+        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
+      Redireccion a <a href='index.php'>al menu</a>
+    </body>
 </html>
