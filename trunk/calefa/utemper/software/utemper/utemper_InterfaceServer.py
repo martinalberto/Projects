@@ -120,7 +120,7 @@ class cInterfaceServer:
             return
 			
         if os.listdir(self.folder_send_files) == []: 
-            text =  "sshpass -f /var/utemp/----.txt rsync  -av --remove-source-files --timeout=15  /home/pi/utemper/config/send/* -------@utemper.net:/tmp/."
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8  /home/pi/utemper/config/send/utemper.conf ubuntu@utemper.net:/tmp/."
             result = subprocess.call(text, shell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
