@@ -1,6 +1,6 @@
 /*** general styling */
 .ui-page.ui-body-c{
-background:url(images/bg.png);
+background:url(../images/bg.png);
 box-shadow:  0px 0px 30px 5px rgba(107, 105, 105, 0.3) inset,
  0px 0px 0px 1px rgba(107, 105, 105, 0.4) inset;
 
@@ -58,12 +58,12 @@ box-sizing: border-box;
 
 /* title bar */
 .ui-header.ui-bar-a{
-background:url(images/header_bg.png);
+background:url(../images/header_bg.png);
 }
 .ui-header .ui-title {
 text-indent:-9999px;
 font-size:0px;
-background:url(images/header_logo.png) no-repeat 69% 5px ;
+background:url(../images/header_logo.png) no-repeat 69% 5px ;
 height:33px;
 padding:5px 0 5px 50px;
 margin:0px;
@@ -84,7 +84,7 @@ box-shadow:none;
 /*** home **/
 
 #branding{
-background:url(images/logo.png) no-repeat;
+background:url(../images/logo.png) no-repeat;
 width:322px;
 height:165px;
 text-indent:-999px;
@@ -100,7 +100,7 @@ color:rgb(65, 38, 37);
 font-weight:normal;
 font-style:italic;
 padding:5px 0 6px 50px;
-background:url(images/pagination.png) no-repeat;
+background:url(../images/pagination.png) no-repeat;
 }
 
 #home .choice_list h1{
@@ -152,7 +152,7 @@ color:rgb(63, 41, 39);
 
 #choisir_restau .classement{
 display:inline-bloc;
-background:url(images/pagination.png) no-repeat  0 -182px;
+background:url(../images/pagination.png) no-repeat  0 -182px;
 height:22px;
 text-indent:-999px;
 font-size:0px;
@@ -216,10 +216,10 @@ color:rgb(63, 41, 39);
 }
 
 .ui-icon-maps {
-background: rgb(63, 41, 39) url(images/maps.png) no-repeat;
+background: rgb(63, 41, 39) url(../images/maps.png) no-repeat;
 }
 .ui-icon-tel{
-background: rgb(63, 41, 39) url(images/phone.png) no-repeat;
+background: rgb(63, 41, 39) url(../images/phone.png) no-repeat;
 }
 
 /** add the stars to the drop down */
@@ -227,10 +227,6 @@ background: rgb(63, 41, 39) url(images/phone.png) no-repeat;
 padding-left:100px;
 position:relative;
 }
-
-#note_utilisateur-button span.ui-btn-text{
-background:url(images/pagination.png) no-repeat;
-} 
 
 #note_utilisateur-button span.ui-btn-inner{
 	padding-left:5px;
@@ -241,7 +237,7 @@ content: "   ";
 display:inline-block;
 width:115px;
 height:20px;
-background:url(images/pagination.png) no-repeat;
+background:url(../images/pagination.png) no-repeat;
 position:absolute;
 left:0px;
 }
@@ -280,14 +276,14 @@ background-position: -2px -182px;
 }
 #choisir_restau .on{
 width:30px;
-background:url(img/icon_on.png) no-repeat  0 -182px;
+background:url(../img/icon_on.png) no-repeat  0 -182px;
 }
 #choisir_restau .off{
 width:30px;
-background:url(img/icon_off.png) no-repeat  0 -182px;
+background:url(../img/icon_off.png) no-repeat  0 -182px;
 }
 #choisir_restau .prog{
 width:30px;
-background:url(img/icon_prog.png) no-repeat  0 -182px;
+background:url(../img/icon_prog.png) no-repeat  0 -182px;
 }
 
