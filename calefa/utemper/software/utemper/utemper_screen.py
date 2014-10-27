@@ -107,11 +107,11 @@ class cScreen:
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"
         fondo_up = self.cUtemperSceenImagen.getImagen(fichero_up)
-        self.screen.blit(fondo_up, (0, -7))
+        self.screen.blit(fondo_up, (0, -10))
         #dia y hora:
-        string=time.strftime("%d-%b %I:%M%p", time.localtime())
+        string=time.strftime("%d-%b %I:%M %p", time.localtime())
         mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
-        posX= gv.screen_widht -(mytext.get_size()[0] + 15)
+        posX= gv.screen_widht -(mytext.get_size()[0] + 7)
         self.screen.blit(mytext, (posX, 10))
         
         #iconos top:
