@@ -61,7 +61,7 @@ if ($handle) {
 }
 else
 {
-	echo "Error: el Sistema no encontro redes WIFI.\n";
+	echo "Error: El Sistema no encontro redes WIFI.\n";
 }
 ?>
 	</ul>

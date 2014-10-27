@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+
 import urllib, urllib2, time
 import xml.etree.ElementTree as ET
 import socket
@@ -9,7 +9,7 @@ from uuid import getnode as get_mac
 from utemper_public import *
 
 class cInterfaceServer:
-    folder_send_files =  "config/send/"
+    folder_send_files =  "send/"
 
     maxTimeSendStatus = 5
     maxTimeSendFromServer = 360
@@ -23,7 +23,7 @@ class cInterfaceServer:
     def __init__(self):
         default_timeout = 3
         socket.setdefaulttimeout(default_timeout)
-         
+
     def suceso (self):
 
         if  (time.time()-self.lastTimeInterfaceServer > 3) and (gv.internet == 1):
@@ -103,7 +103,7 @@ class cInterfaceServer:
             #data = urllib.urlencode({"operacion":"2utemper" , "id":str(gv.number_equipo)})
 
             clog().log(2," update_file from server to local file....")
-            text = "sshpass -f /var/utemp/------.txt rsync -av --remove-source-files --timeout=8  ------@utemper.net:/tmp/* /home/pi/utemper/config/."
+            text = "sshpass -f /var/utemp/------.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + gv.number_equipo + "/send/* /home/pi/utemper/config/."
             result = subprocess.call(text, sell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
@@ -120,7 +120,7 @@ class cInterfaceServer:
             return
 			
         if os.listdir(self.folder_send_files) == []: 
-            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8  /home/pi/utemper/config/send/utemper.conf ubuntu@utemper.net:/tmp/."
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8  /home/pi/utemper/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + gv.number_equipo + "/config/."
             result = subprocess.call(text, shell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()

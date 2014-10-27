@@ -7,7 +7,7 @@ from utemper_public import *
 class cCheck_temperatura:
     lastTimeCheckCalefa=0
     RELE_FILE="/tmp/rele.var"
-    FOLER_PROGRA = "programacion/"
+    FOLER_PROGRA = "config/"
     tiempo_rele = 0
     dia_horarios = 0
     horarios=[]
