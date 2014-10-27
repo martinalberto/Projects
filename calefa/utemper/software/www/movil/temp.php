@@ -1,4 +1,8 @@
 <?php
+include('head.php');
+?>
+
+<?php
 session_start();
 //manejamos en sesion el nombre del usuario que se ha logeado
 $_estoy_logeado="";
@@ -7,6 +11,7 @@ if (!isset($_SESSION["usuario"])){
     $_estoy_logeado='<a href="login/index.php?nologin=false"  data-transition="slidedown"  data-ajax="false">Login</a><script languaje="javascript">location.href="login/index.php?nologin=false&rand='.time().'"</script></body></html>';
 }
 
+$_SESSION["equipo"]= "137291051180603";
 ?>
 <!DOCTYPE html> 
 <html > 
@@ -46,6 +51,8 @@ if ( strlen($_estoy_logeado)>0){
 	exit;
 }
 
+$dir = 'text/'.$_SESSION["equipo"];
+$temperatura= (float)leeConf($dir, "temperatura");
 ?>
 <form method="POST" action="guarda_temp.php" data-ajax="false" >
 <!-- Start of first page: #one -->
@@ -53,15 +60,15 @@ if ( strlen($_estoy_logeado)>0){
 <div id="choisir_ville" data-role="page" data-add-back-btn="true">
 	
 	<div data-role="header"> 
-		<h1> Restaurant Picker</h1>
+		<h1> Utemper.</h1>
 	</div> 
 	
 	<div data-role="content"style="text-align:center;" >	
-<h3 >Temperatura:</h3>	
+<h3>Temperatura:</h3>	
 	<div  class="y " id="ex1_container" style="display:inline-block;text-align:right; background-image: url(images/thermometer.png); height: 260px; width:130px">
 					
 					
-					<input type="range" name="slider" id="slider-0" value="22" step="0.5" min="10" max="32"  sliderOrientation="vertical" />
+					<input type="range" name="slider" id="slider-0" value="<?php echo $temperatura;?>" step="0.5" min="10" max="32"  sliderOrientation="vertical" />
 					
 			</div>
 			               <p align="center">

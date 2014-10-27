@@ -1,30 +1,20 @@
 <?php
+include('head.php');
+?>
+
+<?php
 session_start();
+
+$_SESSION["equipo"]= "137291051180603";
+
 //manejamos en sesion el nombre del usuario que se ha logeado
 if (!isset($_SESSION["usuario"])){
- //   header("location:login/index.php?nologin=false");
-    
+ //   header("location:login/index.php?nologin=false");    
 }
-if ( !file_exists("text") )
-    mkdir("text");
-if ( !file_exists("text/estado.txt") )
-	file_put_contents("text/estado.txt", "sdads\nestado:0");
-//busca en fichero
-$file = fopen("text/estado.txt", "r") or exit("Unable to open file!");
-$encendido=0;
-while(!feof($file)){
-$linea= fgets($file);
+$dir = 'text/'.$_SESSION["equipo"];
 
-	if(stripos($linea,"estado")!== false ){
-		$array_encendido=preg_split('/[:]/',$linea);
-		$encendido=intval($array_encendido[1]);
+$encendido= (int)leeConf($dir, "estado_caldera");
 
-	}
-
-}
-
-fclose($file);
-sleep(1);
 ?>
 <!DOCTYPE html> 
 <html> 
@@ -61,7 +51,6 @@ sleep(1);
 	<br>
 	<div data-theme="a" data-form="ui-body-a" class="ui-body ui-body-a ui-corner-all">
 			<p>Los cambios se han guardado correctamente. Puede verificarlos accediendo donde se han editado</p>
-
 		</div>
 		<?php }
 		if (strlen($_SESSION["usuario"])<1){ ?>
@@ -70,6 +59,7 @@ sleep(1);
 		<?php
 		}else{
 		?>
+			<p><b>Esto es una mierda hecha por David Martin.</b></p>
 			<input type="submit" data-role="button" data-icon="checkbox-on" value="Ir a página principal" />	
 	<?php } ?>
 	</form >
@@ -95,8 +85,8 @@ exit;
 	<ul data-role="listview" data-inset="true" >
 <li><i class="fa fa-home"></i> <h3> Caldera: </h3>
 		<select  data-native-menu="false" data-theme="c"  onchange='window.location.href="guarda_estado.php?estado="+this.selectedIndex+"&nocache=<?=time()?>"' >
-		   <option value="on" class="on" data-transition="slidedown"  data-ajax="false" <?=($encendido==0?"selected":"")?> > Encendido </option>
-		   <option value="off" class="off" data-transition="slidedown"  data-ajax="false" <?=($encendido==1?"selected":"")?> >Apagado </option>
+		   <option value="on" class="on" data-transition="slidedown"  data-ajax="false" <?=($encendido==0?"selected":"")?> > Apagado </option>
+		   <option value="off" class="off" data-transition="slidedown"  data-ajax="false" <?=($encendido==1?"selected":"")?> >Encendido </option>
 		   <option value="prog" class="prog" data-transition="slidedown"  data-ajax="false" <?=($encendido==2?"selected":"")?> >Programado </option>
 		</select>	
 	</form>
