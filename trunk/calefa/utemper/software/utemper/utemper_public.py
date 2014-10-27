@@ -35,7 +35,7 @@ class clog:
 class cread_config(object):
 
     CONFIG_FILE_LOCAL= "config/utemper.conf"
-    CONFIG_FILE_SEND= "config/send/utemper.conf"
+    CONFIG_FILE_SEND= "send/utemper.conf"
     
     def read_config (self, nombre_config):
         # read file local

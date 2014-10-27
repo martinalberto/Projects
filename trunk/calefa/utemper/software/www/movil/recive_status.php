@@ -18,11 +18,11 @@ if(isset($_GET['id'])) {
 	//fclose($tmp);
 
 	//date
-	$content =(string)time(). ":last_update=". (string)time(). "\n";
+	$content =(string)time(). ":last_update:". (string)time(). "\n";
 	//temp
-	$content .= (string)time().  ":temp=". $_GET['temp']."\n";
+	$content .= (string)time().  ":temp:". $_GET['temp']."\n";
 	//rele
-	$content .= (string)time().  ":rele=". $_GET['rele']."\n";
+	$content .= (string)time().  ":rele:". $_GET['rele']."\n";
 
 	
     /*write operation ->*/

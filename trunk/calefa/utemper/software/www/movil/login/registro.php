@@ -6,14 +6,16 @@
 
 		$db = new SQLite3('../text/user');
 //Create a basic table
-$db->exec('CREATE TABLE IF NOT EXISTS user (id numeric PRIMARY KEY ,nombre text, contrasena text, email varchar (255))');
+$db->exec('CREATE TABLE IF NOT EXISTS user (id numeric PRIMARY KEY ,nombre text, contrasena text, email varchar (255), equipo text)');
+
 
         $username = $_POST['name'];
 		$email = $_POST['email'];
         $password = $_POST['pass'];
+		$equipo = $_POST['equipo'];
 		$time=time();
 		$msg="";
-        if($db->exec( "INSERT INTO `user` (id, nombre, contrasena, email) VALUES ('$time','$username', '$password', '$email')")){
+        if($db->exec( "INSERT INTO `user` (id, nombre, contrasena, email, equipo) VALUES ('$time','$username', '$password', '$email', '$equipo')")){
             $msg = "<script>alert('Usuario creado correctamente.');location.href='../index.php?login=true&".time()."'</script>   <a href='../index.php?login=true&".time()."' data-transition='slidedown'  data-ajax='false'>Acceso</a>";
 			
         }
@@ -60,6 +62,8 @@ if ( strlen($msg)>0){
 <input type="password" id="pass1" name="pass1" >
  <label> email </label>
 <input type="email" id="email" name="email" >
+ <label> Numero de equipo </label>
+<input type="number" id="equipo" name="equipo" >
 
 <input type="submit" value="Registro" id="botonLogin">
 <a class="ui-btn ui-btn-corner-all ui-shadow" data-theme="c" href="index.php" data-transition="slidedown"> Volver a login </a>
