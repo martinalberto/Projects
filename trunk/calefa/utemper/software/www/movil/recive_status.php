@@ -1,21 +1,20 @@
 <?php
 error_reporting(-1);
 
+function is_dir_empty($dir) {
+  if (!is_readable($dir)) return NULL; 
+  return (count(scandir($dir)) == 2);
+}
+
 if(isset($_GET['id'])) {
 
 	$content ="";
-	$fl='/tmp/utemper/estado/'.$_GET["id"].'.php'; 
-	
+	$fl='text/'.$_GET["id"].'/status.txt'; 
+	$dirSend = 'text/'.$_GET["id"]."/send/";
+
 	if (!file_exists($fl)) {
-		mkdir ( "/tmp/utemper/estado/", 0777, True); 
+		mkdir ( $dirSend, 0777, True); 
 	}
-	
-    /*read operation ->*/ 
-	//echo $fl;
-	//$tmp = fopen($fl, "r");
-	//if ($tmp != FALSE )
-	//	$content=fread($tmp,filesize($fl));
-	//fclose($tmp);
 
 	//date
 	$content =(string)time(). ":last_update:". (string)time(). "\n";
@@ -24,11 +23,24 @@ if(isset($_GET['id'])) {
 	//rele
 	$content .= (string)time().  ":rele:". $_GET['rele']."\n";
 
-	
+
     /*write operation ->*/
 	$tmp =fopen($fl, "w");
-	fwrite($tmp, $content);
+	if ($tmp != FALSE )
+	{
+		fwrite($tmp, $content);
+	}
 	fclose($tmp);
-	//echo "READ";
+
+	
+	if(is_dir_empty($dirSend))
+	{
+		echo "update:none\n";
+	}
+	else
+	{
+	echo "update:read\n";
+	}
+	
 }
 ?>

@@ -1,4 +1,8 @@
 <?php
+include('head.php');
+?>
+
+<?php
 session_start();
 //manejamos en sesion el nombre del usuario que se ha logeado
 if (!isset($_SESSION["usuario"])){
@@ -6,6 +10,7 @@ if (!isset($_SESSION["usuario"])){
     
 }
 $_SESSION["usuario"];
+$_SESSION["equipo"]= "137291051180603";
 ?>
 <!DOCTYPE html> 
 <html> 
@@ -43,7 +48,8 @@ $_SESSION["usuario"];
 	?></b></h1><br>
 
 <?php 
-if (($gestor = fopen("text/".$_GET['dia'].".txt", "r")) !== FALSE) {
+
+if (($gestor = fopen('text/'.$_SESSION["equipo"]."/".$_GET['dia'].".txt", "r")) !== FALSE) {
 $data=fgetcsv (  $gestor ,  1000 , ';');
 
 for($i=0;$i<24;$i++){ ?> 
