@@ -3,23 +3,19 @@ include('head.php');
 ?>
 
 <?php
-session_start();
-//manejamos en sesion el nombre del usuario que se ha logeado
-$_estoy_logeado="";
 if (!isset($_SESSION["usuario"])){
  //   header("location:login/index.php?nologin=false");
     $_estoy_logeado='<a href="login/index.php?nologin=false"  data-transition="slidedown"  data-ajax="false">Login</a><script languaje="javascript">location.href="login/index.php?nologin=false&rand='.time().'"</script></body></html>';
 }
-
-$_SESSION["equipo"]= "137291051180603";
 ?>
+
 <!DOCTYPE html> 
 <html > 
 
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=0"> 
-	<title>Multi-page template</title> 
+	<title>Select Temp.</title> 
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.1.css" />
 	<link rel="apple-touch-icon" href="images/launch_icon_57.png" />

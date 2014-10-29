@@ -3,10 +3,6 @@ include('head.php');
 ?>
 
 <?php
-session_start();
-
-$_SESSION["equipo"]= "137291051180603";
-
 //manejamos en sesion el nombre del usuario que se ha logeado
 if (!isset($_SESSION["usuario"])){
  //   header("location:login/index.php?nologin=false");    

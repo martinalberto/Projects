@@ -42,5 +42,32 @@ if(isset($_GET['id'])) {
 	echo "update:read\n";
 	}
 	
+	
+	// ultima conexion:
+	$path_ultimo_Acceso = 'text/'.$_GET['id']."/ultimoAcceso.txt";
+	$origen =fopen($path_ultimo_Acceso, 'r');
+	if ($origen){
+		if (($timepo = fgets($origen, 4096)) !== false) {
+			$timepo = trim($timepo);
+			$lastTime= $timepo + 0;
+			if(time()- $lastTime>600)
+			{
+			echo "segsendstatus:600\n";
+			}
+			else if (time()- $lastTime>60)
+			{
+			echo "segsendstatus:60\n";
+			}
+			else
+			{
+			echo "segsendstatus:5\n";
+			}
+		}
+	}
+	else
+	{
+		echo "leeConf error, imposible leer en:" .$path_ultimo_Acceso."\n" ;
+		exit();
+	}
 }
 ?>
