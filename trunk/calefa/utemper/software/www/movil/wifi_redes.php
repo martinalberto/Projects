@@ -1,12 +1,7 @@
 <?php
-session_start();
-//manejamos en sesion el nombre del usuario que se ha logeado
-if (!isset($_SESSION["usuario"])){
-  //  header("location:login/index.php?nologin=false");
-    
-}
-$_SESSION["usuario"];
+include('head.php');
 ?>
+
 <!DOCTYPE html> 
 <html> 
 <head> 
@@ -37,7 +32,8 @@ $_SESSION["usuario"];
 	<ul data-role="listview" data-inset="true" data-filter="true"  >
 		
 <?php
-$handle = @fopen("/tmp/redes_wifi.txt", "r");
+$file = 'text/'.$_SESSION["equipo"]."/redes_wifi.txt";
+$handle = fopen($file, "r");
 if ($handle) {
     while (($buffer = fgets($handle, 4096)) !== false) {
 	$buffer = trim($buffer);

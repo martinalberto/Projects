@@ -6,12 +6,53 @@ if (!isset($_SESSION["usuario"])){
     
 }
 $_SESSION["usuario"];
+$_SESSION["equipo"]= "137291051180603";
 ?>
 
 <?php
-function readestado( $string)
+$fielPath = ""
+function readestado($dir, $string)
 {
-	return 0;
+   $source=$dir."/status.txt";
+           
+           if (!file_exists($source)) {
+                   mkdir( $dir, 0777, True); 
+                   $content =(string)time(). ":last_update:". (string)time(). "\n";
+                   $content .= (string)time().  ":temp:". $_GET['temp']."\n";
+                   $content .= (string)time().  ":rele:". $_GET['rele']."\n";
+                   file_put_contents($source, $content);
+           }
+   
+           $origen =fopen($source, 'r');
+           if ($origen){              
+                   while (($line = fgets($origen, 4096)) !== false) {
+                           echo count(split (':', $line));
+                           $line = trim($line);
+                           if(count(split (':', $line))== 3)
+                           {
+                                    list($seg, $nombre, $valor) = split (':', $line);
+                                    echo $nombre;
+                                    
+                                    if($nombre == $param)
+                                    {
+                                           fclose($origen);
+                                           return $valor;
+                                    }
+                           }
+                   }
+                   if (!feof($origen)) {
+                           echo "Error: unexpected fgets() fail\n";
+                           fclose($origen);
+                           exit();
+                   }
+           }
+           else
+           {
+               echo "leeConf error, imposible leer:" .$dir."\n" ;
+               exit();
+           }
+           fclose($origen);
+           return "0";
 }
 ?>
 
@@ -43,7 +84,7 @@ function readestado( $string)
 	   <hr>
 
 		   <p> <b>Numero de serie:   <?php
-			echo readestado("num_equipo");
+			echo $_SESSION["equipo"];
 			?> </b> </p>
 				
 		<table border="1" cellpadding="0" cellspacing="0">
@@ -51,13 +92,15 @@ function readestado( $string)
 			  <td>Utemper:</td>
 			  <td>
 			  <?php
-				if (readestado("estado")==1)
+				if (time() - (readestado("estado") + 0) < 300)
 					{
 					echo '<img SRC="img/estado_on.png"><br> Encendido ';
 					}
 				else
 					{
 					echo '<img SRC="img/estado_off.png"><br> Error de comunicacion. ';
+					date_default_timezone_set("Europe/Madrid"); 
+					echo '<p> ultima comunicacion:'.date("Y-m-d H:i:s",readestado("estado")).' </p>';
 					}
 			  ?>
 			  </td>
@@ -65,7 +108,7 @@ function readestado( $string)
 			 <tr>
 				 <td>Caldera:</td>
 			     <td>  <?php
-				if (readestado("caldera")==1)
+				if (readestado("rele")==1)
 					{
 					echo '<img SRC="img/estado_caldera_on.png"><br> Encendida ';
 					}

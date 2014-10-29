@@ -1,12 +1,7 @@
 <?php
-session_start();
-//manejamos en sesion el nombre del usuario que se ha logeado
-if (!isset($_SESSION["usuario"])){
- //   header("location:login/index.php?nologin=false");
-    
-}
-$_SESSION["usuario"];
+include('head.php');
 ?>
+
 <!DOCTYPE html> 
 <html> 
 <head> 
