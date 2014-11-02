@@ -18,6 +18,8 @@ class cScreen:
     lastTimeRefes = time.time() + 5
     cUtemperSceenImagen=None
 	
+    last_values= [0, 0, 0, 0, 0] # noche, rele, temperatura, wifi, sensor_temp
+	
     saveConfigurcion = False
 	
     def __init__(self):
@@ -55,8 +57,9 @@ class cScreen:
             # Check el estado del mouse!!!!
             self.check_screen()
             if (time.time()-self.lastTimeRefes > 60 ):
-                self.lastTimeRefes = time.time()
-                self.refrescar_screen()  
+                self.refrescar_screen()
+            elif ([gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error] != self.last_values):
+                self.refrescar_screen() 
     
     def reset(self):
         self.refrescar_screen()
@@ -81,6 +84,7 @@ class cScreen:
                  gv.lastTimeChageSomething = time.time()
 
     def refrescar_screen(self):
+        self.last_values = [gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error]
         self.lastTimeRefes = time.time()
         if(self.pantalla==0):
             return 0
@@ -107,7 +111,7 @@ class cScreen:
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"
         fondo_up = self.cUtemperSceenImagen.getImagen(fichero_up)
-        self.screen.blit(fondo_up, (0, -10))
+        self.screen.blit(fondo_up, (0, -15))
         #dia y hora:
         string=time.strftime("%d-%b %I:%M %p", time.localtime())
         mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
@@ -149,7 +153,7 @@ class cScreen:
         string="%.1fC" %gv.temperatura
         mytext = self.Letra_temp1.render(string, False, self.letra_color).convert_alpha()
         posX = gv.screen_widht - mytext.get_size()[0] - 30
-        posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +42
+        posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +5
         self.screen.blit(mytext, (posX ,posY))
         # se muestran lo cambios en pantalla
         pygame.display.flip()

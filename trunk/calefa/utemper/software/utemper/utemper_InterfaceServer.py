@@ -12,7 +12,7 @@ class cInterfaceServer:
     folder_send_files =  "config/send/"
 
     maxTimeSendStatus = 5
-    maxTimeSendFromServer = 360
+    maxTimeSendFromServer = 200
 
     lastTimeInterfaceServer = 0
     lastTimeSendStatus=0
@@ -25,7 +25,6 @@ class cInterfaceServer:
         socket.setdefaulttimeout(default_timeout)
 
     def suceso (self):
-
         if  (time.time()-self.lastTimeInterfaceServer > 3) and (gv.internet == 1):
 
             if (time.time()-self.lastTimeSendStatus>self.maxTimeSendStatus) or (gv.rele != self.lastSendRele):
@@ -46,7 +45,7 @@ class cInterfaceServer:
     def reset(self):
         self.maxTimeSendStatus = 5
         self.lastTimeSendStatus =  0
-        self.maxTimeSendFromServer = 360
+        self.maxTimeSendFromServer = 200
         lastSendRele = -1
          
     def checkmaxTimeSendStatus(self):
@@ -58,7 +57,7 @@ class cInterfaceServer:
          elif (time.time() - gv.lastTimeChageSomething <180):
              self.maxTimeSendStatus = 90
          else:
-             self.maxTimeSendStatus = 360
+             self.maxTimeSendStatus = 200
 
          if (self.maxTimeSendFromServer < self.maxTimeSendStatus):
              self.maxTimeSendStatus = self.maxTimeSendFromServer
@@ -97,7 +96,7 @@ class cInterfaceServer:
             elif (line.lower() == "segsendstatus:60"):
                 self.maxTimeSendFromServer = 60
             elif (line.lower() == "segsendstatus:600"):
-                self.maxTimeSendFromServer = 600
+                self.maxTimeSendFromServer = 300
     
     def download_files(self):
         try:

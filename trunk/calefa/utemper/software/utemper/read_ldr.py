@@ -30,8 +30,8 @@ lastvalue3 = 0
 valor=0
 errores=1
 
-PIN = 3# Read RC timing using pin #3
-	# it is the same the 1 in rev:1
+PIN = 2# Read RC timing using pin #2
+	# it is the same the 0 in rev:1
 
 		 
 os.system('echo $(date  +"%F_%T")";0;READ_LDR;Init read_ldr.py">>/var/utemp/logs.log')
@@ -47,7 +47,7 @@ while True:
 		lastvalue3 = RCtime(PIN)
 		valor= (lastvalue1 + lastvalue2 + lastvalue3)/3
 		
-		#print ("Valores: %d, %d %d = %d", (lastvalue1, lastvalue2, lastvalue3, valor))
+		print ("Valores: %d, %d %d = %d", (lastvalue1, lastvalue2, lastvalue3, valor))
 		
 		#save:
 		if (valor>0 and valor<49000):

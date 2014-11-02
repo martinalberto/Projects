@@ -151,7 +151,7 @@ while not(salir):
             wifi = 1
             conectado=1
             estado = 4
-            wait = 2
+            wait = 1
         except:
             clog().log(3, "Imposible conectar a la red  %s " %wifissid )
             conectado=0
