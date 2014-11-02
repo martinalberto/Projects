@@ -94,7 +94,7 @@ class eltiempo:
 			return 0
 			
 	def leer_temperatura(self):
-		clog().log(1,"leer_temperatura...")
+		clog().log(0,"leer_temperatura...")
 		temp_c=0
 		count = 0
 		try:		
@@ -103,7 +103,6 @@ class eltiempo:
 				time.sleep(0.2)
 				lines = self.read_temp_raw()
 				count += 1
-				clog().log(1,"count ++")
 				if (count>4):
 					clog().log(3,("Imposible leer temperatura count > 4"))
 					break
@@ -113,7 +112,8 @@ class eltiempo:
 				temp_c = float(temp_string) / 1000.0
 				#temp_f = temp_c * 9.0 / 5.0 + 32.0
 				if (temp_c>2 and temp_c<40):
-					gv.temperatura = temp_c
+					gv.temperatura = round(temp_c, 2)
+					clog().log(5,"temperatura: %f" %temp_c)
 					return 1
 			return 0
 		except:
