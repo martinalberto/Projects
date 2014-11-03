@@ -63,7 +63,7 @@ class cInterfaceServer:
              self.maxTimeSendStatus = self.maxTimeSendFromServer
 
          if (maxTimeSend != self.maxTimeSendStatus):
-             clog().log(3, "Nuevo tiempo Max to send estado: %d" %self.maxTimeSendStatus) 
+             log(3, "Nuevo tiempo Max to send estado: %d" %self.maxTimeSendStatus) 
 
     def send_estatus(self):
         text="http://www.utemper.net/movil/recive_status.php?id=" + str(gv.number_equipo)
@@ -72,12 +72,12 @@ class cInterfaceServer:
         try:
             response = urllib2.urlopen(text)
             gv.internet = 1
-            clog().log(1, "Enviado el estado a: %s" %(text))
+            log(1, "Enviado el estado a: %s" %(text))
             self.check_response_send_status(response.read())
             self.lastSendRele = gv.rele
         except:
             gv.internet = 0
-            clog().log(3, "Imposible poder enviar el estado a: %s" %text)
+            log(3, "Imposible poder enviar el estado a: %s" %text)
             return False
         return True
 
@@ -85,7 +85,7 @@ class cInterfaceServer:
         try:
             lines = lines.split("\n")
         except:
-            clog().log(3, "check_response_send_status imposible leer texto")
+            log(3, "check_response_send_status imposible leer texto")
             return
 
         for line in lines:
@@ -100,36 +100,36 @@ class cInterfaceServer:
     
     def download_files(self):
         try:
-            clog().log(2," download_files from server to local file....")
+            log(2," download_files from server to local file....")
             text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* config/."
             result = subprocess.call(text, shell = True)
 			
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
                 self.download_config = False
-                clog().log(2, "download_files desde utemper.net OK")
+                log(2, "download_files desde utemper.net OK")
                 gv.reset_class = 1
             else:
-                clog().log(3, "download_files desde utemper.net ERROR!")
+                log(3, "download_files desde utemper.net ERROR!")
                 self.lastTimeInterfaceServer += 2 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         except:
-            clog().log(0," Imposible send status to http://www.utemper.net/movil/download_files_config.php ... ")
+            log(0," Imposible send status to http://www.utemper.net/movil/download_files_config.php ... ")
     
     def upload_files(self):
         try:
             os.listdir(self.folder_send_files)
         except:
-            clog().log(5,"upload_files: ERROR! Imposible read fonder: %s" %self.folder_send_files)
+            log(5,"upload_files: ERROR! Imposible read fonder: %s" %self.folder_send_files)
             gv.upload_config =False
             return
  
         if len(os.listdir(self.folder_send_files))!=0: 
             text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8  config/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
-            clog().log(2," upload_files from local to server file....")
+            log(2," upload_files from local to server file....")
             result = subprocess.call(text, shell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
-                clog().log(2, "download_files A utemper.net OK")
+                log(2, "download_files A utemper.net OK")
             else:
-                clog().log(3, "download_files A utemper.net ERROR!")
+                log(3, "download_files A utemper.net ERROR!")
             gv.lastTimeChageSomething = time.time()

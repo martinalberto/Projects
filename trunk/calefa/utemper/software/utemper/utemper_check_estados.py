@@ -29,7 +29,7 @@ class cCheck_estados:
             
         if (time.time()-self.lastTimeCheckInternet>180):
             # enviar estado del equipo.
-            clog().log(0, "suceso check estados: leemos el estado del Internet" )
+            log(0, "suceso check estados: leemos el estado del Internet" )
             self.check_intenernet()
             self.lastTimeCheckInternet = time.time()
             
@@ -63,7 +63,7 @@ class cCheck_estados:
         # read
         try:
             if (os.path.getmtime(self.flie_config_wifi) != self.lastTimeModifyWifiStatus):
-                clog().log(1, "suceso check estados: leemos el estado Wifi" )
+                log(1, "suceso check estados: leemos el estado Wifi" )
                 f = open(self.flie_config_wifi)
                 lines = f.readlines()
                 f.close()
@@ -77,7 +77,7 @@ class cCheck_estados:
                 return 0
 
         except:
-            clog().log(4, "Imposible poder leer el estado del wifi del fichero wifi.var" )
+            log(4, "Imposible poder leer el estado del wifi del fichero wifi.var" )
             gv.wifi_estado = 0
             gv.wifi_ip = ""
             return 0

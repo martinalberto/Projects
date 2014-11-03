@@ -2,6 +2,9 @@
 
 echo "Iniciar Utemper"
 
+# opcion de luz de la pantalla.
+echo 252 > /sys/class/gpio/export
+
 #iniciamos ficheros.
 mkdir -p /var/utemp/
 echo "-1" > /tmp/rele.var

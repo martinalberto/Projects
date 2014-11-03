@@ -9,28 +9,25 @@ import os.path
 # Constantes
 # -----------
  
-class clog:
-    DEBUG_LEVEL= -1
-    LOGS_FILE= "/var/utemp/logs.log"
-    # gris \033[91m
-    COLORES= ['\033[94m','\033[0m',  '\033[92m', '\033[93m','\033[91m','\033[93m']
-    ENDC ='\033[0m'
-    def log(self, nivel, text):
-        if (nivel<self.DEBUG_LEVEL):
-            return 0            
-        frame= sys._getframe(1)
-        text_file= time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()) + ";"+ str(nivel) + ";"
-        text_file+= "UTEMPER;"+ frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
-        print self.COLORES[nivel] + text_file + self.ENDC
-        sys.stdout.flush()
-        
-        
-        return 
-        
-        # save into file.
-        File = file(self.LOGS_FILE, 'a')
-        File.write(text_file)
-        File.close()
+
+LOGS_DEBUG_LEVEL= -1
+LOGS_FILE= "/var/utemp/logs.log"
+# gris \033[91m
+LOGS_COLORES= ['\033[94m','\033[0m',  '\033[92m', '\033[93m','\033[91m','\033[93m']
+LOGS_ENDC ='\033[0m'
+def log(nivel, text):
+	if (nivel<LOGS_DEBUG_LEVEL):
+		return 0            
+	frame= sys._getframe(1)
+	text_file= time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()) + ";"+ str(nivel) + ";"
+	text_file+= "UTEMPER;"+ frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
+	print (LOGS_COLORES[nivel] + text_file + LOGS_ENDC)
+	sys.stdout.flush()
+	
+	# save into file.
+	File = file(LOGS_FILE, 'a')
+	File.write(text_file)
+	File.close()
 
 class cread_config(object):
 
@@ -40,9 +37,9 @@ class cread_config(object):
     def read_config (self, nombre_config):
         # read file local
         (tiempo_local, valor_local) = self.read_config_file(self.CONFIG_FILE_LOCAL,nombre_config )
-        clog().log(1, "Leida el valor -%s- para la config -%s- " %(valor_local, nombre_config) )
+        log(1, "Leida el valor -%s- para la config -%s- " %(valor_local, nombre_config) )
         return valor_local
-	
+
     def read_config_file (self, file, nombre_config):
         lines=[""]
         encontrado = False
@@ -56,7 +53,7 @@ class cread_config(object):
             lines = f.readlines()
             f.close()
         except:
-            clog().log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, file) )
+            log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, file) )
             
         # check.
         for line in lines:
@@ -76,11 +73,11 @@ class cread_config(object):
             lines = f.writelines(data)
             f.close()
         except:
-            clog().log(4, "Imposible poder escribir la nueva configuracion en fichero %s " %( self.CONFIG_FILE_LOCAL) )
+            log(4, "Imposible poder escribir la nueva configuracion en fichero %s " %( self.CONFIG_FILE_LOCAL) )
             return 0
         gv.lastTimeChageSomething = time.time()
         return 1
-		
+
     def update_config_file (self, nombre_config , valor_new):
         encontrado =False
         lines =[]
@@ -93,7 +90,7 @@ class cread_config(object):
             lines = f.readlines()
             f.close()
         except:
-            clog().log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, self.CONFIG_FILE_LOCAL) )
+            log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, self.CONFIG_FILE_LOCAL) )
             return
 
         # process
@@ -118,19 +115,19 @@ class cread_config(object):
             f.writelines(new_lines)
             f.close()
         except:
-            clog().log(5, "Imposible GUARDAR leer la configuracion del fichero %s " %self.CONFIG_FILE_LOCAL )
+            log(5, "Imposible GUARDAR leer la configuracion del fichero %s " %self.CONFIG_FILE_LOCAL )
             return 
 
         # copy to send data.
         try:
             shutil.copy2(self.CONFIG_FILE_LOCAL, self.CONFIG_FILE_SEND)
-            clog().log(0, "Configuracion copiada a  %s " %self.CONFIG_FILE_SEND )
+            log(0, "Configuracion copiada a  %s " %self.CONFIG_FILE_SEND )
         except:
-            clog().log(5, "Imposible copiar de %s  a %s" %(self.CONFIG_FILE_LOCAL, self.CONFIG_FILE_SEND) )
+            log(5, "Imposible copiar de %s  a %s" %(self.CONFIG_FILE_LOCAL, self.CONFIG_FILE_SEND) )
             gv.upload_config = False
             return
 
-        clog().log(2, "Configuracion Actualizada fichero  %s " %self.CONFIG_FILE_LOCAL )
+        log(2, "Configuracion Actualizada fichero  %s " %self.CONFIG_FILE_LOCAL )
         gv.upload_config = True
         gv.lastTimeChageSomething = time.time()
         return 1
@@ -153,6 +150,10 @@ class gv(object):
     temperatura_max = 50
     temperatura_error=1
 
+    # prog Calefa.
+    estadoCalefa = 0
+    estadoCalefa_NextProg = 0
+    
     #dia noche:
     noche=0
     
