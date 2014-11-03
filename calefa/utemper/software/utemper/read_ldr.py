@@ -41,7 +41,7 @@ GPIO.setmode(GPIO.BCM)
 
 while True:
 		
-		#Cilo 1.
+		#Ciclo 1.
 		lastvalue1 = RCtime(PIN)
 		lastvalue2 = RCtime(PIN)
 		lastvalue3 = RCtime(PIN)

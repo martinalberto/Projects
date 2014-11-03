@@ -26,7 +26,7 @@ class cCheck_temperatura:
             self.lastTimeCheckCalefa = time.time()
             if (self.dia_horarios != time.localtime().tm_wday):
                 self.leer_ficheroHorarios()
-				 
+ 
     def reset(self):
         self.__init__()
         
@@ -42,19 +42,38 @@ class cCheck_temperatura:
 
         elif (gv.estadoCalefa == 2):
             # estado programado
+            self.check_next_prog()
+            log(2, "check_next_prog: next hora: %s" %(time.strftime("%d-%b-%Y %I:%M %p", time.localtime(gv.estadoCalefa_NextProg))))
+
             hora=time.localtime()
             index = (hora.tm_hour*4) + (hora.tm_min/15)
             if 0 < index >=len(self.horarios):
-                clog().log(3, "checkEstadoCheckCalefacion: mal estado de index en leer estado %d " %(index) )
+                log(3, "checkEstadoCheckCalefacion: mal estado de index en leer estado %d " %(index) )
                 return
             if (self.horarios[index]!="0"):
                 self.check_temperatura()
             else:
                 if (gv.rele !=0):
                    self.actualiza_rele(0)
-                
+
+    def check_next_prog(self):
+        # estado programado
+        segundos = time.time()
+        hora=time.localtime()
+        index = (hora.tm_hour*4) + (hora.tm_min/15)
+        if 0 < index >=len(self.horarios):
+            log(3, "check_next_prog: mal estado de index en leer estado %d " %(index) )
+            return
+        for i in range(index, len(self.horarios)):
+            if (self.horarios[index]!="0"):
+                gv.estadoCalefa_NextProg = segundos
+                return
+            else:
+                 segundos += 900
+        gv.estadoCalefa_NextProg = -1
+ 
     def check_temperatura(self):
-        clog().log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max ))
+        log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max ))
         if ((gv.temperatura + 0.2) < gv.temperatura_max) and (gv.rele==0):
                 # temperatura menor y rele apagado.
                 self.actualiza_rele(1)
@@ -69,12 +88,12 @@ class cCheck_temperatura:
         iFile.close()
         gv.lastTimeChageSomething = time.time()
         gv.rele = valor
-        clog().log(2, "Actulizado valor del rele a -%d- " %(valor) )
+        log(2, "Actulizado valor del rele a -%d- " %(valor) )
         
     def leer_ficheroHorarios(self):
         fichero = str(time.localtime().tm_wday +1) + ".txt"
         try:
-            clog().log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
+            log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
             iFile = file(self.FOLER_PROGRA +fichero, 'r')
             line = iFile.readline()
             line = line.replace("\n", "")
@@ -82,4 +101,4 @@ class cCheck_temperatura:
             self.horarios = line.split(';')
             self.dia_horarios = time.localtime().tm_wday
         except:
-            clog().log(5, "imposible leer fichero %s" %(self.FOLER_PROGRA +fichero) )
+            log(5, "imposible leer fichero %s" %(self.FOLER_PROGRA +fichero) )

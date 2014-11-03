@@ -4,24 +4,35 @@
 import time
 import pygame
 import os
+import subprocess
 from pygame.locals import *
 from utemper_public import *
 import utemper_screen_image
+import utemper_screen_0
+import utemper_screen_1
+import utemper_screen_2
+import utemper_screen_4
+import utemper_screen_5
 
 class cScreen:
     
     pantalla = 0
+    screen = None
     screen_number = 0
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     Letra_top = None
+    Letra_temp1 = None
+    Letra_temp2 = None
     lastTimeRefes = time.time() + 5
+    lastTimePowerONScreen = time.time()
     cUtemperSceenImagen=None
-	
+    backlightpath = "/sys/class/gpio/gpio252"
+
     last_values= [0, 0, 0, 0, 0] # noche, rele, temperatura, wifi, sensor_temp
-	
+    
     saveConfigurcion = False
-	
+    
     def __init__(self):
         try:
             # iniciamos la pantalla.
@@ -46,22 +57,49 @@ class cScreen:
             gv.screen_height  = pygame.display.Info().current_h
 
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
-            
+            self.cUtemperSceen0 = utemper_screen_0.cScreen_0()
+            self.cUtemperSceen1 = utemper_screen_1.cScreen_1()
+            self.cUtemperSceen2 = utemper_screen_2.cScreen_2()
+            self.cUtemperSceen4 = utemper_screen_4.cScreen_4()
+            self.cUtemperSceen5 = utemper_screen_5.cScreen_5()
             self.refrescar_screen()
         except:
-            clog().log(4,"Imposible iniciar la pantalla")
+            log(4,"Imposible iniciar la pantalla")
             self.pantalla=0
+            
+        # Check if GPIO252 has already been set up  // INICIAR Apagar Pantalla.
+        self.backlightenabled = False
+        if not exists(self.backlightpath):
+            try:
+                with open("/sys/class/gpio/export", "w") as bfile:
+                    bfile.write("252")
 
+            except:
+                log(4,"Imposible Iniciar Apagar Pantalla")
+
+        # Set the direction
+        try:
+            with open("/sys/class/gpio/gpio252/direction", "w") as bfile:
+                bfile.write("out")
+                self.backlightenabled = True
+        except:
+                log(4,"Imposible Iniciar Apagar Pantalla")
+            
     def suceso(self):
         if(self.pantalla==1):
             # Check el estado del mouse!!!!
             self.check_screen()
             if (time.time()-self.lastTimeRefes > 60 ):
                 self.refrescar_screen()
-            elif ([gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error] != self.last_values):
+            elif (time.time()-self.lastTimePowerONScreen > 300 ) and (gv.noche == 1) and (self.screen_number!= 3):
+                self.screen_number = 3  # pantalla negra.
+                self.Backlight(0)
+            elif ([gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error] != self.last_values)and (self.screen_number!= 3):
                 self.refrescar_screen() 
     
     def reset(self):
+        self.Backlight(1)
+        self.lastTimePowerONScreen= time.time()
         self.refrescar_screen()
 
     def check_screen(self):
@@ -69,7 +107,7 @@ class cScreen:
             if(event.type is MOUSEBUTTONDOWN):
                  pos = pygame.mouse.get_pos()
                  print pygame.mouse.get_pos()
-                 clog().log(1,"BOTON press screen %d x %d  y." %(pos[0], pos[1]))
+                 log(1,"BOTON press screen %d x %d  y." %(pos[0], pos[1]))
                  if(self.pantalla==0):
                        return 0
                  if self.screen_number == 0:
@@ -78,10 +116,17 @@ class cScreen:
                        self.boton_screen_1(pos)
                  elif self.screen_number == 2:
                        self.boton_screen_2(pos)
+                 elif self.screen_number == 3:
+                       self.boton_screen_3(pos)
+                 elif self.screen_number == 4:
+                       self.boton_screen_4(pos)
+                 elif self.screen_number == 5:
+                       self.boton_screen_5(pos)
                  else:
-                       self.boton_screen_0(pos)
+                       self.boton_screen_0(pos) 
                  self.refrescar_screen()
                  gv.lastTimeChageSomething = time.time()
+                 self.lastTimePowerONScreen = time.time()
 
     def refrescar_screen(self):
         self.last_values = [gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error]
@@ -89,13 +134,22 @@ class cScreen:
         if(self.pantalla==0):
             return 0
         if self.screen_number == 0:
-            self.refrescar_screen_0()
+            self.cUtemperSceen0.refrescar_screen()
+          #  self.refrescar_screen_0()
         elif self.screen_number == 1:
-            self.refrescar_screen_1()
+            self.cUtemperSceen1.refrescar_screen()
+        #    self.refrescar_screen_1()
         elif self.screen_number == 2:
-            self.refrescar_screen_2()
+            self.cUtemperSceen2.refrescar_screen()
+        #    self.refrescar_screen_2()
+        elif self.screen_number == 3:
+            self.cUtemperSceen3.refrescar_screen()
+        elif self.screen_number == 4:
+            self.cUtemperSceen4.refrescar_screen()
+        elif self.screen_number == 5:
+            self.cUtemperSceen5.refrescar_screen()
         else:
-            elf.refrescar_screen_0()
+            self.refrescar_screen_0()
             
     def refrescar_screen_0(self):
         if (gv.noche==1):
@@ -157,7 +211,7 @@ class cScreen:
         self.screen.blit(mytext, (posX ,posY))
         # se muestran lo cambios en pantalla
         pygame.display.flip()
-        clog().log(1,"Refrescar screen 0 OK")
+        log(1,"Refrescar screen 0 OK")
 
     def refrescar_screen_1(self):
 
@@ -181,13 +235,13 @@ class cScreen:
          
         # se muestran lo cambios en pantalla
         pygame.display.flip()
-        clog().log(1,"Refrescar screen 1 OK")
+        log(1,"Refrescar screen 1 OK")
 
     def refrescar_screen_2(self):
 
         # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
-        fondo = pygame.image.load(fichero_fondo).convert()
+        fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
 
         #text
@@ -210,7 +264,7 @@ class cScreen:
 
         # se muestran lo cambios en pantalla
         pygame.display.flip()
-        clog().log(1,"Refrescar screen 2 OK")
+        log(1,"Refrescar screen 2 OK")
 
     def boton_screen_0 (self, pos):
         # Entrar menu
@@ -225,6 +279,8 @@ class cScreen:
              self.changeTemp(gv.temperatura_max+0.5)
         elif (pos[0] > 180) and (60 < pos[1] < 160):  # subir temp
              self.changeTemp(gv.temperatura_max-0.5)
+        elif (pos[0] > 240) and ( pos[1] > 170):  # Config
+             self.screen_number = 4
         elif (pos[0] < 80) and ( pos[1] > 170):  # volver
              self.screen_number = 0
              if(self.saveConfigurcion == True):
@@ -249,8 +305,46 @@ class cScreen:
              gv.reset_class = 1
         self.screen_number = 1
 
+    def boton_screen_3(self, pos):
+        # boton         # pos[0] x 
+                        # pos[1] y
+        self.Backlight(1)
+        self.screen_number = 0
+		
+    def boton_screen_4(self, pos):
+        # boton         # pos[0] x 
+                        # pos[1] y
+        if (pos[0] < 100) and (pos[1] < 200):  # Info
+            self.screen_number = 5
+        elif (100 <pos[0] > 212) and (pos[1] < 200):  # Apagar
+			fichero_fondo = self.carpeta_img+"fondo/power_off.jpg"
+			fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
+			self.screen.blit(fondo, (0, 0))
+			pygame.display.flip()
+			subprocess.call(["shutdown", "-h", "3"])
+			time.sleep(2)
+        elif (pos[0] < 100) and ( pos[1] > 220):  # Volver
+             self.screen_number = 1
 
+    def boton_screen_5(self, pos):
+        # boton         # pos[0] x 
+                        # pos[1] y
+        self.screen_number = 0
+			 
     def changeTemp(self, new_temp):
         if (15 < new_temp <35):
              gv.temperatura_max = new_temp
              self.saveConfigurcion = True
+
+    def Backlight(self, light):
+        '''Turns the PiTFT backlight on or off.
+        Usage:
+         Backlight(True) - turns light on
+         Backlight(False) - turns light off
+        '''
+        if self.backlightenabled:
+            try:
+                with open("/sys/class/gpio/gpio252/value", "w") as bfile:
+                    bfile.write("%d" % (bool(light)))
+            except:
+                log(4,"Imposible cambiar black light Screen.")

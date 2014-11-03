@@ -20,7 +20,7 @@ class cScreenImeges:
             else:
                icon = pygame.image.load(ruta).convert()
         except:
-               clog().log(4,"Imposible cargar imagen. %s" %(ruta))
+               log(4,"Imposible cargar imagen. %s" %(ruta))
                return pygame.Surface((0,0))
         self.imagenes.append([ruta,icon])
         return icon
