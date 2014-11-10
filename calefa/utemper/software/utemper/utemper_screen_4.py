@@ -7,7 +7,7 @@ from pygame.locals import *
 from utemper_public import *
 import utemper_screen_image
 
-class cScreen_1:
+class cScreen_4:
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     cUtemperSceenImagen=None

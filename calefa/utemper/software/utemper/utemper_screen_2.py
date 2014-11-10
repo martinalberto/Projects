@@ -7,7 +7,7 @@ from pygame.locals import *
 from utemper_public import *
 import utemper_screen_image
 
-class cScreen_1:
+class cScreen_2:
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     cUtemperSceenImagen=None
@@ -17,7 +17,8 @@ class cScreen_1:
         self.screen = screen
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
-
+            self.Letra = pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
+			
         except:
             log(4,"Imposible iniciar la pantalla 1 ")
             self.pantalla=0
@@ -36,7 +37,7 @@ class cScreen_1:
         self.screen.blit(fondo, (0, 0))
 
         #text
-        mytext = self.Letra_top.render("Seleciona el modo.", False, self.letra_color).convert_alpha()
+        mytext = self.Letra.render("Seleciona el modo.", False, self.letra_color).convert_alpha()
         posX = (gv.screen_widht/2) - (mytext.get_size()[0]/2)
         self.screen.blit(mytext, (posX ,15))
         

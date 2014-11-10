@@ -58,7 +58,7 @@ class eltiempo:
 			self.leer_tiempo()
 			
 		#leer temperatura
-		if (time.time()-self.lastTimeTemp>6) and (self.temp):
+		if (time.time()-self.lastTimeTemp>10) and (self.temp):
 			self.lastTimeTemp=time.time()
 			result = self.leer_temperatura()
 			if result==1:
@@ -113,7 +113,6 @@ class eltiempo:
 				#temp_f = temp_c * 9.0 / 5.0 + 32.0
 				if (temp_c>2 and temp_c<40):
 					gv.temperatura = round(temp_c, 2)
-					log(5,"temperatura: %f" %temp_c)
 					return 1
 			return 0
 		except:

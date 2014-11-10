@@ -191,7 +191,7 @@ while not(salir):
             wait = 20
     elif estado ==5:
         # check internet.
-        result = os.system("ping -c 1 -w 1 -I wlan0 %s >/dev/null" %ip)
+        result = os.system("ping -c 1 -w 1 -I wlan0 %s >/dev/null" %('8.8.8.8'))
         if (result== 0):
             errores = 0
             wifi = 1

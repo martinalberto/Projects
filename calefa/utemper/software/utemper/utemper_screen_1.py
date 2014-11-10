@@ -18,7 +18,7 @@ class cScreen_1:
         self.screen = screen
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
-
+            self.Letra_temp2 = pygame.font.Font("font/Interstate-Black.ttf", 40)
         except:
             log(4,"Imposible iniciar la pantalla 1 ")
             self.pantalla=0
