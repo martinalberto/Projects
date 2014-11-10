@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
+import time, datetime
 import pygame
 import os
 from pygame.locals import *
@@ -80,10 +80,11 @@ class cScreen_0:
                 fichero_icono = self.carpeta_img+"iconos/fire_ON.png"
             else:
                 fichero_icono = self.carpeta_img+"iconos/fire_OFF.png"
-                icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
-                posX = gv.screen_widht - icon.get_size()[0] - 7
-                posY = gv.screen_height - icon.get_size()[1] -7
-                self.screen.blit(icon, (posX,posY))
+                log(4,fichero_icono)
+            icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+            posX = gv.screen_widht - icon.get_size()[0] - 7
+            posY = gv.screen_height - icon.get_size()[1] -7
+            self.screen.blit(icon, (posX,posY))
         else:
             if (gv.estadoCalefa_NextProg == -1):
                 fichero_icono = self.carpeta_img+"iconos/programado_label.png"
@@ -91,19 +92,19 @@ class cScreen_0:
                 posX = gv.screen_widht - icon.get_size()[0] - 4
                 posY = gv.screen_height - icon.get_size()[1] -4
                 self.screen.blit(icon, (posX,posY))            
-            elif (time.time() - gv.estadoCalefa_NextProg  < 60):
+            elif (gv.estadoCalefa_NextProg - time.time() < 60):
                 if (gv.rele ==1):            
                     fichero_icono = self.carpeta_img+"iconos/fire_ON_prog.png"
                 else:
                     fichero_icono = self.carpeta_img+"iconos/fire_OFF_prog.png"
-                    icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
-                    posX = gv.screen_widht - icon.get_size()[0] - 7
-                    posY = gv.screen_height - icon.get_size()[1] -7
-                    self.screen.blit(icon, (posX,posY))
+                icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+                posX = gv.screen_widht - icon.get_size()[0] - 7
+                posY = gv.screen_height - icon.get_size()[1] -7
+                self.screen.blit(icon, (posX,posY))
             else:
-                string = "Programado para las %s " %(time.strftime("%I:%M %p", time.localtime(abs(gv.estadoCalefa_NextProg))))
-                string +=  "(%s)" %(time.strftime(str(datetime.timedelta(seconds =round(a - time.time())))))
-                mytext = self.Letra_temp2.render(string , False, self.letra_color).convert_alpha()
+                string = "Prog a las %s " %(time.strftime("%I:%M %p", time.localtime(abs(gv.estadoCalefa_NextProg))))
+                string +=  "(%s)" %(time.strftime(str(datetime.timedelta(seconds =round(gv.estadoCalefa_NextProg - time.time())))))
+                mytext = self.Letra_top.render(string , False, self.letra_color).convert_alpha()
                 posX = gv.screen_widht - mytext.get_size()[0] - 7
                 posY = gv.screen_height - mytext.get_size()[1] -7
                 self.screen.blit(mytext, (posX,posY))

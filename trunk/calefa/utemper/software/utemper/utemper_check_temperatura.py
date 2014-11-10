@@ -21,7 +21,7 @@ class cCheck_temperatura:
 
     def suceso(self):
         # check  programacion del la calefacion:
-        if (time.time()-self.lastTimeCheckCalefa>6):
+        if (time.time()-self.lastTimeCheckCalefa>10):
             self.checkEstadoCheckCalefacion()
             self.lastTimeCheckCalefa = time.time()
             if (self.dia_horarios != time.localtime().tm_wday):
@@ -43,7 +43,6 @@ class cCheck_temperatura:
         elif (gv.estadoCalefa == 2):
             # estado programado
             self.check_next_prog()
-            log(2, "check_next_prog: next hora: %s" %(time.strftime("%d-%b-%Y %I:%M %p", time.localtime(gv.estadoCalefa_NextProg))))
 
             hora=time.localtime()
             index = (hora.tm_hour*4) + (hora.tm_min/15)
@@ -64,8 +63,8 @@ class cCheck_temperatura:
         if 0 < index >=len(self.horarios):
             log(3, "check_next_prog: mal estado de index en leer estado %d " %(index) )
             return
-        for i in range(index, len(self.horarios)):
-            if (self.horarios[index]!="0"):
+        for i in range(index, len(self.horarios)-1):
+            if (self.horarios[i]!="0"):
                 gv.estadoCalefa_NextProg = segundos
                 return
             else:

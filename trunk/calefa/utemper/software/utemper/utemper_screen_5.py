@@ -10,7 +10,7 @@ import socket
 import psutil
 import datetime
 
-class cScreen_1:
+class cScreen_5:
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     cUtemperSceenImagen=None
@@ -41,28 +41,28 @@ class cScreen_1:
 
         #text.
         string="IP: " + socket.gethostbyname(socket.gethostname())
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 30))
         
-        string = "Num Equipo: " + gv.number_equipo
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
+        string = "Num Equipo: " + str(gv.number_equipo)
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 60))
 
-        string = "%Uso CPU: " + psutil.cpu_percent(interval=1)
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
+        string = "%Uso CPU: " + str(psutil.cpu_percent(interval=1))
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 100))
         
-        string = "%Memoria: " + psutil.virtual_memory().percent
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
-        self.screen.blit(mytext, (20, 130))
+        ''' string = "%Memoria: " + str(psutil.virtual_memory().percent)
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
+        self.screen.blit(mytext, (20, 130))'''
         
-        string = "%Disco Usado: " + psutil.disk_usage('/').percent
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
+        string = "%Disco Usado: " + str(psutil.disk_usage('/').percent)
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 160))
         
-        string = "Encendido desde: " + datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%d-%m %H:%M:%S")
-        mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
-        self.screen.blit(mytext, (20, 200))
+        '''string = "Encendido desde: " + datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%d-%m %H:%M:%S")
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
+        self.screen.blit(mytext, (20, 200))'''
         
         
         # se muestran lo cambios en pantalla
