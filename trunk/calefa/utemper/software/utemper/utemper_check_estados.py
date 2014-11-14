@@ -18,7 +18,7 @@ class cCheck_estados:
     def __init__(self):
         default_timeout = 5
         socket.setdefaulttimeout(default_timeout)
-        gv.number_equipo = get_mac()
+        gv.number_equipo = 137291051180603#get_mac()
         self.read_wifi_estado()
          
     def suceso (self):
