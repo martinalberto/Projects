@@ -80,7 +80,6 @@ class cScreen_0:
                 fichero_icono = self.carpeta_img+"iconos/fire_ON.png"
             else:
                 fichero_icono = self.carpeta_img+"iconos/fire_OFF.png"
-                log(4,fichero_icono)
             icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
             posX = gv.screen_widht - icon.get_size()[0] - 7
             posY = gv.screen_height - icon.get_size()[1] -7

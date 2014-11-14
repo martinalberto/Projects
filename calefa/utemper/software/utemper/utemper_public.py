@@ -20,15 +20,18 @@ def log(nivel, text):
 		return 0            
 	frame= sys._getframe(1)
 	text_file= time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()) + ";"+ str(nivel) + ";"
-	text_file+= "UTEMPER;"+ frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
+	text_file+= frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
 	print (LOGS_COLORES[nivel] + text_file + LOGS_ENDC)
 	sys.stdout.flush()
 	
 	# save into file.
-	File = file(LOGS_FILE, 'a')
-	File.write(text_file)
-	File.close()
-
+	try:
+		File = file(LOGS_FILE, 'a')
+		File.write(text_file+"\n")
+		File.close()
+	except:
+		print("Imposible escribir en File: " +LOGS_FILE )
+		
 class cread_config(object):
 
     CONFIG_FILE_LOCAL= "config/utemper.conf"

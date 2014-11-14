@@ -49,7 +49,6 @@ class cScreen:
             self.Letra_top = pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
             self.Letra_temp1 = pygame.font.Font("font/Interstate-Black.ttf", 50)
             self.Letra_temp2 = pygame.font.Font("font/Interstate-Black.ttf", 40)
-            self.pantalla=1
             
             # info
             gv.screen_widht  = pygame.display.Info().current_w
@@ -61,6 +60,7 @@ class cScreen:
             self.cUtemperSceen2 = utemper_screen_2.cScreen_2(self.screen)
             self.cUtemperSceen4 = utemper_screen_4.cScreen_4(self.screen)
             self.cUtemperSceen5 = utemper_screen_5.cScreen_5(self.screen)
+            self.pantalla=1
             self.refrescar_screen()
         except:
             log(4,"Imposible iniciar la pantalla")
@@ -168,12 +168,14 @@ class cScreen:
                         # pos[1] y
         if (pos[0] < 100) and (pos[1] < 200):  # Info
             self.screen_number = 5
-        elif (100 <pos[0] > 212) and (pos[1] < 200):  # Apagar
+        elif (100 < pos[0] < 212) and (pos[1] < 200):  # Apagar
+            log(1,"Apagando el equipo....")
             fichero_fondo = self.carpeta_img+"fondo/power_off.jpg"
             fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
             self.screen.blit(fondo, (0, 0))
             pygame.display.flip()
-            subprocess.call(["shutdown", "-h", "3"])
+            os.remove(LOGS_FILE)
+            subprocess.call(["shutdown", "-h", "-F", "-t", "5"])
             time.sleep(2)
         elif (pos[0] < 100) and ( pos[1] > 220):  # Volver
              self.screen_number = 1

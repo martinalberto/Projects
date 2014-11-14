@@ -63,7 +63,7 @@ class cInterfaceServer:
              self.maxTimeSendStatus = self.maxTimeSendFromServer
 
          if (maxTimeSend != self.maxTimeSendStatus):
-             log(3, "Nuevo tiempo Max to send estado: %d" %self.maxTimeSendStatus) 
+             log(1, "Nuevo tiempo Max to send estado: %d" %self.maxTimeSendStatus) 
 
     def send_estatus(self):
         text="http://www.utemper.net/movil/recive_status.php?id=" + str(gv.number_equipo)
@@ -101,7 +101,7 @@ class cInterfaceServer:
     def download_files(self):
         try:
             log(2," download_files from server to local file....")
-            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* config/."
+            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* /home/pi/utemper/config/."
             result = subprocess.call(text, shell = True)
 			
             if result ==0:
@@ -124,7 +124,7 @@ class cInterfaceServer:
             return
  
         if len(os.listdir(self.folder_send_files))!=0: 
-            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8  config/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8 /home/pi/utemper/config/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
             log(2," upload_files from local to server file....")
             result = subprocess.call(text, shell = True)
             if result ==0:

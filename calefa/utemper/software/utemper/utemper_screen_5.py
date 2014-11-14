@@ -10,6 +10,8 @@ import socket
 import psutil
 import datetime
 
+import utemper_ipAddress
+
 class cScreen_5:
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
@@ -21,7 +23,7 @@ class cScreen_5:
         self.screen = screen
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
-            self.letra= pygame.font.Font("font/stag-sans-light-webfont.ttf", 15)
+            self.letra= pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
         except:
             log(4,"Imposible iniciar la pantalla 1 ")
             self.pantalla=0
@@ -38,13 +40,16 @@ class cScreen_5:
         fichero_fondo = self.carpeta_img+"fondo/config_fondo.jpg"
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
-
+		
         #text.
-        string="IP: " + socket.gethostbyname(socket.gethostname())
+        try:
+            string="IP: " + utemper_ipAddress.get_lan_ip()
+        except:
+            string="IP: Error!"
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 30))
         
-        string = "Num Equipo: " + str(gv.number_equipo)
+        string = "Num Equipo: \n" + str(gv.number_equipo)
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 60))
 

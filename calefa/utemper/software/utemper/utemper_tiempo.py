@@ -12,18 +12,17 @@ class eltiempo:
 	WOEID=0
 	CONF_FILE= "config/utemper.conf"
 	WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'	
-	lastTimeTiempo=0
+	lastTimeTiempo = 0
 	
-	#temp:
-	
+	#temp:	
 	temp = False
-	lastTimeTemp=0
+	lastTimeTemp = 0
 	
 	def __init__(self):
-		log(1,"init int_tiempo OK")
 		if self.int_tiempo()==1:
 			self.tiempo=True
-		
+			log(1,"init int_tiempo OK")
+			
 		if self.int_temp()==1:
 			self.temp=True
 			log(1,"init read temperatura OK")
@@ -43,6 +42,7 @@ class eltiempo:
 			os.system('modprobe w1-gpio')
 			os.system('modprobe w1-therm')
 			base_dir = '/sys/bus/w1/devices/'
+			time.sleep(0.5)
 			device_folder = glob.glob(base_dir + '10*')[0]
 			self.device_file = device_folder + '/w1_slave'
 			return 1
@@ -56,7 +56,12 @@ class eltiempo:
 		if (time.time()-self.lastTimeTiempo>900) and (self.tiempo):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
-			
+		elif (time.time()-self.lastTimeTiempo>300) and (self.tiempo == False):
+			self.lastTimeTiempo=time.time()
+			if self.int_tiempo()==1:
+				self.tiempo=True
+				log(1,"init int_tiempo OK")
+				
 		#leer temperatura
 		if (time.time()-self.lastTimeTemp>10) and (self.temp):
 			self.lastTimeTemp=time.time()
@@ -65,7 +70,12 @@ class eltiempo:
 			    gv.temperatura_error=0
 			else:
 			    gv.temperatura_error=1
-	
+		elif (time.time()-self.lastTimeTemp>300) and (self.temp== False):
+			self.lastTimeTemp=time.time()
+			if self.int_temp()==1:
+				self.temp=True
+				log(1,"Conseguimos iniciar read temperatura OK")
+				
 	def reset(self):
 		self.__init__()
 		
