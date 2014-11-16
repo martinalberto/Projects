@@ -3,17 +3,19 @@
 import urllib, urllib2, time
 import xml.etree.ElementTree as ET
 import socket
-import os, os.path
+import os, os.path, subprocess
 from uuid import getnode as get_mac
 from utemper_public import *
 
 class cCheck_estados:
     flie_config_wifi = "/tmp/wifi.var"
+    file_watchdog =  "/tmp/file_watchdog.txt"
     lastTimeNoche=0
-	
+    
     lastTimeCheckInternet=0    
     lastTimeReadWifiStatus =0
     lastTimeModifyWifiStatus =0
+    lastTimePerroGuardian = 0
 
     def __init__(self):
         default_timeout = 5
@@ -37,7 +39,10 @@ class cCheck_estados:
             self.read_wifi_estado()
             self.lastTimeReadWifiStatus = time.time()
 
-
+        if (time.time()-self.lastTimePerroGuardian>60):            
+            self.ActualizaWatchdog()
+            self.lastTimePerroGuardian = time.time()
+            
     def reset(self):
         self.checkNoche()
         self.read_wifi_estado()
@@ -81,3 +86,14 @@ class cCheck_estados:
             gv.wifi_estado = 0
             gv.wifi_ip = ""
             return 0
+
+    def ActualizaWatchdog(self):
+        try:
+            log(0, "Actualizamos perro guardian: " + self.file_watchdog)
+            f = open(self.file_watchdog,'w')
+            lines = f.write("1")
+            f.close()
+        except:
+            log(5, "Imposibleactulizar perro guardian: reboot!!" )
+            subprocess.call("reboot")
+            exit()

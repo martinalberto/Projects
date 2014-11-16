@@ -25,7 +25,7 @@ class cScreen_5:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
             self.letra= pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
         except:
-            log(4,"Imposible iniciar la pantalla 1 ")
+            log(4,"Imposible iniciar la pantalla 5 ")
             self.pantalla=0
 
     def refrescar_screen(self):
