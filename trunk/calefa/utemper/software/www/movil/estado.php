@@ -1,58 +1,49 @@
 <?php
-session_start();
-//manejamos en sesion el nombre del usuario que se ha logeado
-if (!isset($_SESSION["usuario"])){
- //   header("location:login/index.php?nologin=false");
-    
-}
-$_SESSION["usuario"];
-$_SESSION["equipo"]= "137291051180603";
+include('head.php');
 ?>
 
 <?php
-$fielPath = ""
-function readestado($dir, $string)
+function readestado($string)
 {
+   $dir = 'text/'.$_SESSION["equipo"];
    $source=$dir."/status.txt";
            
-           if (!file_exists($source)) {
-                   mkdir( $dir, 0777, True); 
-                   $content =(string)time(). ":last_update:". (string)time(). "\n";
-                   $content .= (string)time().  ":temp:". $_GET['temp']."\n";
-                   $content .= (string)time().  ":rele:". $_GET['rele']."\n";
-                   file_put_contents($source, $content);
-           }
-   
-           $origen =fopen($source, 'r');
-           if ($origen){              
-                   while (($line = fgets($origen, 4096)) !== false) {
-                           echo count(split (':', $line));
-                           $line = trim($line);
-                           if(count(split (':', $line))== 3)
-                           {
-                                    list($seg, $nombre, $valor) = split (':', $line);
-                                    echo $nombre;
-                                    
-                                    if($nombre == $param)
-                                    {
-                                           fclose($origen);
-                                           return $valor;
-                                    }
-                           }
-                   }
-                   if (!feof($origen)) {
-                           echo "Error: unexpected fgets() fail\n";
-                           fclose($origen);
-                           exit();
-                   }
-           }
-           else
-           {
-               echo "leeConf error, imposible leer:" .$dir."\n" ;
-               exit();
-           }
-           fclose($origen);
-           return "0";
+   if (!file_exists($source)) {
+		   mkdir( $dir, 0777, True); 
+		   $content =(string)time(). ":last_update:". (string)time(). "\n";
+		   $content .= (string)time().  ":temp:". $_GET['temp']."\n";
+		   $content .= (string)time().  ":rele:". $_GET['rele']."\n";
+		   file_put_contents($source, $content);
+   }
+
+   $origen =fopen($source, 'r');
+   if ($origen){              
+		   while (($line = fgets($origen, 4096)) !== false) {
+				   $line = trim($line);
+
+			   if(count(split (':', $line))== 3)
+			   {
+					list($seg, $nombre, $valor) = split (':', $line);
+					if($nombre == $string)
+					{
+						   fclose($origen);
+						   return $valor;
+					}
+			   }
+		   }
+		   if (!feof($origen)) {
+			   echo "Error: unexpected fgets() fail\n";
+			   fclose($origen);
+			   exit();
+		   }
+   }
+   else
+   {
+	   echo "leeConf error, imposible leer:" .$source."\n" ;
+	   exit();
+   }
+   fclose($origen);
+   return "0";
 }
 ?>
 
@@ -92,7 +83,7 @@ function readestado($dir, $string)
 			  <td>Utemper:</td>
 			  <td>
 			  <?php
-				if (time() - (readestado("estado") + 0) < 300)
+				if (time() - (readestado("last_update") + 0) < 300)
 					{
 					echo '<img SRC="img/estado_on.png"><br> Encendido ';
 					}
@@ -100,7 +91,7 @@ function readestado($dir, $string)
 					{
 					echo '<img SRC="img/estado_off.png"><br> Error de comunicacion. ';
 					date_default_timezone_set("Europe/Madrid"); 
-					echo '<p> ultima comunicacion:'.date("Y-m-d H:i:s",readestado("estado")).' </p>';
+					echo '<p> ultima comunicacion:'.date("Y-m-d H:i:s",readestado("last_update")).' </p>';
 					}
 			  ?>
 			  </td>

@@ -58,8 +58,8 @@ if ( strlen($msg)>0){
 <input type="password" id="pass" name="pass" >
  <label> Password </label>
 <input type="password" id="pass1" name="pass1" >
- <label> email </label>
-<input type="email" id="email" name="email" >
+ <label> Co'digo Utemper </label>
+<input type="text" id="email" name="email" >
 
 <input type="submit" value="Registro" id="botonLogin">
 <a class="ui-btn ui-btn-corner-all ui-shadow" data-theme="c" href="index.php" data-transition="slidedown"> Volver a login </a>

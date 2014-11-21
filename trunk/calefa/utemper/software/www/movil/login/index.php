@@ -5,21 +5,19 @@ $valido=true;
          /*Entra solo si se presiona el boton entrar*/
         
 		$db = new SQLite3('../text/user');
-var_dump($db);
 		$nombre=$_POST['name'];
          $contrasena=$_POST['pass'];
-		echo "SELECT id FROM user where nombre='$nombre' AND contrasena='$contrasena'";
 		
          //$consulta="SELECT id, nombre,contrasena FROM user where nombre='$nombre' AND contrasena='$contrasena'";
-		$data= $db->querySingle("SELECT id, nombre,contrasena FROM user where nombre='$nombre' AND contrasena='$contrasena' limit 1");
+		$data= $db->querySingle("SELECT email FROM user where nombre='$nombre' AND contrasena='$contrasena' limit 1");
 		
 		if (intval($data)<1){
              $valido=false;
          }else{
-			
              $valido=true;
              //guardamos en sesion el nombre del usuario 
              $_SESSION["usuario"]=$data;
+			 $_SESSION["equipo"]= $data;
              header("location:../index.php?login=true&".time());
          }               
       }

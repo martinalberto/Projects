@@ -84,7 +84,7 @@ box-shadow:none;
 /*** home **/
 
 #branding{
-background:url(../images/logo.png) no-repeat;
+background:url(../images/logo.png ) no-repeat;
 width:322px;
 height:165px;
 text-indent:-999px;
