@@ -7,8 +7,8 @@ if (!isset($_SESSION["usuario"])){
    // header("location:login/index.php?nologin=false");
     
 }
-$_SESSION["usuario"];
-$_SESSION["equipo"]= "137291051180603";
+
+
 
 function guardaConf($dir, $param, $valueNew )
 {
@@ -87,13 +87,10 @@ function leeConf($dir, $param )
 
 	if ($origen){
 		while (($line = fgets($origen, 4096)) !== false) {
-			echo count(split (':', $line));
 			$line = trim($line);
 			if(count(split (':', $line))== 3)
 			{
-				 list($seg, $nombre, $valor) = split (':', $line);
-				 echo $nombre;
-				 
+				 list($seg, $nombre, $valor) = split (':', $line);				 
 				 if($nombre == $param)
 				 {
 				 	fclose($origen);
@@ -120,11 +117,11 @@ function leeConf($dir, $param )
 $path_ultimo_Acceso = 'text/'.$_SESSION["equipo"]."/ultimoAcceso.txt";
 $origen =fopen($path_ultimo_Acceso, 'w');
 if ($origen){
-	fwrite($destino, $line."\n");
+	fwrite($origen, (string)time()."\n");
 }
 else
 {
-	echo "leeConf error, imposible scribir en:" .$path_ultimo_Acceso."\n" ;
+	echo "leeConf error, imposible escribir en:" .$path_ultimo_Acceso."\n" ;
 	exit();
 }
 fclose($origen);

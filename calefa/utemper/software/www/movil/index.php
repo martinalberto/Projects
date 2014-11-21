@@ -15,6 +15,8 @@ $encendido= (int)leeConf($dir, "estado_caldera");
 <!DOCTYPE html> 
 <html> 
 	<head>
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
   <meta charset="UTF-8">	
 	<title>Utemper Control</title> 
 	
@@ -55,8 +57,22 @@ $encendido= (int)leeConf($dir, "estado_caldera");
 		<?php
 		}else{
 		?>
-			<p><b>Esto es una mierda hecha por David Martin.</b></p>
-			<input type="submit" data-role="button" data-icon="checkbox-on" value="Ir a página principal" />	
+			
+
+			<ul data-role="listview" data-inset="true" >
+<li><i class="fa fa-home"></i> <h3> Caldera: </h3>
+		<select  data-native-menu="false" data-theme="c"  onchange='window.location.href="guarda_estado.php?estado="+this.selectedIndex+"&nocache=<?=time()?>"' >
+		   <option value="on" class="on" data-transition="slidedown"  data-ajax="false" <?=($encendido==0?"selected":"")?> > Apagado </option>
+		   <option value="off" class="off" data-transition="slidedown"  data-ajax="false" <?=($encendido==1?"selected":"")?> >Encendido </option>
+		   <option value="prog" class="prog" data-transition="slidedown"  data-ajax="false" <?=($encendido==2?"selected":"")?> >Programado </option>
+		</select>	
+	</form>
+	</li>
+	
+	<li><a href="temp.php"  data-transition="slidedown"  data-ajax="false"><i><IMG SRC="img/icon_temp.png"> </i>  <h3> temperatura. </h3></a></li>
+	<li><a href="dias.php?nocache=<?=time()?>"  data-transition="slidedown"><i class="fa fa-calendar-o"></i><h3> Programacion</h3></a></li>
+	<li><a href="config1.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>	
+	</ul>	
 	<?php } ?>
 	</form >
 	
