@@ -74,12 +74,15 @@ while not(salir):
     elif estado==0:
         # leer configuracion
         try:
+            subprocess.call(["ifconfig", "wlan0", "up"])			
+            subprocess.call(["killall", "dhclient"])
             wifissid = cread_config_Class.read_config("wifi_ssid")
             wificode = cread_config_Class.read_config("wifi_code")
             wait = 0.1
             conectado=0
             internet=0
             estado = 1
+            log(1, "Reset ifconfig y dhclient")
             log(0, "configuracion leida.")
         except:
             # error.
@@ -170,7 +173,7 @@ while not(salir):
                wifi = 1
                conectado=1
                estado = 5
-               wait = 1
+               wait = 30
                errores = 0
             else:
                wait = 5 #intentamos conectar otra vez.
@@ -198,7 +201,7 @@ while not(salir):
             conectado=1
             internet=1
             estado = 5
-            wait = 30
+            wait = 120
         else:
             log(3, "Imposible hacer ping en la wlan0 a 8.8.8.8" )
             errores+=1
@@ -208,6 +211,8 @@ while not(salir):
             if errores >3:
                 estado = 0
                 wait = 10
+                subprocess.call(["ifconfig", "wlan0", "down"])
+                log(4, "Max errores: wlan0 Down." )
     else:
             #estado imposible
             log(5, "Estado imposible del Wifi connect estado : %d" %estado )
@@ -222,7 +227,7 @@ while not(salir):
         conectado_old = conectado
         internet_old = internet
         ip_old = ip
-        save_resultados (wifi, conectado, internet, ip )
+        save_resultados(wifi, conectado, internet, ip )
         
     time.sleep(wait)
     
