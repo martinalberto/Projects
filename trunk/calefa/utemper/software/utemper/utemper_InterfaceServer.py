@@ -25,6 +25,12 @@ class cInterfaceServer:
         socket.setdefaulttimeout(default_timeout)
 
     def suceso (self):
+        if  (time.time()-self.lastTimeInterfaceServer > 300) and (gv.internet == 0):
+            self.lastTimeInterfaceServer = time.time()
+            result = os.system("ping -c 1 -w 1 %s >/dev/null" %('8.8.8.8'))
+            if (result== 0):
+                gv.internet = 1
+                log(1, "Hay Internet.")
         if  (time.time()-self.lastTimeInterfaceServer > 3) and (gv.internet == 1):
 
             if (time.time()-self.lastTimeSendStatus>self.maxTimeSendStatus) or (gv.rele != self.lastSendRele):
@@ -103,7 +109,7 @@ class cInterfaceServer:
             log(2," download_files from server to local file....")
             text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* /home/pi/utemper/config/."
             result = subprocess.call(text, shell = True)
-			
+            
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
                 self.download_config = False

@@ -104,21 +104,28 @@ class cScreen_0:
                 string = "Prog a las %s " %(time.strftime("%I:%M %p", time.localtime(abs(gv.estadoCalefa_NextProg))))
                 string +=  "(%s)" %(time.strftime(str(datetime.timedelta(seconds =round(gv.estadoCalefa_NextProg - time.time())))))
                 mytext = self.Letra_top.render(string , False, self.letra_color).convert_alpha()
+                mytext_sombra = self.Letra_top.render(string , False, (127,127,127)).convert_alpha()
                 posX = gv.screen_widht - mytext.get_size()[0] - 7
                 posY = gv.screen_height - mytext.get_size()[1] -7
+                self.screen.blit(mytext_sombra, (posX+1,posY+1))
                 self.screen.blit(mytext, (posX,posY))
         
         # temperaturas:
         string="%d.C" %gv.tiempo_temp
+        mytext_sombra = self.Letra_temp2.render(string, False, (127,127,127)).convert_alpha()
         mytext = self.Letra_temp2.render(string, False, self.letra_color).convert_alpha()
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +30
+        self.screen.blit(mytext_sombra, (20+2 ,posY+2))
         self.screen.blit(mytext, (20 ,posY))
         
         string="%.1fC" %gv.temperatura
+        mytext_sombra = self.Letra_temp1.render(string, False, (127,127,127)).convert_alpha()
         mytext = self.Letra_temp1.render(string, False, self.letra_color).convert_alpha()
         posX = gv.screen_widht - mytext.get_size()[0] - 30
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +5
+        self.screen.blit(mytext_sombra, (posX+2 ,posY+2))
         self.screen.blit(mytext, (posX ,posY))
+		
         # se muestran lo cambios en pantalla
         pygame.display.flip()
         log(1,"Refrescar screen 0 OK")

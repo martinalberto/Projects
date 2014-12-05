@@ -48,13 +48,18 @@ class cCheck_estados:
         self.read_wifi_estado()
 
     def checkNoche(self):
-        gv.hora_init_dia
         ahora= time.strptime( time.strftime("%I:%M %p", time.localtime()), "%I:%M %p")
         if (gv.hora_init_dia < ahora < gv.hora_init_noche):
-            gv.noche=0 # dia
+            if gv.noche!=0:
+                gv.noche=0 # dia
+                gv.reset_class = 1
+                log(2, "Cambiamos a dia. Reseteamos.")
         else:
-            gv.noche=1 # noche
-     
+            if gv.noche!=1:
+                gv.noche=1 # noche
+                gv.reset_class = 1
+                log(2, "Cambiamos a noche. Reseteamos.")
+
     def check_intenernet(self):
         # check internet.
         ip_ping = "8.8.8.8"

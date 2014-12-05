@@ -3,7 +3,7 @@
 echo -e "\tIniciar start_read_ldr.sh"
 
 count=1
-while [ $count -le 15 ]
+while [ 1 ]
 do
   # si el programa esta arrancado lo cerramos.
   killall read_ldr.py 2>/dev/null 
@@ -15,7 +15,5 @@ do
 done
 
 echo $(date  +"%F_%T")";5;start_read_ldr.sh;max errores KO">>/var/utemp/logs.log
-echo $(date  +"%F_%T")";5;start_read_ldr.sh;Rebbot OK">>/var/utemp/logs.log
-sleep 60
+echo $(date  +"%F_%T")";5;start_read_ldr.sh;EXIT">>/var/utemp/logs.log
 
-reboot

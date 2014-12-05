@@ -21,6 +21,7 @@ chmod 777 /tmp/temp.var
 chmod 777 /tmp/ldr.var
 chmod 777 /tmp/time_espera.var
 chmod 777 ./rele
+chmod +x  ./utemper.py
 
 # mkidr dir
 mkdir -p config/
@@ -29,7 +30,7 @@ mkdir -p config/send/
 #logs
 mkdir -p /var/utemp/
 
-echo $(date  +"%F_%T")";1;Start Utemper.sh: Iniciamos ficheros">>/var/utemp/logs.log
+echo $(date  +"%F_%T")";1;INI1;Iniciamos ficheros">>/var/utemp/logs.log
 chmod 777 /var/utemp/logs.log
 
 # desabilitamos swap:
@@ -46,14 +47,19 @@ killall start_read_ldr.sh 2>/dev/null
 killall start_rele.sh 2>/dev/null
 killall utemper.py 2>/dev/null
 killall connect_wifi.py 2>/dev/null
-
+killall utemper.py
 # Iniciamos programas.
 sleep 10
 
+bash /home/pi/utemper/start_wifi_conect.sh &
 bash /home/pi/utemper/start_read_ldr.sh &
 bash /home/pi/utemper/start_rele.sh &
-#bash /home/pi/utemper/start_wifi_conect.sh &
-sleep 2
-
 bash /home/pi/utemper/start_watchdog.sh &
-sudo python utemper.py
+sleep 5
+
+sudo ./utemper.py
+ 
+echo "Error Utemper: Reiniciamos..."
+echo "Esperamos 200 seg."
+sleep 200
+reboot 

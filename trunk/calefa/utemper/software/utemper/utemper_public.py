@@ -10,7 +10,7 @@ import os.path
 # -----------
  
 
-LOGS_DEBUG_LEVEL= -1
+LOGS_DEBUG_LEVEL= 1
 LOGS_FILE= "/var/utemp/logs.log"
 # gris \033[91m
 LOGS_COLORES= ['\033[94m','\033[0m',  '\033[92m', '\033[93m','\033[91m','\033[93m']
