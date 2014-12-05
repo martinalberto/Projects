@@ -1,9 +1,9 @@
 #!/usr/bin/python
 from __future__ import print_function
 from wifi import Cell, Scheme
-import os
-import os.path
-import subprocess
+import os, os.path
+import re
+import subprocess, commands
 
 from utemper_public import *
         
@@ -74,7 +74,7 @@ while not(salir):
     elif estado==0:
         # leer configuracion
         try:
-            subprocess.call(["ifconfig", "wlan0", "up"])			
+            subprocess.call(["ifconfig", "wlan0", "up"])
             subprocess.call(["killall", "dhclient"])
             wifissid = cread_config_Class.read_config("wifi_ssid")
             wificode = cread_config_Class.read_config("wifi_code")
@@ -133,7 +133,6 @@ while not(salir):
                 except:
                     pass
                 log(3, "Imposible guardar la wifissid  %s " %wifissid )
-                scheme.delete()
                 wifi = 0
                 conectado=0
                 internet=0
@@ -165,7 +164,7 @@ while not(salir):
     elif estado ==4:
         # dhcp.
         try:
-            result = subprocess.call(["dhclient", "wlan0"])
+            result, output = commands.getstatusoutput("dhclient wlan0 -v")
             if (result == 0):
                conexion = scheme.activate()
                ip = conexion.ip_address
@@ -173,7 +172,7 @@ while not(salir):
                wifi = 1
                conectado=1
                estado = 5
-               wait = 30
+               wait = 0.5
                errores = 0
             else:
                wait = 5 #intentamos conectar otra vez.
@@ -194,19 +193,32 @@ while not(salir):
             wait = 20
     elif estado ==5:
         # check internet.
+        result = re.search('DHCPACK from (.*)', output)
+        if (result):
+            os.system("route add default gw %s wlan0 " %result.group(0)[13:])
+            estado = 6
+            wait = 2
+        else:
+            log(1, "Imposible hacer gateway Error en DHCP. Continuamos...." )
+            errores+=1
+            internet=0
+            estado = 6
+            wait = 10
+    elif estado ==6:
+        # check internet.
         result = os.system("ping -c 1 -w 1 -I wlan0 %s >/dev/null" %('8.8.8.8'))
         if (result== 0):
             errores = 0
             wifi = 1
             conectado=1
             internet=1
-            estado = 5
+            estado = 6
             wait = 120
         else:
             log(3, "Imposible hacer ping en la wlan0 a 8.8.8.8" )
             errores+=1
             internet=0
-            estado = 5
+            estado = 6
             wait = 2
             if errores >3:
                 estado = 0

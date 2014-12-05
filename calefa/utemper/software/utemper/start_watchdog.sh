@@ -17,4 +17,3 @@ done
 
 echo $(date  +"%F_%T")";1; Fin de start_atchdog.sh END"
 echo $(date  +"%F_%T")";1; Fin de start_atchdog.sh END">>/var/utemp/logs.log
-

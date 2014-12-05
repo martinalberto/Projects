@@ -27,7 +27,7 @@ class cScreen:
     lastTimeRefes = time.time() + 5
     lastTimePowerONScreen = time.time()
     cUtemperSceenImagen=None
-	
+    
     last_values= [0, 0, 0, 0, 0, 0] # noche, rele, temperatura, wifi, sensor_temp
     
     saveConfigurcion = False
@@ -161,7 +161,7 @@ class cScreen:
              gv.estadoCalefa = 2
              cread_config().update_config_file("estado_caldera",str(gv.estadoCalefa))
              gv.reset_class = 1
-        self.screen_number = 1
+        self.screen_number = 0
         
     def boton_screen_4(self, pos):
         # boton         # pos[0] x 
@@ -178,7 +178,7 @@ class cScreen:
             subprocess.call(["shutdown", "-h", "-F", "-t", "5"])
             time.sleep(2)
         elif (pos[0] < 100) and ( pos[1] > 220):  # Volver
-             self.screen_number = 1
+             self.screen_number = 0
 
     def boton_screen_5(self, pos):
         # boton         # pos[0] x 
