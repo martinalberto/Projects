@@ -52,12 +52,12 @@ class cCheck_estados:
         if (gv.hora_init_dia < ahora < gv.hora_init_noche):
             if gv.noche!=0:
                 gv.noche=0 # dia
-                gv.reset_class = 1
+                gv.reset_class = 2
                 log(2, "Cambiamos a dia. Reseteamos.")
         else:
             if gv.noche!=1:
                 gv.noche=1 # noche
-                gv.reset_class = 1
+                gv.reset_class = 2
                 log(2, "Cambiamos a noche. Reseteamos.")
 
     def check_intenernet(self):

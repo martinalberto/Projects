@@ -41,7 +41,7 @@ def main():
 		#salir=0
 		time.sleep(0.3)
 		
-		if (gv.reset_class==1):
+		if (gv.reset_class!=0):
 			log(2,"RESET utemper....")
 			cutemper_tiempo.reset()
 			cutemper_screen.reset()

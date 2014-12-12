@@ -8,6 +8,7 @@ from utemper_public import *
 import utemper_screen_image
 
 class cScreen_4:
+    pantalla=0
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     cUtemperSceenImagen=None
@@ -17,12 +18,15 @@ class cScreen_4:
         self.screen = screen
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
-
+            self.pantalla=1
         except:
-            log(4,"Imposible iniciar la pantalla 1 ")
+            log(4,"Imposible iniciar la pantalla 4 ")
             self.pantalla=0
 
     def refrescar_screen(self):
+        if (self.pantalla==0):
+            log(3," Pantalla inactiva: Imposible refrescar la pantalla 4 ")
+            return
         if (gv.noche==1):
             self.carpeta_img="img/noche/"
             self.letra_color=(255,255,255)

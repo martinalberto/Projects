@@ -13,6 +13,7 @@ import datetime
 import utemper_ipAddress
 
 class cScreen_5:
+    pantalla=0
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     cUtemperSceenImagen=None
@@ -24,11 +25,15 @@ class cScreen_5:
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
             self.letra= pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
+            self.pantalla=1
         except:
             log(4,"Imposible iniciar la pantalla 5 ")
             self.pantalla=0
 
     def refrescar_screen(self):
+        if (self.pantalla==0):
+            log(3," Pantalla inactiva: Imposible refrescar la pantalla 5 ")
+            return
         if (gv.noche==1):
             self.carpeta_img="img/noche/"
             self.letra_color=(255,255,255)
@@ -40,7 +45,7 @@ class cScreen_5:
         fichero_fondo = self.carpeta_img+"fondo/config_fondo.jpg"
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
-		
+        
         #text.
         try:
             string="IP: " + utemper_ipAddress.get_lan_ip()

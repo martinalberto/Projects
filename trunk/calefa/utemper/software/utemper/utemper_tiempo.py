@@ -8,7 +8,6 @@ from utemper_public import *
 
 class eltiempo:
 	# tiempo
-	tiempo = False
 	WOEID=0
 	CONF_FILE= "config/utemper.conf"
 	WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'	
@@ -20,7 +19,6 @@ class eltiempo:
 	
 	def __init__(self):
 		if self.int_tiempo()==1:
-			self.tiempo=True
 			log(1,"init int_tiempo OK")
 			
 		if self.int_temp()==1:
@@ -33,6 +31,7 @@ class eltiempo:
 	def int_tiempo(self):		
 		self.WOEID = int(cread_config().read_config("WOEID"))
 		if self.WOEID ==-1:
+			gv.tiempo_OK = False
 			return 0
 		self.leer_tiempo()
 		return 1
@@ -53,14 +52,13 @@ class eltiempo:
 	def suceso(self):
 		#leer tiempo
 
-		if (time.time()-self.lastTimeTiempo>900) and (self.tiempo):
+		if (time.time()-self.lastTimeTiempo>900) and (gv.tiempo_OK):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
-		elif (time.time()-self.lastTimeTiempo>300) and (self.tiempo == False):
+		elif (time.time()-self.lastTimeTiempo>300) and (gv.tiempo_OK == False):
 			self.lastTimeTiempo=time.time()
 			if self.int_tiempo()==1:
-				self.tiempo=True
-				log(1,"init int_tiempo OK")
+				log(1,"Read tiempo KO ->  OK Bien ")
 				
 		#leer temperatura
 		if (time.time()-self.lastTimeTemp>10) and (self.temp):
@@ -82,10 +80,11 @@ class eltiempo:
 	def leer_tiempo(self):
 		if self.WOEID<=0:
 			log(4,("Error al leer tiempo WOEID <0 "))
+			gv.tiempo_OK = False
 			return 0
 		try:
 			log(1,("init leer_tiempo... "))
-			data = urllib2.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID), timeout = 5).read()
+			data = urllib2.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID), timeout = 2).read()
 			rss = ET.fromstring(data)
 			ycondition = rss.find('channel/item/{%s}condition' % self.WEATHER_NS)
 			gv.tiempo_temp = int(ycondition.get('temp'))
@@ -98,9 +97,11 @@ class eltiempo:
 			gv.hora_init_dia = time.strptime(ycondition.get('sunrise'), "%I:%M %p")
 			gv.hora_init_noche = time.strptime(ycondition.get('sunset'), "%I:%M %p")
 			log(0," leer_tiempo  OK")
+			gv.tiempo_OK = True
 			return 1
 		except:
 			log(3,"Imposible poder acceder al tiempo.")
+			gv.tiempo_OK = False
 			return 0
 			
 	def leer_temperatura(self):
@@ -129,7 +130,6 @@ class eltiempo:
 			log(3,("Imposible leer temperatura "))
 			return 0
 
-		
 	def read_temp_raw(self):
 		f = open(self.device_file, 'r')
 		lines = f.readlines()
