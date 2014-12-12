@@ -8,6 +8,7 @@ from utemper_public import *
 import utemper_screen_image
 
 class cScreen_1:
+    pantalla=0
     carpeta_img = "img/dia/"
     letra_color = (0,0,0)
     Letra_temp2 = None
@@ -19,11 +20,15 @@ class cScreen_1:
         try:
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
             self.Letra_temp2 = pygame.font.Font("font/Interstate-Black.ttf", 40)
+            self.pantalla=1
         except:
             log(4,"Imposible iniciar la pantalla 1 ")
             self.pantalla=0
 
     def refrescar_screen(self):
+        if (self.pantalla==0):
+            log(3," Pantalla inactiva: Imposible refrescar la pantalla 1 ")
+            return
         if (gv.noche==1):
             self.carpeta_img="img/noche/"
             self.letra_color=(255,255,255)
@@ -32,10 +37,15 @@ class cScreen_1:
             self.letra_color=(0,0,0)
             
         # cargamos el fondo
-        fichero_fondo = self.carpeta_img+"fondo/change_temp.jpg"
+        fichero_fondo = self.carpeta_img+"fondo/config_fondo.jpg"
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
 
+        #botones.
+        fichero_fondo = self.carpeta_img+"fondo/change_temp.png"
+        fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
+        self.screen.blit(fondo, (0, 0))
+        
         #estado Calefa
         fichero_icono = self.carpeta_img+"iconos/boton_"+str(gv.estadoCalefa)+".png"
         icon = self.cUtemperSceenImagen.getImagen(fichero_icono)

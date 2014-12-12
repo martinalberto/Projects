@@ -4,6 +4,8 @@ echo "Iniciar Utemper"
 
 # opcion de luz de la pantalla.
 echo 252 > /sys/class/gpio/export
+sudo sh -c "echo 'out' > /sys/class/gpio/gpio252/direction"
+sudo sh -c "echo '1' > /sys/class/gpio/gpio252/value"
 
 #iniciamos ficheros.
 mkdir -p /var/utemp/
@@ -39,7 +41,8 @@ sudo rm /var/swap
 
 # convertirmos ficheros a linux.
 cd /home/pi/utemper/
-dos2unix *
+dos2unix * 2>/dev/null
+dos2unix config/* 2>/dev/null
 
 # cerramos antiguos programas:
 killall start_read_temp.sh 2>/dev/null
@@ -47,7 +50,7 @@ killall start_read_ldr.sh 2>/dev/null
 killall start_rele.sh 2>/dev/null
 killall utemper.py 2>/dev/null
 killall connect_wifi.py 2>/dev/null
-killall utemper.py
+killall utemper.py 2>/dev/null
 # Iniciamos programas.
 sleep 10
 
@@ -55,7 +58,7 @@ bash /home/pi/utemper/start_wifi_conect.sh &
 bash /home/pi/utemper/start_read_ldr.sh &
 bash /home/pi/utemper/start_rele.sh &
 bash /home/pi/utemper/start_watchdog.sh &
-sleep 5
+sleep 20
 
 sudo ./utemper.py
  

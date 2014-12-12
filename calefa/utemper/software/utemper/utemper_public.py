@@ -10,7 +10,7 @@ import os.path
 # -----------
  
 
-LOGS_DEBUG_LEVEL= 1
+LOGS_DEBUG_LEVEL= -1
 LOGS_FILE= "/var/utemp/logs.log"
 # gris \033[91m
 LOGS_COLORES= ['\033[94m','\033[0m',  '\033[92m', '\033[93m','\033[91m','\033[93m']
@@ -141,6 +141,7 @@ class gv(object):
     number_equipo =0
     
     # el tiempo
+    tiempo_OK = False
     tiempo_temp=-1
     tiempo_code=3200
     tiempo_estado=""
@@ -179,3 +180,7 @@ class gv(object):
     #config:
     upload_config = True
     lastTimeChageSomething = 0 
+
+    # sensor de luz
+    luz_OK =  False
+    luzValor = 0

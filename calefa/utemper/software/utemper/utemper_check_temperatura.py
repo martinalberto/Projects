@@ -14,15 +14,22 @@ class cCheck_temperatura:
     def __init__(self):
         # read config value:
         gv.temperatura_max = float (cread_config().read_config("temperatura"))
+        if(gv.temperatura_max == -1):
+            log(5, "ERROR INIT : Imposible leer valor Temperatura Max suponemos 18.") 
+            gv.temperatura_max = 18.0
         gv.estadoCalefa = int (cread_config().read_config("estado_caldera"))
+        if(gv.temperatura_max == -1):
+            log(5, "ERROR INIT : Imposible leer valor estado_caldera suponemos 0.") 
+            gv.estadoCalefa = 0
         self.leer_ficheroHorarios()
-        self.checkEstadoCheckCalefacion()
+        self.checkEstado()
         self.actualiza_rele(gv.rele)
+        log(1, "Init Check Temperatura OK") 
 
     def suceso(self):
         # check  programacion del la calefacion:
-        if (time.time()-self.lastTimeCheckCalefa>10):
-            self.checkEstadoCheckCalefacion()
+        if (time.time()-self.lastTimeCheckCalefa>30):
+            self.checkEstado()
             self.lastTimeCheckCalefa = time.time()
             if (self.dia_horarios != time.localtime().tm_wday):
                 self.leer_ficheroHorarios()
@@ -30,7 +37,7 @@ class cCheck_temperatura:
     def reset(self):
         self.__init__()
         
-    def checkEstadoCheckCalefacion(self):
+    def checkEstado(self):
         if(gv.estadoCalefa == 0):
             # estado Apagado.
             if (gv.rele !=0):
@@ -47,7 +54,7 @@ class cCheck_temperatura:
             hora=time.localtime()
             index = (hora.tm_hour*4) + (hora.tm_min/15)
             if 0 < index >=len(self.horarios):
-                log(3, "checkEstadoCheckCalefacion: mal estado de index en leer estado %d " %(index) )
+                log(3, "checkEstado: mal estado de index en leer estado %d " %(index) )
                 return
             if (self.horarios[index]!="0"):
                 self.check_temperatura()

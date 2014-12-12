@@ -31,8 +31,7 @@ class cInterfaceServer:
             if (result== 0):
                 gv.internet = 1
                 log(1, "Hay Internet.")
-        if  (time.time()-self.lastTimeInterfaceServer > 3) and (gv.internet == 1):
-
+        if(time.time()-self.lastTimeInterfaceServer > 5) and (gv.internet == 1):
             if (time.time()-self.lastTimeSendStatus>self.maxTimeSendStatus) or (gv.rele != self.lastSendRele):
                 # enviar estado del equipo.
                 if (self.send_estatus()):
@@ -75,8 +74,9 @@ class cInterfaceServer:
         text="http://www.utemper.net/movil/recive_status.php?id=" + str(gv.number_equipo)
         text+= "&temp="+str(gv.temperatura)
         text+= "&rele="+str(gv.rele)
+        text+= "&temp_ext="+str(gv.tiempo_temp)
         try:
-            response = urllib2.urlopen(text)
+            response = urllib2.urlopen(text, timeout = 5)
             gv.internet = 1
             log(1, "Enviado el estado a: %s" %(text))
             self.check_response_send_status(response.read())
