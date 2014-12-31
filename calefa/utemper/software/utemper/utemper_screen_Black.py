@@ -11,7 +11,7 @@ class cScreenBlack:
     ConfScreenBlack = 0
     InitOk = False
     lastTimePowerONScreen = time.time()
-    lastStatusScreen = -1 # 1 = ENcendeido 0 = apagado.
+    lastStatusScreen = -1 # 1 = Encendido 0 = apagado.
     botonScreen_OFF = 0
     
     def __init__(self):
@@ -20,7 +20,7 @@ class cScreenBlack:
             self.ScreenON()
             self.ConfScreenBlack = int(cread_config().read_config("PantallNegra"))
             if(self.ConfScreenBlack == -1):
-                log(4,"Error: Imposible leer PantallNegra Conf: Simepre encendida!")
+                log(4,"Error: Imposible leer 'PantallNegra' Conf: Simepre encendida!")
                 self.InitOk= False
                 return
             if not (os.path.isfile("/sys/class/gpio/gpio252/value")):
@@ -40,7 +40,7 @@ class cScreenBlack:
         if (self.botonScreen_OFF == 1 ):
             return # Boton Pulsado. NO hacemos caso de los estados.
             
-        if(self.ConfScreenBlack == 0): # siempre encendido.
+        elif(self.ConfScreenBlack == 0): # siempre encendido.
             self.ScreenON()
             
         elif (self.ConfScreenBlack == 1) and (gv.noche==0): # encendido de día. y es de dia
@@ -80,6 +80,8 @@ class cScreenBlack:
                 log(1,"Apagamos la pantalla OFF")
                 reslut = os.system("echo '0' > /sys/class/gpio/gpio252/value")
                 self.lastStatusScreen = 0
+        else:
+		    log(3,"Pantalla negra NO inicalizacida NO se apaga.")
     
     def IsScreenON(self):
         if (self.lastStatusScreen == 1):
@@ -88,6 +90,6 @@ class cScreenBlack:
             return False
 
     def BotonScreenOFF(self):
-        botonScreen_OFF = 1
+        self.botonScreen_OFF = 1
         log(1,"BotonScreenOFF: Han pulsado a BotonScreenOFF.")
         self.ScreenOFF()
