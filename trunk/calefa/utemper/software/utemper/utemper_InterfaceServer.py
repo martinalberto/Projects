@@ -40,7 +40,7 @@ class cInterfaceServer:
             if (self.download_config):
                 self.download_files()
 
-            if (gv.upload_config) and (self.download_config == False) :
+            if (gv.upload_config):
                 self.upload_files()
 
             self.checkmaxTimeSendStatus()
@@ -75,6 +75,8 @@ class cInterfaceServer:
         text+= "&temp="+str(gv.temperatura)
         text+= "&rele="+str(gv.rele)
         text+= "&temp_ext="+str(gv.tiempo_temp)
+        text+= "&stadCalefa="+str(gv.estadoCalefa)
+        text+= "&stadWifi="+str(gv.wifi_estado)
         try:
             response = urllib2.urlopen(text, timeout = 5)
             gv.internet = 1

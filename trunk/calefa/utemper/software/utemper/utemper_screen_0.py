@@ -89,7 +89,7 @@ class cScreen_0:
             posX = gv.screen_widht - icon.get_size()[0] - 7
             posY = gv.screen_height - icon.get_size()[1] -7
             self.screen.blit(icon, (posX,posY))
-        else:
+        elif (gv.estadoCalefa == 2):
             if (gv.estadoCalefa_NextProg == -1):
                 fichero_icono = self.carpeta_img+"iconos/programado_label.png"
                 icon = self.cUtemperSceenImagen.getImagen(fichero_icono)

@@ -148,6 +148,8 @@ class gv(object):
     tiempo_titulo=""
     hora_init_dia = time.strptime( "08:00 am", "%I:%M %p")
     hora_init_noche = time.strptime( "07:00 pm", "%I:%M %p")
+    tiempo_speed = 0.0
+    tiempo_City = "Error"
 
     # temperatura.
     temperatura=30

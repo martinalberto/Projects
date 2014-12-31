@@ -16,6 +16,7 @@ class eltiempo:
 	#temp:	
 	temp = False
 	lastTimeTemp = 0
+	sensorTemp = None
 	
 	def __init__(self):
 		if self.int_tiempo()==1:
@@ -28,7 +29,7 @@ class eltiempo:
 			self.temp=False
 			log(1,"init read temperatura KO")
 		
-	def int_tiempo(self):		
+	def int_tiempo(self):
 		self.WOEID = int(cread_config().read_config("WOEID"))
 		if self.WOEID ==-1:
 			gv.tiempo_OK = False
@@ -38,15 +39,12 @@ class eltiempo:
 		
 	def int_temp(self):
 		try:
-			os.system('modprobe w1-gpio')
-			os.system('modprobe w1-therm')
-			base_dir = '/sys/bus/w1/devices/'
+			from w1thermsensor import W1ThermSensor
 			time.sleep(0.5)
-			device_folder = glob.glob(base_dir + '10*')[0]
-			self.device_file = device_folder + '/w1_slave'
+			self.sensorTemp = W1ThermSensor()
 			return 1
 		except:
-			log(3,("Imposible modprobe w1-gpio y w1-therm "))
+			log(3,("Imposible W1ThermSensor"))
 			return 0
 			
 	def suceso(self):
@@ -61,7 +59,7 @@ class eltiempo:
 				log(1,"Read tiempo KO ->  OK Bien ")
 				
 		#leer temperatura
-		if (time.time()-self.lastTimeTemp>10) and (self.temp):
+		if (time.time()-self.lastTimeTemp>30) and (self.temp):
 			self.lastTimeTemp=time.time()
 			result = self.leer_temperatura()
 			if result==1:
@@ -96,6 +94,15 @@ class eltiempo:
 			ycondition = rss.find('channel/{%s}astronomy' % self.WEATHER_NS)
 			gv.hora_init_dia = time.strptime(ycondition.get('sunrise'), "%I:%M %p")
 			gv.hora_init_noche = time.strptime(ycondition.get('sunset'), "%I:%M %p")
+			
+			# wind speed
+			ycondition = rss.find('channel/{%s}wind' % self.WEATHER_NS)
+			gv.tiempo_speed = float(ycondition.get('speed'))
+			
+			# city 
+			ycondition = rss.find('channel/{%s}location' % self.WEATHER_NS)
+			gv.tiempo_City = ycondition.get('city')
+			
 			log(0," leer_tiempo  OK")
 			gv.tiempo_OK = True
 			return 1
@@ -108,21 +115,9 @@ class eltiempo:
 		log(0,"leer_temperatura...")
 		temp_c=0
 		count = 0
-		try:		
-			lines = self.read_temp_raw()
-			while lines[0].strip()[-3:] != 'YES':
-				time.sleep(0.2)
-				lines = self.read_temp_raw()
-				count += 1
-				if (count>4):
-					log(3,("Imposible leer temperatura count > 4"))
-					break
-			equals_pos = lines[1].find('t=')
-			if equals_pos != -1:
-				temp_string = lines[1][equals_pos+2:]
-				temp_c = float(temp_string) / 1000.0
-				#temp_f = temp_c * 9.0 / 5.0 + 32.0
-				if (temp_c>2 and temp_c<40):
+		try:
+			temp_c = self.sensorTemp.get_temperature()
+			if (temp_c>2 and temp_c<40):
 					gv.temperatura = round(temp_c, 2)
 					return 1
 			return 0

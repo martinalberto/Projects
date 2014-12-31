@@ -61,18 +61,26 @@ class cScreen_5:
         string = "%Uso CPU: " + str(psutil.cpu_percent(interval=1))
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 100))
-        
-        ''' string = "%Memoria: " + str(psutil.virtual_memory().percent)
-        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
-        self.screen.blit(mytext, (20, 130))'''
-        
+
         string = "%Disco Usado: " + str(psutil.disk_usage('/').percent)
+        mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
+        self.screen.blit(mytext, (20, 130))
+        
+        string = "Ciudad: " + str(gv.tiempo_City)
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
         self.screen.blit(mytext, (20, 160))
         
-        '''string = "Encendido desde: " + datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%d-%m %H:%M:%S")
+        string = "Estado del wifi: "
+        if (gv.wifi_estado == 0):
+            string+= "Hardware No encontrado o deshabilitado"
+        elif (gv.wifi_estado == 1):
+            string+= "Imposible conectar con: " + cread_config().read_config("wifi_ssid")
+        elif (gv.wifi_estado == 2):
+            string+= "El router no tiene Internet"
+        elif (gv.wifi_estado == 3):
+            string+= "Conectado."
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()
-        self.screen.blit(mytext, (20, 200))'''
+        self.screen.blit(mytext, (20, 200))
         
         
         # se muestran lo cambios en pantalla

@@ -59,7 +59,7 @@ class cScreen:
 
             log(1,"iniciar la pantalla  OK")
         except:
-            log(4,"Imposible iniciar la pantalla")
+            log(4,"Imposible iniciar la pantalla KOO")
             self.pantalla=0
         self.refrescar_screen()                
     def suceso(self):
@@ -81,7 +81,7 @@ class cScreen:
 
     def check_screen(self):
         for event in pygame.event.get():
-            if(event.type is MOUSEBUTTONDOWN):                       
+            if(event.type is MOUSEBUTTONDOWN):                
                  self.cScreenBlack.ScreenON()
                  pos = pygame.mouse.get_pos()
                  log(1,"BOTON press screen %d x %d  y." %(pos[0], pos[1]))
@@ -175,8 +175,7 @@ class cScreen:
             self.screen.blit(fondo, (0, 0))
             pygame.display.flip()
             os.remove(LOGS_FILE)
-            subprocess.call(["shutdown", "-h", "-F", "-t", "2"])
-            time.sleep(1)
+            subprocess.call(["shutdown", "-h", "-F", "now"])
             exit(0)
         if (pos[0] > 212) and (pos[1] < 200):  # sleep Screen
             log(1,"Sleep Pantalla el equipo....")
