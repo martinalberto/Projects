@@ -2,6 +2,7 @@
 
 import sys
 import time, datetime, os
+import RPi.GPIO as GPIO
 from utemper_public import *
 
 class cCheck_temperatura:
@@ -11,6 +12,7 @@ class cCheck_temperatura:
     tiempo_rele = 0
     dia_horarios = 0
     horarios=[]
+    Pin_RELE=0
     def __init__(self):
         # read config value:
         gv.temperatura_max = float (cread_config().read_config("temperatura"))
@@ -21,8 +23,18 @@ class cCheck_temperatura:
         if(gv.temperatura_max == -1):
             log(5, "ERROR INIT : Imposible leer valor estado_caldera suponemos 0.") 
             gv.estadoCalefa = 0
+        self.Pin_RELE = int (cread_config().read_config("Pin_RELE"))
+        if(self.Pin_RELE == -1):
+            log(5, "ERROR INIT : Imposible leer valor 'Pin_RELE' suponemos 3.") 
+            self.Pin_RELE = 3
         self.leer_ficheroHorarios()
         self.checkEstado()
+        
+        #Rele Config.
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.Pin_RELE, GPIO.OUT)
+        GPIO.output(self.Pin_RELE, GPIO.LOW)
+        
         self.actualiza_rele(gv.rele)
         log(1, "Init Check Temperatura OK") 
 
@@ -92,14 +104,23 @@ class cCheck_temperatura:
         iFile = file(self.RELE_FILE, 'w')
         iFile.write(str(valor))
         iFile.close()
+		
+        if valor == 1: # fix valor si hay error.
+            valor_pin = GPIO.LOW
+        else:
+            valor_pin = GPIO.HIGH            
+        GPIO.output(self.Pin_RELE, valor_pin)
+        if GPIO.input(self.Pin_RELE) != valor_pin:
+            log(5, "ERROR RELE: Imposible actualizar RELE el pin: " + str(self.Pin_RELE) + " al valor: " + str(valor_pin))
+            return
         gv.lastTimeChageSomething = time.time()
-        gv.rele = valor
-        log(2, "Actulizado valor del rele a -%d- " %(valor) )
+        gv.rele = valor_pin
+        log(2, "Actulizado valor del rele a -%d- " %(valor_pin) )
         
     def leer_ficheroHorarios(self):
         fichero = str(time.localtime().tm_wday +1) + ".txt"
         try:
-            log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA +fichero) )
+            log(1, "Leer la temperatura del fichero %s..." %(self.FOLER_PROGRA + fichero))
             iFile = file(self.FOLER_PROGRA +fichero, 'r')
             line = iFile.readline()
             line = line.replace("\n", "")
