@@ -20,6 +20,9 @@ class cInterfaceServer:
     lastSendRele = -1
     download_config = False
     
+    # send report.
+    maxTimeSendLogs = time.time()
+    
     def __init__(self):
         default_timeout = 3
         socket.setdefaulttimeout(default_timeout)
@@ -43,6 +46,9 @@ class cInterfaceServer:
             if (gv.upload_config):
                 self.upload_files()
 
+            if(time.time() > self.maxTimeSendLogs):
+                self.sendLogs()
+                
             self.checkmaxTimeSendStatus()
 
             self.lastTimeInterfaceServer = time.time()
@@ -137,7 +143,18 @@ class cInterfaceServer:
             result = subprocess.call(text, shell = True)
             if result ==0:
                 gv.lastTimeChageSomething = time.time()
-                log(2, "download_files A utemper.net OK")
+                log(2, "upload_files A utemper.net OK")
             else:
-                log(3, "download_files A utemper.net ERROR!")
+                log(3, "upload_files A utemper.net ERROR!")
             gv.lastTimeChageSomething = time.time()
+
+    def sendLogs(self):
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -avzu --timeout=20 /var/utemp/log* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
+            log(2," Send Logs from local to server file....")
+            result = subprocess.call(text, shell = True)
+            if result ==0:
+                log(2, "Send Logs to utemper.net OK")
+                self.maxTimeSendLogs = round(time.time()) + 14400 # 4 horas.
+            else:
+                log(3, "Send Logs to utemper.net ERROR!")
+                self.maxTimeSendLogs = round(time.time()) + 300 # 5 min.
