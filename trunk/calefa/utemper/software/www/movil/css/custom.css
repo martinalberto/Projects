@@ -286,4 +286,6 @@ background:url(../img/icon_off.png) no-repeat  0 -182px;
 width:30px;
 background:url(../img/icon_prog.png) no-repeat  0 -182px;
 }
-
+.ui-icon-checkbox-on{
+	background-color:#148373 !important;
+}

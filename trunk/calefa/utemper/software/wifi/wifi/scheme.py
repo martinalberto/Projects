@@ -116,7 +116,7 @@ class Scheme(object):
         assert not self.find(self.interface, self.name), "This scheme already exists"
 
         with open(self.interfaces, 'a') as f:
-            f.write('\n')
+            #f.write('\n') # Error Cuando lo borrar, esta linea no se borra.
             f.write(str(self))
 
     def delete(self):

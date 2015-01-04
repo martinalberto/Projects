@@ -40,11 +40,11 @@ class cCheck_temperatura:
 
     def suceso(self):
         # check  programacion del la calefacion:
-        if (time.time()-self.lastTimeCheckCalefa>30):
-            self.checkEstado()
-            self.lastTimeCheckCalefa = time.time()
+        if (time.time()-self.lastTimeCheckCalefa>5):
             if (self.dia_horarios != time.localtime().tm_wday):
                 self.leer_ficheroHorarios()
+            self.checkEstado()
+            self.lastTimeCheckCalefa = time.time()
  
     def reset(self):
         self.__init__()
@@ -106,16 +106,16 @@ class cCheck_temperatura:
         iFile.close()
 		
         if valor == 1: # fix valor si hay error.
-            valor_pin = GPIO.LOW
+            valor_pin = GPIO.HIGH
         else:
-            valor_pin = GPIO.HIGH            
+            valor_pin = GPIO.LOW            
         GPIO.output(self.Pin_RELE, valor_pin)
         if GPIO.input(self.Pin_RELE) != valor_pin:
-            log(5, "ERROR RELE: Imposible actualizar RELE el pin: " + str(self.Pin_RELE) + " al valor: " + str(valor_pin))
+            log(5, "ERROR RELE: Imposible actualizar RELE el pin: " + str(self.Pin_RELE) + " al valor: " + str(valor))
             return
         gv.lastTimeChageSomething = time.time()
-        gv.rele = valor_pin
-        log(2, "Actulizado valor del rele a -%d- " %(valor_pin) )
+        gv.rele = valor
+        log(2, "Actulizado valor del rele a -%d- " %(valor) )
         
     def leer_ficheroHorarios(self):
         fichero = str(time.localtime().tm_wday +1) + ".txt"

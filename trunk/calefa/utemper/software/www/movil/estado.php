@@ -12,6 +12,7 @@ function readestado($string)
 		   mkdir( $dir, 0777, True); 
 		   $content =(string)time(). ":last_update:". (string)time(). "\n";
 		   $content .= (string)time().  ":temp:". $_GET['temp']."\n";
+		   $content .= (string)time().  ":temp_ext:". $_GET['temp_ext']."\n";
 		   $content .= (string)time().  ":rele:". $_GET['rele']."\n";
 		   file_put_contents($source, $content);
    }
@@ -124,7 +125,7 @@ function readestado($string)
 			  <td>Temperatura fuera:</td>
 			  <td>
 			   <?php
-				echo readestado("temp");
+				echo readestado("temp_ext");
 				?> &deg;C
 			  </td>
 		   </tr>
