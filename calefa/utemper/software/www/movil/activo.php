@@ -6,7 +6,7 @@ include('head.php');
 <html> 
 <head> 
 	 <meta charset="UTF-8">
-	<title>Restaurant Picker</title> 
+	<title>Utemper Control</title> 
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.1.css" />
 	<link rel="apple-touch-icon" href="images/launch_icon_57.png" />

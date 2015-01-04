@@ -20,6 +20,8 @@ if(isset($_GET['id'])) {
 	$content =(string)time(). ":last_update:". (string)time(). "\n";
 	//temp
 	$content .= (string)time().  ":temp:". $_GET['temp']."\n";
+	//temp_ext
+	$content .= (string)time().  ":temp_ext:". $_GET['temp_ext']."\n";
 	//rele
 	$content .= (string)time().  ":rele:". $_GET['rele']."\n";
 

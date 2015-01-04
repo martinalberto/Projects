@@ -1,6 +1,5 @@
 <?php
-
-/// SESION
+#ini_set ('session.save_path', '/tmp/');
 session_start();
 //manejamos en sesion el nombre del usuario que se ha logeado
 if (!isset($_SESSION["usuario"])){

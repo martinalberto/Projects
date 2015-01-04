@@ -71,7 +71,8 @@ $encendido= (int)leeConf($dir, "estado_caldera");
 	
 	<li><a href="temp.php"  data-transition="slidedown"  data-ajax="false"><i><IMG SRC="img/icon_temp.png"> </i>  <h3> temperatura. </h3></a></li>
 	<li><a href="dias.php?nocache=<?=time()?>"  data-transition="slidedown"><i class="fa fa-calendar-o"></i><h3> Programacion</h3></a></li>
-	<li><a href="config1.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>	
+	<li><a href="config1.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>
+	<li><a href="login/index.php?borra_session=<?=time()?>" data-transition="slidedown"  data-ajax="false"><i><IMG SRC="img/icon_close.png"> </i>  <h3> Cerrar Sesion.</h3></a></li>	
 	</ul>	
 	<?php } ?>
 	</form >
@@ -106,7 +107,8 @@ exit;
 	
 	<li><a href="temp.php"  data-transition="slidedown"  data-ajax="false"><i><IMG SRC="img/icon_temp.png"> </i>  <h3> temperatura. </h3></a></li>
 	<li><a href="dias.php?nocache=<?=time()?>"  data-transition="slidedown"><i class="fa fa-calendar-o"></i><h3> Programacion</h3></a></li>
-	<li><a href="config1.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>	
+	<li><a href="config1.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"></i> <h3> Configuracion.</h3></a></li>
+	<li><a href="login/index.php?borra_session=<?=time()?>" data-transition="slidedown"  data-ajax="false"><i><IMG SRC="img/icon_close.png"> </i>  <h3> Cerrar Sesion.</h3></a></li>
 	</ul>	
 	
 	</div>
