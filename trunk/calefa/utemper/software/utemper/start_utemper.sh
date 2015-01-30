@@ -7,6 +7,11 @@ echo 252 > /sys/class/gpio/export
 sudo sh -c "echo 'out' > /sys/class/gpio/gpio252/direction"
 sudo sh -c "echo '1' > /sys/class/gpio/gpio252/value"
 
+#apagamos rele:
+echo "3" > /sys/class/gpio/export
+echo "out" > /sys/class/gpio/gpio3/direction
+echo "0" > /sys/class/gpio/gpio3/value
+
 #iniciamos ficheros.
 mkdir -p /var/utemp/
 echo "-1" > /tmp/rele.var
@@ -31,12 +36,14 @@ mkdir -p config/send/
 
 #logs
 mkdir -p /var/utemp/
-
-echo $(date  +"%F_%T")";1;INI1;Iniciamos ficheros">>/var/utemp/logs.log
+echo $(date  +"%F_%T")";1;===================================================">>/var/utemp/logs.log
+echo $(date  +"%F_%T")";1;       Iniciamos ficheros UTEMPER ">>/var/utemp/logs.log
+echo $(date  +"%F_%T")";1;===================================================">>/var/utemp/logs.log
 chmod 777 /var/utemp/logs.log
 
 # desabilitamos swap:
 sudo swapoff --all
+sudo dphys-swapfile swapoff
 sudo rm /var/swap
 
 # convertirmos ficheros a linux.
@@ -52,17 +59,16 @@ killall utemper.py 2>/dev/null
 killall connect_wifi.py 2>/dev/null
 killall utemper.py 2>/dev/null
 # Iniciamos programas.
-sleep 10
 
 bash /home/pi/utemper/start_wifi_conect.sh &
+
 bash /home/pi/utemper/start_read_ldr.sh &
-bash /home/pi/utemper/start_rele.sh &
-bash /home/pi/utemper/start_watchdog.sh &
-sleep 20
+#bash /home/pi/utemper/start_rele.sh &
+#bash /home/pi/utemper/start_watchdog.sh &
 
 sudo ./utemper.py
  
 echo "Error Utemper: Reiniciamos..."
 echo "Esperamos 200 seg."
 sleep 200
-reboot 
+#sudo shutdown -r -F now

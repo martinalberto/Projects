@@ -35,7 +35,7 @@ class cCheck_estados:
             self.check_intenernet()
             self.lastTimeCheckInternet = time.time()
             
-        if (time.time()-self.lastTimeReadWifiStatus>5):            
+        if (time.time()-self.lastTimeReadWifiStatus>15):            
             self.read_wifi_estado()
             self.lastTimeReadWifiStatus = time.time()
 

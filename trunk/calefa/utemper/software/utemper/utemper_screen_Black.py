@@ -58,13 +58,16 @@ class cScreenBlack:
             self.InitOk= False
             
     def reset(self):
+        log(2,"reset cScreenBlack...")
         NewConfScreenBlack = int(cread_config().read_config("PantallNegra"))
-        if(NewConfScreenBlack != self.ConfScreenBlack ):
+        if(self.ConfScreenBlack != NewConfScreenBlack):
             self.__init__() # La configuracion ha cambiado Iniciamos todo de nuevo.
             
         if (gv.reset_class == 1): # Encedemos la pantalla.
+            log(2,"gv.reset_class == 1: ENCENDEMOS LA PANTALLA.")
             self.lastStatusScreen = -1# Se resetea si o si.
-            self.ScreenON()
+            return self.ScreenON()
+        return False
 
     def ScreenON(self):
         if (self.lastStatusScreen != 1):
@@ -73,6 +76,8 @@ class cScreenBlack:
             self.lastStatusScreen = 1
             self.botonScreen_OFF  = 0
             self.lastTimePowerONScreen = time.time()
+            return True
+        return False
 
     def ScreenOFF(self):
         if (self.InitOk):
@@ -81,7 +86,7 @@ class cScreenBlack:
                 reslut = os.system("echo '0' > /sys/class/gpio/gpio252/value")
                 self.lastStatusScreen = 0
         else:
-		    log(3,"Pantalla negra NO inicalizacida NO se apaga.")
+            log(3,"Pantalla negra NO inicalizacida NO se apaga.")
     
     def IsScreenON(self):
         if (self.lastStatusScreen == 1):
