@@ -26,7 +26,7 @@ def RCtime (RCpin):
 		
 		
 #Init del programa.
-
+lastValue_Write = -1 
 lastvalue1 = 0
 lastvalue2 = 0
 lastvalue3 = 0
@@ -57,12 +57,13 @@ while True:
 		#print ("Valores: %d, %d %d = %d" %(lastvalue1, lastvalue2, lastvalue3, valor))
 		
 		#save:
-		if (valor>0 and valor<49000):
+		if (valor>0 and valor<49000) and (lastValue_Write != valor):
 			try:
 				file = open(FILE, "w")
 				file.write(str(valor))
 				file.close()
 				errores=1
+				lastValue_Write = valor
 			except:
 				os.system('echo $(date  +"%F_%T")";4;READ_LDR;Impisible guardar valor en /tmp/ldr.var">>/var/utemp/logs.log')
 				errores+=1
@@ -72,8 +73,9 @@ while True:
 		if (errores>10):
 			os.system('echo $(date  +"%F_%T")";5;READ_LDR;Errores max KO">>/var/utemp/logs.log')
 			os.system('echo $(date  +"%F_%T")";5;READ_LDR;Reboot">>/var/utemp/logs.log')
-			time.sleep(90)
-			os.remove(FILE)
+			if (os.path.isfile(FILE) ):
+				os.remove(FILE)
+			time.sleep(120)
 			errores=1
         
 		#sleep

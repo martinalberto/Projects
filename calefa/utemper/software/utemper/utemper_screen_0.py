@@ -48,7 +48,7 @@ class cScreen_0:
             
         # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/"+str(gv.tiempo_code)+".jpg"
-        log(2," Pantalla 0: fondo: "+ fichero_fondo)
+        log(0," Pantalla 0: fondo: "+ fichero_fondo)
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"

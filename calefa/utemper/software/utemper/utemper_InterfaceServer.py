@@ -34,7 +34,7 @@ class cInterfaceServer:
             if (result== 0):
                 gv.internet = 1
                 log(1, "Hay Internet.")
-        if(time.time()-self.lastTimeInterfaceServer > 5) and (gv.internet == 1):
+        if(time.time()-self.lastTimeInterfaceServer > 10) and (gv.internet == 1):
             if (time.time()-self.lastTimeSendStatus>self.maxTimeSendStatus) or (gv.rele != self.lastSendRele):
                 # enviar estado del equipo.
                 if (self.send_estatus()):
@@ -130,14 +130,15 @@ class cInterfaceServer:
             log(0," Imposible send status to http://www.utemper.net/movil/download_files_config.php ... ")
     
     def upload_files(self):
+		
         try:
-            os.listdir(self.folder_send_files)
+            num_files_to_send = len(os.listdir(self.folder_send_files))
         except:
             log(5,"upload_files: ERROR! Imposible read fonder: %s" %self.folder_send_files)
             gv.upload_config =False
             return
  
-        if len(os.listdir(self.folder_send_files))!=0: 
+        if num_files_to_send !=0: 
             text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8 /home/pi/utemper/config/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
             log(2," upload_files from local to server file....")
             result = subprocess.call(text, shell = True)

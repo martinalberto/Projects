@@ -49,24 +49,24 @@ class eltiempo:
 			
 	def suceso(self):
 		#leer tiempo
-
-		if (time.time()-self.lastTimeTiempo>900) and (gv.tiempo_OK):
+		tiempoSeg = time.time()		
+		if (tiempoSeg -self.lastTimeTiempo>900) and (gv.tiempo_OK):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
-		elif (time.time()-self.lastTimeTiempo>300) and (gv.tiempo_OK == False):
+		elif (tiempoSeg -self.lastTimeTiempo>300) and (gv.tiempo_OK == False):
 			self.lastTimeTiempo=time.time()
 			if self.int_tiempo()==1:
 				log(1,"Read tiempo KO ->  OK Bien ")
 				
 		#leer temperatura
-		if (time.time()-self.lastTimeTemp>30) and (self.temp):
+		if (tiempoSeg -self.lastTimeTemp>30) and (self.temp):
 			self.lastTimeTemp=time.time()
 			result = self.leer_temperatura()
 			if result==1:
 			    gv.temperatura_error=0
 			else:
 			    gv.temperatura_error=1
-		elif (time.time()-self.lastTimeTemp>300) and (self.temp== False):
+		elif (tiempoSeg -self.lastTimeTemp>300) and (self.temp== False):
 			self.lastTimeTemp=time.time()
 			if self.int_temp()==1:
 				self.temp=True

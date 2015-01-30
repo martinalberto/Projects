@@ -10,7 +10,7 @@ class cCheck_temperatura:
     RELE_FILE="/tmp/rele.var"
     FOLER_PROGRA = "config/"
     tiempo_rele = 0
-    dia_horarios = 0
+    dia_horarios = -1
     horarios=[]
     Pin_RELE=0
     def __init__(self):
@@ -91,7 +91,7 @@ class cCheck_temperatura:
         gv.estadoCalefa_NextProg = -1
  
     def check_temperatura(self):
-        log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max ))
+        #log(0, "Temperatura: %.2f Temperatura_Max %.2f " %(gv.temperatura , gv.temperatura_max )) # demasiadas escrituras en disco.
         if ((gv.temperatura + 0.2) < gv.temperatura_max) and (gv.rele==0):
                 # temperatura menor y rele apagado.
                 self.actualiza_rele(1)
