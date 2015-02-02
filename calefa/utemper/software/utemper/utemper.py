@@ -39,7 +39,7 @@ def main():
 		cutemper_report.suceso()
 		cutemper_screen.suceso()
 		#log(1," cutemper_screen OK")
-		#salir=0		
+		#salir=0
 		time.sleep(0.3)
 		if (gv.reset_class!=0):
 			log(2,"RESET utemper Clase %d...." %gv.reset_class)

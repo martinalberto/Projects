@@ -66,7 +66,7 @@ class cScreen:
         if(self.pantalla==1):
             # Check el estado del mouse!!!!
             self.check_screen()
-            if (time.time() - self.lastTimeSeg > 1 ): # se ha de cheqear cada SEG
+            if (time.time() - self.lastTimeSeg > 2 ): # se ha de cheqear cada SEG
                 self.cScreenBlack.suceso()
                 self.lastTimeSeg = time.time()
                 if (self.lastTimeSeg - self.lastTimeRefes > 60 ):
@@ -76,17 +76,22 @@ class cScreen:
     
     def reset(self):
         if(self.pantalla==1):
-            self.cScreenBlack.reset()
+            if (self.cScreenBlack.reset()):
+			   log(1,"Despertamos pantalla OFF -> ON. Pantalla principal.")
+			   self.screen_number = 0
             self.refrescar_screen()
 
     def check_screen(self):
         for event in pygame.event.get():
-            if(event.type is MOUSEBUTTONDOWN):                
-                 self.cScreenBlack.ScreenON()
+            if(event.type is MOUSEBUTTONDOWN):
                  pos = pygame.mouse.get_pos()
                  log(1,"BOTON press screen %d x %d  y." %(pos[0], pos[1]))
                  if(self.pantalla==0):
-                       return 0
+                       return False # Error de pantalla.
+                 if (self.cScreenBlack.ScreenON()):
+                       log(1,"Despertamos pantalla OFF -> ON. Pantalla principal.")
+                       self.screen_number = 0
+                       return True
                  if self.screen_number == 0:
                        self.boton_screen_0(pos)
                  elif self.screen_number == 1:
@@ -101,6 +106,7 @@ class cScreen:
                        self.boton_screen_0(pos)
                  self.refrescar_screen()
                  gv.lastTimeChageSomething = time.time()
+        return True
 
     def refrescar_screen(self):
         if(self.pantalla==0):
