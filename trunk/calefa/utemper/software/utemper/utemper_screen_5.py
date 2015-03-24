@@ -8,6 +8,8 @@ from utemper_public import *
 import utemper_screen_image
 import socket
 import datetime
+import utemper_ipAddress
+import psutil
 
 class cScreen_5:
     pantalla=0
@@ -20,8 +22,6 @@ class cScreen_5:
     def __init__(self, screen):
         self.screen = screen
         try:
-            import utemper_ipAddress
-            import psutil
             self.cUtemperSceenImagen = utemper_screen_image.cScreenImeges()
             self.letra= pygame.font.Font("font/stag-sans-light-webfont.ttf", 20)
             self.pantalla=1

@@ -20,7 +20,11 @@ class cCheck_estados:
     def __init__(self):
         default_timeout = 5
         socket.setdefaulttimeout(default_timeout)
-        gv.number_equipo = 9999#get_mac()
+        gv.number_equipo = int(("0x"+ getserial()), 0)
+        if (gv.number_equipo<=0):
+            log(5, "Error al leer number_equipo: "+ gv.number_equipo )
+            log(5, "Numero de equipo por defecto: 137291051180603" )
+            gv.number_equipo = 137291051180603
         self.read_wifi_estado()
          
     def suceso (self):
@@ -99,6 +103,20 @@ class cCheck_estados:
             lines = f.write("1")
             f.close()
         except:
-            log(5, "Imposibleactulizar perro guardian: reboot!!" )
+            log(5, "Imposible actulizar perro guardian: reboot!!" )
             subprocess.call("reboot")
             exit()
+
+			
+def getserial():
+  # Extract serial from cpuinfo file
+  cpuserial = "0000000000000000"
+  try:
+    f = open('/proc/cpuinfo','r')
+    for line in f:
+      if line[0:6]=='Serial':
+        cpuserial = line[10:26]
+    f.close()
+  except:
+    cpuserial = "00000000000000"
+  return cpuserial
