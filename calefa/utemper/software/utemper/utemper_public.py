@@ -8,7 +8,7 @@ import os.path
 # -----------
 # Constantes
 # -----------
- 
+
 
 LOGS_DEBUG_LEVEL= -1
 LOGS_FILE= "/var/utemp/logs.log"
@@ -16,27 +16,27 @@ LOGS_FILE= "/var/utemp/logs.log"
 LOGS_COLORES= ['\033[94m','\033[0m',  '\033[92m', '\033[93m','\033[91m','\033[93m']
 LOGS_ENDC ='\033[0m'
 def log(nivel, text):
-	if (nivel<LOGS_DEBUG_LEVEL):
-		return 0            
-	frame= sys._getframe(1)
-	text_file= time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()) + ";"+ str(nivel) + ";"
-	text_file+= frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
-	print (LOGS_COLORES[nivel] + text_file + LOGS_ENDC)
-	sys.stdout.flush()
-	
-	# save into file.
-	try:
-		File = file(LOGS_FILE, 'a')
-		File.write(text_file+"\n")
-		File.close()
-	except:
-		print("Imposible escribir en File: " +LOGS_FILE )
-		
+    if (nivel<LOGS_DEBUG_LEVEL):
+        return 0
+    frame= sys._getframe(1)
+    text_file= time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime()) + ";"+ str(nivel) + ";"
+    text_file+= frame.f_code.co_filename.split('/')[-1] + ":" + str(frame.f_lineno) +" "+ text
+    print (LOGS_COLORES[nivel] + text_file + LOGS_ENDC)
+    sys.stdout.flush()
+
+    # save into file.
+    try:
+        File = file(LOGS_FILE, 'a')
+        File.write(text_file+"\n")
+        File.close()
+    except:
+        print("Imposible escribir en File: " +LOGS_FILE )
+
 class cread_config(object):
 
     CONFIG_FILE_LOCAL= "config/utemper.conf"
     CONFIG_FILE_SEND= "config/send/utemper.conf"
-    
+
     def read_config (self, nombre_config):
         # read file local
         (tiempo_local, valor_local) = self.read_config_file(self.CONFIG_FILE_LOCAL,nombre_config )
@@ -46,10 +46,10 @@ class cread_config(object):
     def read_config_file (self, file, nombre_config):
         lines=[""]
         encontrado = False
-        tiempo = 0 
+        tiempo = 0
         nombre=""
         valor="-1"
-        
+
         # read
         try:
             f = open(file)
@@ -57,7 +57,7 @@ class cread_config(object):
             f.close()
         except:
             log(4, "Imposible poder leer la configuracion -%s- del fichero %s " %(nombre_config, file) )
-            
+
         # check.
         for line in lines:
             if (len(line.split(':'))==3):
@@ -66,7 +66,7 @@ class cread_config(object):
                 tiempo = int(stiempo)
                 if (nombre.lower() == nombre_config.lower()):
                     encontrado = True
-                    return (tiempo, valor)                
+                    return (tiempo, valor)
         return (0, "-1")
 
     def write_config_file (self,  data):
@@ -111,7 +111,7 @@ class cread_config(object):
                 new_lines.append(linen)
         if (encontrado ==False):
             new_lines.lappend (new_line)
-            
+
         # save
         try:
             f = open(self.CONFIG_FILE_LOCAL, "w")
@@ -119,7 +119,7 @@ class cread_config(object):
             f.close()
         except:
             log(5, "Imposible GUARDAR leer la configuracion del fichero %s " %self.CONFIG_FILE_LOCAL )
-            return 
+            return
 
         # copy to send data.
         try:
@@ -134,12 +134,12 @@ class cread_config(object):
         gv.upload_config = True
         gv.lastTimeChageSomething = time.time()
         return 1
-        
+
 class gv(object):
-    
+
     # number equipo.
     number_equipo =0
-    
+
     # el tiempo
     tiempo_OK = False
     tiempo_temp=-1
@@ -159,19 +159,19 @@ class gv(object):
     # prog Calefa.
     estadoCalefa = 0
     estadoCalefa_NextProg = 0
-    
+
     #dia noche:
     noche=0
-    
+
     # rele
     rele=0
     tiempo_espera=0
-    
+
     #internet y wifi
     internet=0
     wifi_estado = 0
     wifi_ip = ""
-    
+
     # screen
     screen_widht = 320
     screen_height = 240
@@ -181,8 +181,12 @@ class gv(object):
 
     #config:
     upload_config = True
-    lastTimeChageSomething = 0 
+    lastTimeChageSomething = 0
 
     # sensor de luz
     luz_OK =  False
     luzValor = 0
+
+    #Scan Macs IP.
+    scanIp_OK = False
+    scanIp_EnCasa = False

@@ -12,6 +12,8 @@ import utemper_check_estados
 import utemper_InterfaceServer
 import utemper_check_temperatura
 import utemper_report
+import utemper_Scan_Ips
+import utemper_ldr
 
 #import utemper_wifi
 		
@@ -26,6 +28,8 @@ def main():
 	cutemper_Check_temperatura = utemper_check_temperatura.cCheck_temperatura()
 	cinterfaceServer = utemper_InterfaceServer.cInterfaceServer()
 	cutemper_report = utemper_report.calssReport()
+	cutemper_ldr = utemper_ldr.cUtemperLdr()
+	cutemper_Scan_Ips =  utemper_Scan_Ips.cUtemperCheckIp()
 	log(1,"##### Init Utemper OK ####")
 	# bucle
 	while(salir):
@@ -38,6 +42,8 @@ def main():
 		cinterfaceServer.suceso()
 		cutemper_report.suceso()
 		cutemper_screen.suceso()
+		cutemper_ldr.suceso()
+		cutemper_Scan_Ips.suceso()
 		#log(1," cutemper_screen OK")
 		#salir=0
 		time.sleep(0.3)

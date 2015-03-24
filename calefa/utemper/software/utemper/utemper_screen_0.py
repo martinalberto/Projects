@@ -18,7 +18,7 @@ class cScreen_0:
     Letra_temp2 = None
     cUtemperSceenImagen=None
     screen = None
-    
+
     def __init__(self, screen):
         self.screen = screen
         try:
@@ -45,7 +45,7 @@ class cScreen_0:
             self.carpeta_img="img/dia/"
             self.letra_color=(0,0,0)
             self.Sombra_Color = (130,130,130)
-            
+
         # cargamos el fondo
         fichero_fondo = self.carpeta_img+"fondo/"+str(gv.tiempo_code)+".jpg"
         log(0," Pantalla 0: fondo: "+ fichero_fondo)
@@ -59,22 +59,37 @@ class cScreen_0:
         mytext = self.Letra_top.render(string, False, self.letra_color).convert_alpha()
         posX= gv.screen_widht -(mytext.get_size()[0] + 7)
         self.screen.blit(mytext, (posX, 10))
-        
+
         #iconos top:
         #wifi
         posX = 10
         fichero_icono = self.carpeta_img+"iconos/wifi_"+str(gv.wifi_estado)+".png"
         icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         self.screen.blit(icon, (posX,10))
-        
+
         #sensor temperatura
         posX +=(icon.get_size()[0] + 10)
-        if (gv.temperatura_error ==1):            
+        if (gv.temperatura_error ==1):
             fichero_icono = self.carpeta_img+"iconos/temp_KO.png"
         else:
             fichero_icono = self.carpeta_img+"iconos/temp_OK.png"
         icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
         self.screen.blit(icon, (posX,10))
+        posX +=(icon.get_size()[0] + 10)
+
+        #sensor ldr
+        if (gv.luz_OK ==False):
+            fichero_icono = self.carpeta_img+"iconos/ldr_OK.png"
+            icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+            self.screen.blit(icon, (posX,10))
+            posX +=(icon.get_size()[0] + 10)
+
+        #hay gente
+        if (gv.scanIp_EnCasa ==True):
+            fichero_icono = self.carpeta_img+"iconos/enCasa.png"
+            icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+            self.screen.blit(icon, (posX,10))
+            posX +=(icon.get_size()[0] + 10)
 
         #caldera.
         if (gv.estadoCalefa == 0):
@@ -83,7 +98,7 @@ class cScreen_0:
             posX = gv.screen_widht - icon.get_size()[0] - 4
             posY = gv.screen_height - icon.get_size()[1] -4
             self.screen.blit(icon, (posX,posY))
-        elif (gv.estadoCalefa == 1) and (gv.rele ==1): # solo cuando esta encendido.            
+        elif (gv.estadoCalefa == 1) and (gv.rele ==1): # solo cuando esta encendido.
             fichero_icono = self.carpeta_img+"iconos/fire_ON.png"
             icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
             posX = gv.screen_widht - icon.get_size()[0] - 7
@@ -95,9 +110,9 @@ class cScreen_0:
                 icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
                 posX = gv.screen_widht - icon.get_size()[0] - 4
                 posY = gv.screen_height - icon.get_size()[1] -4
-                self.screen.blit(icon, (posX,posY))            
+                self.screen.blit(icon, (posX,posY))
             elif (gv.estadoCalefa_NextProg - time.time() < 60):
-                if (gv.rele ==1):            
+                if (gv.rele ==1):
                     fichero_icono = self.carpeta_img+"iconos/fire_ON_prog.png"
                 else:
                     fichero_icono = self.carpeta_img+"iconos/fire_OFF_prog.png"
@@ -114,7 +129,7 @@ class cScreen_0:
                 posY = gv.screen_height - mytext.get_size()[1] -7
                 self.screen.blit(mytext_sombra, (posX+1,posY+1))
                 self.screen.blit(mytext, (posX,posY))
-        
+
         # temperaturas:
         if (gv.tiempo_OK ): # temperatura Imposible.
             string="%d.C" %gv.tiempo_temp
@@ -123,7 +138,7 @@ class cScreen_0:
             posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +30
             self.screen.blit(mytext_sombra, (20+2 ,posY+2))
             self.screen.blit(mytext, (20 ,posY))
-        
+
         string="%.1fC" %gv.temperatura
         mytext_sombra = self.Letra_temp1.render(string, False, self.Sombra_Color).convert_alpha()
         mytext = self.Letra_temp1.render(string, False, self.letra_color).convert_alpha()
@@ -131,7 +146,7 @@ class cScreen_0:
         posY = (gv.screen_height/2)- (mytext.get_size()[1]/2) +5
         self.screen.blit(mytext_sombra, (posX+2 ,posY+2))
         self.screen.blit(mytext, (posX ,posY))
-        
+
         # se muestran lo cambios en pantalla
         pygame.display.flip()
         log(1,"Refrescar screen 0 OK")
@@ -140,4 +155,4 @@ class cScreen_0:
     def boton_screen (self, pos):
         # Entrar menu
         self.screen_number = 1
-        
+

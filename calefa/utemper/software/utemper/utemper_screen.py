@@ -26,7 +26,7 @@ class cScreen:
     lastTimeSeg = time.time()
     cUtemperSceenImagen=None
     cScreenBlack =  None
-    last_values= [0, 0, 0, 0, 0, 0] # noche, rele, temperatura, wifi, sensor_temp
+    last_values= [0, 0, 0, 0, 0, 0, 0 , 0] # noche, rele, temperatura, wifi, sensor_temp, en casa, ldr
     
     saveConfigurcion = False
     
@@ -71,7 +71,7 @@ class cScreen:
                 self.lastTimeSeg = time.time()
                 if (self.lastTimeSeg - self.lastTimeRefes > 60 ):
                     self.refrescar_screen()
-                elif ([gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error, gv.estadoCalefa] != self.last_values):
+                elif ([gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error, gv.estadoCalefa, gv.scanIp_EnCasa, gv.luz_OK] != self.last_values):
                     self.refrescar_screen() 
     
     def reset(self):
@@ -113,7 +113,7 @@ class cScreen:
             return 0
         if(self.cScreenBlack.IsScreenON() == False): # si no esta encendida no se refresca.
             return 0
-        self.last_values = [gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error, gv.estadoCalefa]
+        self.last_values = [gv.noche, gv.rele, round(gv.temperatura, 0), gv.wifi_estado, gv.temperatura_error, gv.estadoCalefa, gv.scanIp_EnCasa, gv.luz_OK]
         self.lastTimeRefes = time.time()
         if(self.pantalla==0):
             return 0
