@@ -66,12 +66,11 @@ class cUtemperCheckIp:
                 log(3,"Error: Fichero "+self.FILE_TMP_LIST+" No existe. ")
                 self.status = 5
                 return
-                
-            result  = subprocess.call("diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l", shell = True)
-            print result
-            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l result: " + str(result))
+					
+            result  = subprocess.Popen("diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>' 1>/dev/null", shell = True)
+            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l result: " + str(result.wait()))
             gv.scanIp_OK = True
-            if (result != 0):
+            if (result.wait() == 0):
                 log(0,"Hay gente en Casa.")
                 gv.scanIp_EnCasa = True
             else:
