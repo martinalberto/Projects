@@ -2,6 +2,7 @@
 
 #import RPi.GPIO as GPIO
 import os, os.path
+import re
 import shutil
 import subprocess
 from utemper_public import *
@@ -36,8 +37,9 @@ class cUtemperCheckIp:
                 self.status = 5
 
         elif self.status == 2:
-            # Execute.
-            self.vSubprocess = subprocess.Popen(["bash", "scan_ips.sh", "192.168.1", self.FILE_TMP_LIST])
+            # Execute. 
+            subNetwork =re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}', gv.wifi_ip).group(0) 
+            self.vSubprocess = subprocess.Popen(["bash", "scan_ips.sh", subNetwork, self.FILE_TMP_LIST])
             self.lastTimeScan = time.time()
             self.status =3
 
@@ -66,11 +68,11 @@ class cUtemperCheckIp:
                 log(3,"Error: Fichero "+self.FILE_TMP_LIST+" No existe. ")
                 self.status = 5
                 return
-					
-            result  = subprocess.Popen("diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>' 1>/dev/null", shell = True)
-            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l result: " + str(result.wait()))
+                
+            result  = subprocess.call("diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l", shell = True)
+            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l result: " + str(result))
             gv.scanIp_OK = True
-            if (result.wait() == 0):
+            if (result != 0):
                 log(0,"Hay gente en Casa.")
                 gv.scanIp_EnCasa = True
             else:

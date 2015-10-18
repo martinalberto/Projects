@@ -15,18 +15,18 @@ class cUtemperLdr:
         log(0, "Init LDR OK")
 
     def suceso (self):
-        if  (time.time()-self.lastTimeReadLdr > 10) :
+        if  (time.time()-self.lastTimeReadLdr > 20) :
             self.lastTimeReadLdr = time.time()
             result = os.path.isfile(self.FILE_LDR)
             if (result!= True):
                 return
             try:
-                file = open(self.FILE_LDR, "w")
+                file = open(self.FILE_LDR, "r")
                 valor = file.readline()
                 file.close()
                 gv.luzValor = long(valor)
                 gv.luz_OK = 1
-                log(0, "Hay valor LDR: "+ gv.luzValor)
+                log(0, "Hay valor LDR: "+ str(gv.luzValor))
             except:
                 gv.luz_OK = 0
                 log(3, "Error al leer el fichero: "+ self.FILE_LDR)
