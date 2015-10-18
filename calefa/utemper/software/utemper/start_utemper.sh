@@ -63,9 +63,7 @@ killall utemper.py 2>/dev/null
 bash /home/pi/utemper/start_wifi_conect.sh &
 
 bash /home/pi/utemper/start_read_ldr.sh &
-#bash /home/pi/utemper/start_rele.sh &
 #bash /home/pi/utemper/start_watchdog.sh &
-
 sudo ./utemper.py
  
 echo "Error Utemper: Reiniciamos..."

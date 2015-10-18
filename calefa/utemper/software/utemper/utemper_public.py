@@ -110,7 +110,7 @@ class cread_config(object):
             else:
                 new_lines.append(linen)
         if (encontrado ==False):
-            new_lines.lappend (new_line)
+            new_lines.append(new_line)
 
         # save
         try:

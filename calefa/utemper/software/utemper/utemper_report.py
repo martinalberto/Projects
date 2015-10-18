@@ -13,19 +13,24 @@ class calssReport:
     oldValores=[-1,-1,-1,-1]
     inicio = 0
     # Variables personales
-    FEED_ID="1844265561"
-    API_KEY="3QTvK8CwHnYoJmHsp2OiVdrwE1NEkGX9YmenXwu4Fgz9iAhj"
+    xively_id = "-1"
+    xively_key = "-1"
     
     def __init__(self):
+        self.xively_id = cread_config().read_config("xively_id")
+        self.xively_key = cread_config().read_config("xively_key")
         self.Init_xively()
         
     def Init_xively(self):
         if gv.internet!= 1:
             log(3, "No hay Internet. Imposible Iniciar reportes xively.")
             return False
+        if ((self.xively_id == "-1") or (self.xively_key == "-1")):
+            log(0, "No hay configuracion xively.")
+            return False
         try:
-            api = xively.XivelyAPIClient(self.API_KEY)
-            self.feed = api.feeds.get(self.FEED_ID)
+            api = xively.XivelyAPIClient(self.xively_key)
+            self.feed = api.feeds.get(self.xively_id)
             self.inicio=1
             log(2, "inicializar Report xively OK.")
             return True
@@ -38,7 +43,7 @@ class calssReport:
         valores = [gv.temperatura, gv.rele, gv.tiempo_temp, gv.luzValor, gv.temperatura_max]
         Tiempo = time.time()
         if (self.inicio != 1): # No inicializado.
-            if(Tiempo - self.old_time>200) and (gv.internet == 1):
+            if(Tiempo - self.old_time>300) and (gv.internet == 1):
                 self.old_time=Tiempo
                 log(1,"Intentamos self.Init_xively()")
                 if self.Init_xively():

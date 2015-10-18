@@ -25,7 +25,7 @@ class cUtemperCheckIp:
     def suceso (self):
         if self.status == 0:
             #wait time for start.
-            if  (time.time()-self.lastTimeScan > 50) and (gv.wifi_estado>2):
+            if  (time.time()-self.lastTimeScan > 90) and (gv.wifi_estado>2):
                 self.lastTimeScan = time.time()
                 self.status = 1
 

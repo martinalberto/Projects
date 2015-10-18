@@ -79,7 +79,7 @@ class cScreen_0:
 
         #sensor ldr
         if (gv.luz_OK ==False):
-            fichero_icono = self.carpeta_img+"iconos/ldr_OK.png"
+            fichero_icono = self.carpeta_img+"iconos/ldr_KO.png"
             icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
             self.screen.blit(icon, (posX,10))
             posX +=(icon.get_size()[0] + 10)

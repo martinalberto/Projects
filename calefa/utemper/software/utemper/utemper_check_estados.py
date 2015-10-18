@@ -23,8 +23,11 @@ class cCheck_estados:
         gv.number_equipo = int(("0x"+ getserial()), 0)
         if (gv.number_equipo<=0):
             log(5, "Error al leer number_equipo: "+ gv.number_equipo )
-            log(5, "Numero de equipo por defecto: 137291051180603" )
-            gv.number_equipo = 137291051180603
+            log(5, "Numero de equipo por defecto: 00000000000000" )
+        # Check with configuration.
+        if(gv.number_equipo != int(cread_config().read_config("serial"))):
+            cread_config().update_config_file("serial",str(gv.number_equipo))
+		#Wifi Status.
         self.read_wifi_estado()
          
     def suceso (self):
@@ -117,6 +120,7 @@ def getserial():
       if line[0:6]=='Serial':
         cpuserial = line[10:26]
     f.close()
+	
   except:
     cpuserial = "00000000000000"
   return cpuserial
