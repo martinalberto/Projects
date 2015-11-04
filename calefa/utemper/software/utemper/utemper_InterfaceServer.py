@@ -115,7 +115,7 @@ class cInterfaceServer:
     def download_files(self):
         try:
             log(2," download_files from server to local file....")
-            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8  ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* /home/pi/utemper/config/."
+            text = "sshpass -f /var/utemp/pass.txt rsync -av --remove-source-files --timeout=8 -e '/usr/bin/ssh -p 2222' ubuntu@utemper.net:/var/www/www/utemper/movil/text/" + str(gv.number_equipo) + "/send/* /home/pi/utemper/config/."
             result = subprocess.call(text, shell = True)
             
             if result ==0:
@@ -139,7 +139,7 @@ class cInterfaceServer:
             return
  
         if num_files_to_send !=0: 
-            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8 /home/pi/utemper/config/send/* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -av --remove-source-files --timeout=8 -e '/usr/bin/ssh -p 2222'  /home/pi/utemper/config/send/* ubuntu@utemper.net:/var/www/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
             log(2," upload_files from local to server file....")
             result = subprocess.call(text, shell = True)
             if result ==0:
@@ -150,7 +150,8 @@ class cInterfaceServer:
             gv.lastTimeChageSomething = time.time()
 
     def sendLogs(self):
-            text =  "sshpass -f /var/utemp/pass.txt rsync  -avzu --timeout=20 /var/utemp/log* ubuntu@utemper.net:/var/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
+            text =  "sshpass -f /var/utemp/pass.txt rsync  -avzu --timeout=20 -e '/usr/bin/ssh -p 2222' /var/utemp/log* ubuntu@utemper.net:/var/www/www/utemper/movil/text/" + str(gv.number_equipo) + "/."
+            
             log(2," Send Logs from local to server file....")
             result = subprocess.call(text, shell = True)
             if result ==0:

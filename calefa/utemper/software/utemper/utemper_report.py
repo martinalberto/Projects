@@ -15,6 +15,8 @@ class calssReport:
     # Variables personales
     xively_id = "-1"
     xively_key = "-1"
+    FEED_ID="1844265561"
+    API_KEY="3QTvK8CwHnYoJmHsp2OiVdrwE1NEkGX9YmenXwu4Fgz9iAhj"
     
     def __init__(self):
         self.xively_id = cread_config().read_config("xively_id")
