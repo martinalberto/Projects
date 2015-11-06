@@ -4,6 +4,7 @@
 import xively
 import datetime
 import time
+import utemper_report_grovestreams
 from utemper_public import *
 
 class calssReport:
@@ -22,6 +23,7 @@ class calssReport:
         self.xively_id = cread_config().read_config("xively_id")
         self.xively_key = cread_config().read_config("xively_key")
         self.Init_xively()
+        self.Grovestreams = utemper_report_grovestreams.calssReport_Grovestreams()
         
     def Init_xively(self):
         if gv.internet!= 1:
@@ -57,7 +59,9 @@ class calssReport:
                     if (self.SendDataxively(valores)):# send values.
                         self.old_time=Tiempo
                         self.oldValores = valores
-
+                        
+        self.Grovestreams.suceso()
+        
     def SendDataxively(self, valores):
         if (self.inicio != 1):
             log(5,"Intentamos enviar reportes Sin Inicialiar. ERROR!")
