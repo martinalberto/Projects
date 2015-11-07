@@ -11,13 +11,15 @@ import time
 from utemper_public import *
 
 class calssReport_Grovestreams:
-    old_time = 0
-    time_lastUpdate = 0
-    oldValores=[-1,-1,-1,-1]
+   old_time = 0
+   time_lastUpdate = 0
+   oldValores=[-1,-1,-1,-1,-1]
  
    def __init__(self):
         #GroveStreams Settings
-        self.api_key = "8fd02458-1eb1-38c9-8056-ad660b25efe0"
+        self.api_key = "79cfda3d-8e8b-3e93-ba3b-8b42681d0a74"
+		# Ints1957@cuvox.de
+		# 38..42
         
         #Optionally compress the JSON feed body to decrease network bandwidth
         self.compress = True
@@ -29,16 +31,16 @@ class calssReport_Grovestreams:
    def suceso(self):
       Tiempo = time.time()
       if(time.time() - self.old_time>200) and (gv.internet == 1): # cada 200 seg se envia el estado.
-         valores = [gv.temperatura, gv.rele, gv.tiempo_temp, gv.luzValor, gv.temperatura_max]
+         valores = [gv.temperatura, gv.rele, gv.tiempo_temp, gv.luzValor, gv.scanIp_EnCasa]
          if((Tiempo -self.old_time>300) or (valores!=self.oldValores)):
          
             self.component_id = str(gv.number_equipo)
-            if (self.SendData(valores)):# send values.
-               self.old_time=Tiempo
-               self.oldValores = valores
+            self.SendData(valores)# send values.
+            self.old_time=Tiempo
+            self.oldValores = valores
     
 
-   def compressBuf(buf):
+   def compressBuf(self, buf):
        #This method is used to compress a string
        zbuf = StringIO.StringIO()
        zfile = gzip.GzipFile(mode = 'wb',  fileobj = zbuf, compresslevel = 9)
@@ -47,10 +49,7 @@ class calssReport_Grovestreams:
        return zbuf.getvalue()
        
    def SendData(self, valores):
-   
-        temperature_val = random.randrange(-10, 40)
-        humidity_val = random.randrange(0, 100)
-       
+	
         #Assemble feed as a JSON string (Let the GS servers set the sample time)
         samples = []
         samples.append({ 'compId' : self.component_id, 'streamId' : 'temp', 'data' : valores[0] })
@@ -73,8 +72,7 @@ class calssReport_Grovestreams:
                 #Compress the JSON HTTP body
                 body = self.compressBuf(json_encoded)
  
-                print(
-               log(0,'SendData: Compressed feed ' + str(100*len(body) / len(json_encoded)) + '%')
+                log(0,'SendData: Compressed feed ' + str(100*len(body) / len(json_encoded)) + '%')
                 headers = {"Content-Encoding" : "gzip" , "Connection" : "close",
                            "Content-type" : "application/json", "Cookie" : "api_key="+self.api_key}
                
@@ -87,8 +85,7 @@ class calssReport_Grovestreams:
             else:
                 #No Compression
                 body = json_encoded
-                headers = {"Connection" : "close", "Content-type" : "application/json",
-                           "Cookie" : "api_key="+self.api_key}
+                headers = {"Connection" : "close", "Content-type" : "application/json", "Cookie" : "api_key="+self.api_key}
  
                 #GS limits calls to 10 per second per outward facing router IP address
                 #Use the ip_addr and headers assignment below to work around this

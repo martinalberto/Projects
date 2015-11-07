@@ -11,7 +11,7 @@ class calssReport:
 
     old_time = 0
     time_lastUpdate    = 0
-    oldValores=[-1,-1,-1,-1]
+    oldValores=[-1,-1,-1,-1, -1]
     inicio = 0
     # Variables personales
     xively_id = "-1"

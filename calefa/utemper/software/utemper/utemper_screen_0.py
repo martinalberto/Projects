@@ -71,12 +71,12 @@ class cScreen_0:
         posX +=(icon.get_size()[0] + 10)
         if (gv.temperatura_error ==1):
             fichero_icono = self.carpeta_img+"iconos/temp_KO.png"
-        else:
-            fichero_icono = self.carpeta_img+"iconos/temp_OK.png"
-        icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
-        self.screen.blit(icon, (posX,10))
-        posX +=(icon.get_size()[0] + 10)
-
+            icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+            self.screen.blit(icon, (posX,10))
+            posX +=(icon.get_size()[0] + 10)
+        #else:
+        #    fichero_icono = self.carpeta_img+"iconos/temp_OK.png"
+		
         #sensor ldr
         if (gv.luz_OK ==False):
             fichero_icono = self.carpeta_img+"iconos/ldr_KO.png"
