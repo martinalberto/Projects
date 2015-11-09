@@ -70,7 +70,7 @@ class cUtemperCheckIp:
                 return
                 
             result  = subprocess.call("diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'", shell = True) # 1: ERROR, 0: OK.
-            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>'|wc -l result: " + str(result))
+            log(0,"diff -i -B -w "+self.FILE_CONF_LIST+" "+self.FILE_TMP_LIST+" | grep '>' result: " + str(result))
             gv.scanIp_OK = True
             if (result == 0):
                 log(0,"Hay gente en Casa.")

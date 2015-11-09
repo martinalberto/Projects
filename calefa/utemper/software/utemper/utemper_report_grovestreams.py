@@ -32,8 +32,8 @@ class calssReport_Grovestreams:
       Tiempo = time.time()
       if(time.time() - self.old_time>200) and (gv.internet == 1): # cada 200 seg se envia el estado.
          valores = [gv.temperatura, gv.rele, gv.tiempo_temp, gv.luzValor, gv.scanIp_EnCasa]
-         if((Tiempo -self.old_time>300) or (valores!=self.oldValores)):
-         
+         if((Tiempo -self.old_time>900) or (valores!=self.oldValores)):
+
             self.component_id = str(gv.number_equipo)
             self.SendData(valores)# send values.
             self.old_time=Tiempo

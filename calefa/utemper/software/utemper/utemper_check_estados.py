@@ -42,11 +42,11 @@ class cCheck_estados:
             self.check_intenernet()
             self.lastTimeCheckInternet = time.time()
             
-        if (time.time()-self.lastTimeReadWifiStatus>15):            
+        if (time.time()-self.lastTimeReadWifiStatus>15): 
             self.read_wifi_estado()
             self.lastTimeReadWifiStatus = time.time()
 
-        if (time.time()-self.lastTimePerroGuardian>60):            
+        if (time.time()-self.lastTimePerroGuardian>60):
             self.ActualizaWatchdog()
             self.lastTimePerroGuardian = time.time()
             
@@ -110,7 +110,7 @@ class cCheck_estados:
             subprocess.call("reboot")
             exit()
 
-			
+
 def getserial():
   # Extract serial from cpuinfo file
   cpuserial = "0000000000000000"
