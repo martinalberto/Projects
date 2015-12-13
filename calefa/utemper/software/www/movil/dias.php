@@ -1,12 +1,5 @@
 <?php
-session_start();
-//manejamos en sesion el nombre del usuario que se ha logeado
-if (!isset($_SESSION["usuario"])){
-  //  header("location:login/index.php?nologin=false");
-    
-}
-$_SESSION["usuario"];
-sleep();
+include('head.php');
 ?>
 <!DOCTYPE html> 
 <html> 
@@ -30,19 +23,20 @@ sleep();
 		<h1> Selección del día de la semana a programar</h1>
 	</div> 
 
+	
 	<div data-role="content">
 	
 	<div class="choice_list"> 
 	<h1> Selección del día de la semana a programar </h1>
 	
-	<ul data-role="listview" data-inset="true" data-filter="true"  >
+	<ul data-role="listview" data-inset="true" data-filter="true">
 	<li><a href="activo.php?dia=1&nocache=<?=time()?>"  data-transition="slidedown"> Lunes <span class="ui-li-count" > L </span></a> </li>
 	<li><a href="activo.php?dia=2&nocache=<?=time()?>"  data-transition="slidedown"> Martes <span class="ui-li-count" > M </span></a> </li>
 	<li><a href="activo.php?dia=3&nocache=<?=time()?>" data-transition="slidedown">  Miércoles <span class="ui-li-count" > X </span></a> </li>
 	<li><a href="activo.php?dia=4&nocache=<?=time()?>" data-transition="slidedown"> Jueves <span class="ui-li-count" > J </span></a> </li>
 	<li><a href="activo.php?dia=5&nocache=<?=time()?>" data-transition="slidedown">Viernes <span class="ui-li-count" > V</span></a> </li>	
-	<li><a href="activo.php?dia=6&nocache=<?=time()?>" data-transition="slidedown"> Sábado <span class="ui-li-count" > S </span></a> </li>
-	<li><a href="activo.php?dia=7&nocache=<?=time()?>" data-transition="slidedown"> Domingo <span class="ui-li-count" > D </span></a> </li>	
+	<li><a href="activo.php?dia=6&nocache=<?=time()?>" data-transition="slidedown"><u> Sábado </u><span class="ui-li-count" > S </span></a> </li>
+	<li><a href="activo.php?dia=7&nocache=<?=time()?>" data-transition="slidedown"><u> Domingo </u><span class="ui-li-count" > D </span></a> </li>	
 	</ul>
 	</div>
 	

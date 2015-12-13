@@ -34,6 +34,7 @@ $_SESSION["usuario"];
 	<h1>Men&uacute;	de Configuraci&oacute;n.</h1>
 	<div class="choice_list"> 
 	<ul data-role="listview" data-inset="true" >
+			<li><a href="config2.php"  data-transition="slidedown"><i class="fa fa-cogs fa-fw"> </i><br> <h3> Configuraci&oacute;n. </h3></a></li>
 			<li><a href="wifi_redes.php"  data-transition="slidedown"><i><IMG SRC="img/icon_wifi.png"> </i> <br> <h3> Configurar Wifi. </h3></a></li>
 			<li><a href="estado.php"  data-transition="slidedown"><i><IMG SRC="img/icon_status.png"> </i> <br> <h3> Estado del sistema. </h3></a></li>
 	</ul>	
