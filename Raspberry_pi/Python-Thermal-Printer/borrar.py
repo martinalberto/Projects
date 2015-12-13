@@ -36,8 +36,8 @@ import gspread
 #DHT_PIN  = 'P8_11'
 
 # Google Docs account email, password, and spreadsheet name.
-GDOCS_EMAIL            = 'martinalberto@gmail.com'
-GDOCS_PASSWORD         = 'Martin13'
+GDOCS_EMAIL            = '********@gmail.com'
+GDOCS_PASSWORD         = '*******'
 GDOCS_SPREADSHEET_NAME = 'your google docs spreadsheet name'
 
 # How long to wait (in seconds) between measurements.

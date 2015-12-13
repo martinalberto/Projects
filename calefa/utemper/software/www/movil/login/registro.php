@@ -6,32 +6,34 @@
 
 		$db = new SQLite3('../text/user');
 //Create a basic table
-$db->exec('CREATE TABLE IF NOT EXISTS user (id numeric PRIMARY KEY ,nombre text, contrasena text, email varchar (255))');
+//var_dump( $db->exec('CREATE TABLE IF NOT EXISTS user (id numeric PRIMARY KEY ,nombre text, contrasena text, email varchar (255))'));
 
         $username = $_POST['name'];
 		$email = $_POST['email'];
         $password = $_POST['pass'];
 		$time=time();
 		$msg="";
-        if($db->exec( "INSERT INTO `user` (id, nombre, contrasena, email) VALUES ('$time','$username', '$password', '$email')")){
+		echo "INSERT INTO user (id, nombre, contrasena, email) VALUES ('$time','$username', '$password', '$email')";
+		var_dump($db->exec( "INSERT INTO user (id, nombre, contrasena, email) VALUES ('$time','$username', '$password', '$email')"));
+        if($db->exec( "INSERT INTO user (id, nombre, contrasena, email) VALUES ('$time','$username', '$password', '$email')")){
             $msg = "<script>alert('Usuario creado correctamente.');location.href='../index.php?login=true&".time()."'</script>   <a href='../index.php?login=true&".time()."' data-transition='slidedown'  data-ajax='false'>Acceso</a>";
 			
         }
-		
+		exit;
     }
     ?>
 <!DOCTYPE html> 
 <html> 
 <head> 
 	<meta charset="UTF-8">
-	<title>Restaurant Picker</title> 
+	<title>Utemper registro</title> 
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet" href="jquery.mobile.structure-1.0.1.css" />
+	<link rel="stylesheet" href="../css/jquery.mobile.structure-1.0.1.css" />
 	<link rel="apple-touch-icon" href="../images/launch_icon_57.png" />
 	<link rel="apple-touch-icon" sizes="72x72" href="../images/launch_icon_72.png" />
 	<link rel="apple-touch-icon" sizes="114x114" href="../images/launch_icon_114.png" />
-	<link rel="stylesheet" href="../jquery.mobile-1.0.1.css" />
-	<link rel="stylesheet" href="../custom.css" />
+	<link rel="stylesheet" href="../css/jquery.mobile-1.0.1.css" />
+	<link rel="stylesheet" href="../css/custom.css" />
 	<script src="../js/jquery-1.7.1.min.js"></script>
 	<script src="../js/jquery.mobile-1.0.1.min.js"></script>
 </head> 
@@ -51,7 +53,7 @@ if ( strlen($msg)>0){
 	</div> 
 
 	<div data-role="content">
-		<form id="formulario" action="registro.php?<?=time()?>" method="POST">
+		<form id="formulario" action="registro.php?<?=time()?>" method="POST"  data-ajax="false">
 <label> Usuario </label>
 <input type="text" id="name" name="name">
 <label> Password </label>
