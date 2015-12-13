@@ -28,8 +28,7 @@ if (!isset($_SESSION["usuario"])){
 	
 	<script src="js/jquery-1.7.1.min.js"></script>
 	<script src="js/jquery.mobile-1.0.1.min.js"></script>
-	<script src="js/vertical-slider.jquery.js"></script>
-	
+
 	
 	<style>
   #ex1_container { text-align:center }
@@ -50,7 +49,7 @@ if ( strlen($_estoy_logeado)>0){
 $dir = 'text/'.$_SESSION["equipo"];
 $temperatura= (float)leeConf($dir, "temperatura");
 ?>
-<form method="POST" action="guarda_temp.php" data-ajax="false" >
+
 <!-- Start of first page: #one -->
 
 <div id="choisir_ville" data-role="page" data-add-back-btn="true">
@@ -61,16 +60,14 @@ $temperatura= (float)leeConf($dir, "temperatura");
 	
 	<div data-role="content"style="text-align:center;" >	
 <h3>Temperatura:</h3>	
-	<div  class="y " id="ex1_container" style="display:inline-block;text-align:right; background-image: url(images/thermometer.png); height: 260px; width:130px">
-					
-					
-					<input type="range" name="slider" id="slider-0" value="<?php echo $temperatura;?>" step="0.5" min="10" max="32"  sliderOrientation="vertical" />
-					
-			</div>
+<form method="POST" action="guarda_temp.php" data-ajax="false" >
+<table width="95%"><tr><td>
+<input type="number" name="slider" id="slider-0" value="<?php echo $temperatura;?>"  onchange="(this.value=this.value.replace(/,/g, '.'));this.value=Math.round(this.value * 100)/100" step="0.01" />
+
 			               <p align="center">
-		<input type="submit" data-role="button" data-icon="checkbox-on" value="Guardar" />	
+		<input type="submit" data-role="button" data-icon="checkbox-on" data-ajax="false" value="Guardar" />	
                   </p>
-		
+</td><td width="100px"><img src="images/temperature_3925.png" style="margin:10px;width:96px !important"></td></tr></table>		
 	</div><!-- /content -->
 </form>
 </div><!-- /page one -->

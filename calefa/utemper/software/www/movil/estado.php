@@ -64,6 +64,8 @@ function readestado($string)
 	<script src="js/jquery.mobile-1.0.1.min.js"></script>
 </head> 
 <body> 
+
+
 <div id="choisir_ville" data-role="page" data-add-back-btn="true">
 	
 	<div data-role="header"> 
@@ -71,7 +73,9 @@ function readestado($string)
 	</div> 
 
 	<div data-role="content">
-
+<style>
+	td{padding:10px}
+</style>
 	<b>Estado de tu Utemper:</b><br>
 	   <hr>
 
@@ -79,7 +83,7 @@ function readestado($string)
 			echo $_SESSION["equipo"];
 			?> </b> </p>
 				
-		<table border="1" cellpadding="0" cellspacing="0">
+		<table border="1" cellpadding="0" cellspacing="0" >
 		   <tr>
 			  <td>Utemper:</td>
 			  <td>

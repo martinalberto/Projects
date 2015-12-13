@@ -2,17 +2,11 @@
 #ini_set ('session.save_path', '/tmp/');
 session_start();
 //manejamos en sesion el nombre del usuario que se ha logeado
-if (!isset($_SESSION["usuario"])){
-   // header("location:login/index.php?nologin=false");
-    
-}
-
-
 
 function guardaConf($dir, $param, $valueNew )
 {
 	$source=$dir."/utemper.conf";
-	$temp = $source + ".tmp";
+	$temp  =$dir."/utemper.conf.tmp";
 	$sendFile = $dir."/send/utemper.conf";
 	$update = false;
 	
@@ -112,17 +106,24 @@ function leeConf($dir, $param )
 	return "";
 }
 
-// ultimo acceso a la web.
-$path_ultimo_Acceso = 'text/'.$_SESSION["equipo"]."/ultimoAcceso.txt";
-$origen =fopen($path_ultimo_Acceso, 'w');
-if ($origen){
-	fwrite($origen, (string)time()."\n");
-}
-else
-{
-	echo "leeConf error, imposible escribir en:" .$path_ultimo_Acceso."\n" ;
-	exit();
-}
-fclose($origen);
 
+if (!isset($_SESSION["usuario"]) ){
+        header("location:login/index.php?nologin=false");
+        exit;
+}
+
+// ultimo acceso a la web.
+if (isset($_SESSION["equipo"]) ){
+        $path_ultimo_Acceso = 'text/'.$_SESSION["equipo"]."/ultimoAcceso.txt";
+        $origen =fopen($path_ultimo_Acceso, 'w');
+        if ($origen){
+                fwrite($origen, (string)time()."\n");
+        }
+        else
+        {
+                echo "leeConf error, imposible escribir en:" .$path_ultimo_Acceso."\n" ;
+                exit();
+        }
+        fclose($origen);
+}
 ?>
