@@ -83,6 +83,8 @@ class cInterfaceServer:
         text+= "&temp_ext="+str(gv.tiempo_temp)
         text+= "&stadCalefa="+str(gv.estadoCalefa)
         text+= "&stadWifi="+str(gv.wifi_estado)
+        text+= "&enCasa="+str(gv.scanIp_EnCasa)
+        text+= "&Economy="+str(gv.Economy)
         try:
             response = urllib2.urlopen(text, timeout = 5)
             gv.internet = 1

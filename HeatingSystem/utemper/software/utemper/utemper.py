@@ -54,6 +54,9 @@ def main():
 			cinterfaceServer.reset()
 			cutemper_Check_estados.reset()
 			cutemper_Check_temperatura.reset()
+			#cutemper_report.reset()
+			#cutemper_ldr.reset()
+			cutemper_Scan_Ips.reset()
 			log(2,"RESET utemper OK")
 			gv.reset_class = 0
 	# exit

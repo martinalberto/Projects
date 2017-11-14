@@ -20,6 +20,10 @@ def save_resultados (wifi, conectado, internet, ip ):
 ######################################################
 
 # Init.
+
+FILE_REDES_WIFI= "/tmp/redes_wifi.txt"
+FILE_SEND_REDES_WIFI= "config/send/redes_wifi.txt"
+
 FILE_RED_WIFI ="/tmp/crear_wifi.var"
 FILE_WIFI =  "/tmp/wifi.var"
 wifissid ="prueba"
@@ -93,7 +97,20 @@ while not(salir):
             estado = 0
             wait= 10
             
-    elif estado ==1:    
+    elif estado ==1:
+        # Leemos las redes disponibles.
+        try:
+           import shutil
+           File = file(FILE_REDES_WIFI, 'w')
+           todos = Cell.all("wlan0")
+           for celda in todos:
+               File.write(celda.ssid +"\n")
+           File.close()
+           shutil.copy2(FILE_REDES_WIFI, FILE_SEND_REDES_WIFI)
+           log(1, "Leidas redes wifi al fichero /tmp/redes_wifi.txt -> send/redes_wifi.txt")
+        except:
+           log(4, "Error Listar Redes Wifi.")
+
         # buscamos el ssid:
         try:
             cell = Cell.where("wlan0", lambda cell: cell.ssid.lower() == wifissid.lower())
@@ -114,7 +131,7 @@ while not(salir):
             conectado=0
             internet=0
             estado = 0
-            wait= 10
+            wait= 30
             
     elif estado ==2:
         if (Scheme.find("wlan0", wifissid) == None ):
@@ -137,7 +154,7 @@ while not(salir):
                 conectado=0
                 internet=0
                 estado = 0
-                wait= 10
+                wait= 20
         else:
             wifi = 1
             estado = 3

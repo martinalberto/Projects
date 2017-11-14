@@ -1,4 +1,4 @@
-fping -g ${1}.0 ${1}.255 >/dev/null 2>/dev/null
+fping -g ${1}.0 ${1}.254 >/dev/null 2>/dev/null
 arp -an >/dev/null 2>/dev/null
 cat /proc/net/arp |\
     # remove space from column headers

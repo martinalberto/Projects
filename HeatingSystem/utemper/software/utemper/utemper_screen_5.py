@@ -47,7 +47,7 @@ class cScreen_5:
         
         #text.
         try:
-            string="IP: " + utemper_ipAddress.get_lan_ip()
+            string="IP: " + gv.wifi_ip
         except:
             string="IP: Error!"
         mytext = self.letra.render(string, False, self.letra_color).convert_alpha()

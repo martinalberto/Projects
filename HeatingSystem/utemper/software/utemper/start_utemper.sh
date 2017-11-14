@@ -58,15 +58,20 @@ killall start_rele.sh 2>/dev/null
 killall utemper.py 2>/dev/null
 killall connect_wifi.py 2>/dev/null
 killall utemper.py 2>/dev/null
+
+
 # Iniciamos programas.
+ifup --force eth0
+cat /sys/class/net/eth0/carrier
 
 bash /home/pi/utemper/start_wifi_conect.sh &
 
 bash /home/pi/utemper/start_read_ldr.sh &
-#bash /home/pi/utemper/start_watchdog.sh &
+bash /home/pi/utemper/start_watchdog.sh &
+
 sudo ./utemper.py
  
 echo "Error Utemper: Reiniciamos..."
 echo "Esperamos 200 seg."
 sleep 200
-#sudo shutdown -r -F now
+sudo shutdown -r -F now

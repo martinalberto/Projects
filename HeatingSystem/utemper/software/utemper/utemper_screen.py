@@ -38,7 +38,6 @@ class cScreen:
             os.putenv('SDL_MOUSEDRV' , 'TSLIB')
             os.putenv('SDL_MOUSEDEV'   , '/dev/input/touchscreen')
             pygame.init()
-            #screen = pygame.display.set_mode((gv.screen_widht, gv.screen_widht))
             self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
             pygame.display.set_caption("utemper")
             pygame.mouse.set_visible(False)

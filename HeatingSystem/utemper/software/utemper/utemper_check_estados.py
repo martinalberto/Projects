@@ -4,6 +4,7 @@ import urllib, urllib2, time
 import xml.etree.ElementTree as ET
 import socket
 import os, os.path, subprocess
+import utemper_ipAddress
 from uuid import getnode as get_mac
 from utemper_public import *
 
@@ -41,8 +42,10 @@ class cCheck_estados:
             log(0, "suceso check estados: leemos el estado del Internet" )
             self.check_intenernet()
             self.lastTimeCheckInternet = time.time()
+            if (gv.internet == 1):
+               gv.wifi_ip = utemper_ipAddress.get_lan_ip()
             
-        if (time.time()-self.lastTimeReadWifiStatus>15): 
+        if (time.time()-self.lastTimeReadWifiStatus>15):
             self.read_wifi_estado()
             self.lastTimeReadWifiStatus = time.time()
 
@@ -86,7 +89,7 @@ class cCheck_estados:
                 f.close()
                 if int(lines[2]) == 1:
                     gv.internet = 1
-                gv.wifi_estado=int(lines[0]) + int(lines[1]) +int(lines[2])
+                gv.wifi_estado=int(lines[0]) + int(lines[1]) + int(lines[2])
                 gv.wifi_ip=lines[3].replace("\n", "")
                 self.lastTimeModifyWifiStatus = os.path.getmtime(self.flie_config_wifi)
                 return 1

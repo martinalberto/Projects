@@ -190,3 +190,7 @@ class gv(object):
     #Scan Macs IP.
     scanIp_OK = False
     scanIp_EnCasa = False
+    
+    #Economy.
+    Economy = False
+    temp_max_Intelig = 50

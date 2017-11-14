@@ -26,10 +26,9 @@ def RCtime (RCpin):
 		
 		
 #Init del programa.
-lastValue_Write = -1 
-lastvalue1 = 0
-lastvalue2 = 0
-lastvalue3 = 0
+lastValue_Write = -1
+lastvalues = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
 valor=0
 errores=1
 
@@ -49,13 +48,13 @@ else:
 while True:
 		
 		#Ciclo 1.
-		lastvalue1 = RCtime(pinLdr)
-		lastvalue2 = RCtime(pinLdr)
-		lastvalue3 = RCtime(pinLdr)
-		valor= (lastvalue1 + lastvalue2 + lastvalue3)/3
+		lastvalues.pop(0)
+		lastvalues.append(RCtime(pinLdr))
 		
-		#print ("Valores: %d, %d %d = %d" %(lastvalue1, lastvalue2, lastvalue3, valor))
+		valor= sum(lastvalues) / float(len(lastvalues))
 		
+		print ("Valor LDR: %f" %(valor))
+
 		#save:
 		if (valor>0 and valor<49000) and (lastValue_Write != valor):
 			try:

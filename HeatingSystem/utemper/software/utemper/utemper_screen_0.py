@@ -47,8 +47,10 @@ class cScreen_0:
             self.Sombra_Color = (130,130,130)
 
         # cargamos el fondo
-        fichero_fondo = self.carpeta_img+"fondo/"+str(gv.tiempo_code)+".jpg"
+        fichero_fondo = self.carpeta_img+"fondo/tiempo/"+str(gv.tiempo_estado)+".jpg"
         log(0," Pantalla 0: fondo: "+ fichero_fondo)
+        if(os.path.isfile(fichero_fondo)!= True):
+                fichero_fondo = self.carpeta_img+"fondo/3200.jpg"
         fondo = self.cUtemperSceenImagen.getImagen(fichero_fondo)
         self.screen.blit(fondo, (0, 0))
         fichero_up =  self.carpeta_img+"fondo_up.png"
@@ -90,7 +92,13 @@ class cScreen_0:
             icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
             self.screen.blit(icon, (posX,10))
             posX +=(icon.get_size()[0] + 10)
-
+            
+        #Modo Economy
+        if (gv.Economy == True):
+            fichero_icono = self.carpeta_img+"iconos/Economy.png"
+            icon = self.cUtemperSceenImagen.getImagen(fichero_icono)
+            self.screen.blit(icon, (10,175))
+            
         #caldera.
         if (gv.estadoCalefa == 0):
             fichero_icono = self.carpeta_img+"iconos/apagado_label.png"
