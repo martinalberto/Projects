@@ -35,13 +35,13 @@ def photo_callback(tipo):
    camera.resolution = (512, 384)
    camera.brightness = 60
    #camera.rotation = 90
-   camera.framerate = 15
+   camera.framerate = 10
    #camera.contrast = 70
    camera.exposure_mode ="auto"
    camera.awb_mode = "auto"
    #camera.awb_mode='fluorescent'
    if (tipo == 1):
-    camera.image_effect = 'colorbalance'
+   # camera.image_effect = 'colorbalance'
     print ("colorbalance")
    else:
 	 camera.image_effect = 'watercolor'
@@ -51,8 +51,8 @@ def photo_callback(tipo):
    GPIO.output(LedFlash, 0)
    
    camera.close()
-   
-   printer.wake() # Despertamos!
+   # Linea Vacia.
+   printer.feed(1)
    
    imagen = Image.open("../ImgCapture/image"+num+".bmp")
    if (len(imagen.histogram())<400):
@@ -72,9 +72,10 @@ def photo_callback(tipo):
    imagen.save("../ImgPrint/image"+num+".bmp")
    
    #Imprimimos!!
-   printer.feed(1)
    printer.printImage(imagen, True)
-   printer.feed(3)
+   printer.feed(6)
+   time.sleep(0.2)
+   printer.feed(2)
    
 def setLed ( LRojo, LVerde, LAzul):
 
@@ -116,7 +117,6 @@ try:
 except:
    printer.feed(1)
    
-printer.sleep()
 
 ########################################################################
 #             2.- Bucle.
@@ -139,7 +139,7 @@ while(1):
                   setLed(True, False, False)
                   try:
                      printer.print("Bye, bye")
-                     printer.feed(3)
+                     printer.feed(2)
                   except:
                      print("Error goodbye")
                   subprocess.call("sync")
