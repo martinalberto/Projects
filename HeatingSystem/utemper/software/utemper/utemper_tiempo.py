@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import urllib2, time
+import json
 import glob, os
 import xml.etree.ElementTree as ET
 
@@ -8,12 +9,10 @@ from utemper_public import *
 
 class eltiempo:
 	# tiempo
-	WOEID=0
 	CONF_FILE= "config/utemper.conf"
-	WEATHER_NS = 'http://xml.weather.yahoo.com/ns/rss/1.0'	
 	lastTimeTiempo = 0
 	
-	#temp:	
+	#temp:
 	temp = False
 	lastTimeTemp = 0
 	sensorTemp = None
@@ -33,6 +32,7 @@ class eltiempo:
 		self.WOEID = int(cread_config().read_config("WOEID"))
 		if self.WOEID ==-1:
 			gv.tiempo_OK = False
+			log(4,"Error Leer WOEID")
 			return 0
 		self.leer_tiempo()
 		return 1
@@ -50,7 +50,7 @@ class eltiempo:
 	def suceso(self):
 		#leer tiempo
 		tiempoSeg = time.time()		
-		if (tiempoSeg -self.lastTimeTiempo>900) and (gv.tiempo_OK):
+		if (tiempoSeg -self.lastTimeTiempo>1800) and (gv.tiempo_OK):
 			self.lastTimeTiempo=time.time()
 			self.leer_tiempo()
 		elif (tiempoSeg -self.lastTimeTiempo>300) and (gv.tiempo_OK == False):
@@ -81,33 +81,37 @@ class eltiempo:
 			gv.tiempo_OK = False
 			return 0
 		try:
+			import urllib2, time
+			import json
+			import glob, os
+			import xml.etree.ElementTree as ET
 			log(1,("init leer_tiempo... "))
-			data = urllib2.urlopen('http://weather.yahooapis.com/forecastrss?u=c&w=' + str(self.WOEID), timeout = 2).read()
-			rss = ET.fromstring(data)
-			ycondition = rss.find('channel/item/{%s}condition' % self.WEATHER_NS)
-			gv.tiempo_temp = int(ycondition.get('temp'))
-			gv.tiempo_code = int(ycondition.get('code'))
-			gv.tiempo_estado = rss.findtext('text')
-			gv.tiempo_titulo = rss.findtext('channel/title')
-		
+			f = urllib2.urlopen('https://api.wunderground.com/api/********************/geolookup/conditions/forecast/q/Spain/Madrid.json', timeout = 2)
+			json_string = f.read()
+			parsed_json = json.loads(json_string)
+
+			gv.tiempo_temp = float(parsed_json['current_observation']['temp_c'])
+			gv.tiempo_code = int(3200)
+			gv.tiempo_estado = parsed_json['current_observation']['icon']
+			gv.tiempo_City = parsed_json['location']['city']
+			gv.tiempo_speed = float(parsed_json['current_observation']['wind_kph'])
+			f.close()
+         
 			# dia y noche.
-			ycondition = rss.find('channel/{%s}astronomy' % self.WEATHER_NS)
-			gv.hora_init_dia = time.strptime(ycondition.get('sunrise'), "%I:%M %p")
-			gv.hora_init_noche = time.strptime(ycondition.get('sunset'), "%I:%M %p")
-			
-			# wind speed
-			ycondition = rss.find('channel/{%s}wind' % self.WEATHER_NS)
-			gv.tiempo_speed = float(ycondition.get('speed'))
-			
-			# city 
-			ycondition = rss.find('channel/{%s}location' % self.WEATHER_NS)
-			gv.tiempo_City = ycondition.get('city')
-			
-			log(0," leer_tiempo  OK")
+			log(1,("Leemos Hora sale el Sol y Se pone... "))
+			f = urllib2.urlopen('https://api.wunderground.com/api/********************/astronomy/q/Spain/Madrid.json', timeout = 2)
+			json_string = f.read()
+			parsed_json = json.loads(json_string)
+			sunrise = parsed_json['sun_phase']['sunrise']['hour'] +":"+ parsed_json['sun_phase']['sunrise']['minute']
+			sunset  = parsed_json['sun_phase']['sunset']['hour']  +":"+ parsed_json['sun_phase']['sunset']['minute']
+			gv.hora_init_dia = time.strptime(sunrise, "%H:%M")
+			gv.hora_init_noche = time.strptime(sunset, "%H:%M")
+			f.close()
+			log(0," leer_tiempo  [OK] "+ str(gv.tiempo_temp) + " C Code:"+ str(gv.tiempo_code))
 			gv.tiempo_OK = True
 			return 1
 		except:
-			log(3,"Imposible poder acceder al tiempo.")
+			log(4,"Imposible poder acceder al tiempo.")
 			gv.tiempo_OK = False
 			return 0
 			
