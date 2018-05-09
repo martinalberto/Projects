@@ -3,7 +3,12 @@ import urllib2
 import csv
 import re
 
+import logging
+import telegram
+from telegram.error import NetworkError, Unauthorized
+
 try:
+   print "Start leeAEMET_telegram.py..."
    # 1.- Descargamos el fiechero. -> This Case Media de Rioseco
    response = urllib2.urlopen('http://www.aemet.es/es/eltiempo/observacion/ultimosdatos_2604B_resumenes-diarios-anteriores.csv?k=cle&l=2604B&datos=det&w=2&f=tmax&x=')
    data = response.read()
@@ -33,12 +38,13 @@ try:
    #Enviamos!
    dia = re.sub(r"20..", '', dia)
    texto = "El dia " + dia + "llovio en Rioseco: " + str(lluvia) + "L"
+   
+   bot = telegram.Bot("*******************************")# Repmplazar por BOT-ID
+   
    #Yo
-   os.system('/usr/local/bin/yowsup-cli demos -l 34******:*********= -s 34********* "'+texto +'"')
-   #Papa
-   os.system('/usr/local/bin/yowsup-cli demos -l 34******:*********= -s 34********* "'+texto +'"')
+   bot.send_message (*********, texto) # Repmplazar por Chat-ID
    print texto
    
 except Exception,e: 
-   os.system('/usr/local/bin/yowsup-cli demos -l 34******:*********= -s 34********* "ERROR: Bot Check lluvia."')
+   bot.send_message ((*********,, "ERROR: Bot Check lluvia.")# Repmplazar por Chat-ID
    print str(e)
