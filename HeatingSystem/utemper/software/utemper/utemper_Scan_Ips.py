@@ -39,7 +39,7 @@ class cUtemperCheckIp:
             # Check.
             self.status = 2
             if(os.path.isfile(self.FILE_CONF_LIST)!= True):
-                log(3,"Warning Don't exist file: " + self.FILE_CONF_LIST)
+                log(4,"Warning Don't exist file: " + self.FILE_CONF_LIST)
                 self.status = 5
 
         elif self.status == 2:
@@ -47,7 +47,7 @@ class cUtemperCheckIp:
             if (len(gv.wifi_ip) > 0):
                log(0,"Empezamos a Escanear IPs")
                subNetwork =re.search(r'\d{1,3}\.\d{1,3}\.\d{1,3}', gv.wifi_ip).group(0) 
-               log (2, "bash + scan_ips.sh " + subNetwork + self.FILE_TMP_LIST)
+               log (2, "bash scan_ips.sh " + subNetwork + " " + self.FILE_TMP_LIST)
                self.vSubprocess = subprocess.Popen(["bash", "scan_ips.sh", subNetwork, self.FILE_TMP_LIST])
                self.lastTimeScan = time.time()
                self.status =3
@@ -56,12 +56,12 @@ class cUtemperCheckIp:
               
         elif self.status == 3:
             #wait
-            if (self.vSubprocess !=None):
+            if (self.vSubprocess.poll() !=None):
                self.status = 4 # OK -> Vamos.
         
             if  (time.time()-self.lastTimeScan > 300):
                 #Error
-                log(3,"Error: tiempo maximo scan_ips.sh ")
+                log(4,"Error: tiempo maximo scan_ips.sh ")
                 self.status = 5
                 self.vSubprocess.kill()
                 self.lastTimeScan = time.time()
