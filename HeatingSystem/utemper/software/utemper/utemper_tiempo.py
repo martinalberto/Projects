@@ -46,11 +46,12 @@ class eltiempo:
       return 1
       
    def int_temp(self):
+      # Inciamos Lectura Sensor.
       self.Temper_Port = int(cread_config().read_config("WifiTemp_Port"))
-      if self.Temper_Port >0:
+      log(1,"Init Read Temperatura.")
+      if (self.Temper_Port >0):
          # Iniciamos el Puerto UDP.
          try:
-            print self.Sockt
             self.Sockt.close()
             del(self.Sockt)
          except:
@@ -58,16 +59,18 @@ class eltiempo:
          self.Sockt = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
          self.Sockt.setblocking(0)
          self.Sockt.bind(("", self.Temper_Port ))
+         print self.Sockt
          self.regex = ur"Temp=(-?[0-9\.]*);"
-      # Inciamos Lectura Sensor.
-      try:
-         from w1thermsensor import W1ThermSensor
-         time.sleep(0.5)
-         self.sensorTemp = W1ThermSensor()
          return 1
-      except:
-         log(3,("Imposible W1ThermSensor"))
-         return 0
+      else:
+         try:
+            from w1thermsensor import W1ThermSensor
+            time.sleep(0.5)
+            self.sensorTemp = W1ThermSensor()
+            return 1
+         except:
+            log(3,("Imposible W1ThermSensor"))
+            return 0
          
    def suceso(self):
       #leer tiempo
